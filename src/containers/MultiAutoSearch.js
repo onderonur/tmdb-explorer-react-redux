@@ -18,7 +18,7 @@ import {
   Avatar
 } from "@material-ui/core";
 
-function MovieAutoSearch({ history, autoFocus }) {
+function MultiAutoSearch({ className, history, autoFocus }) {
   const [searchValue, setSearchValue] = useState("");
   const isFetchingMovies = useSelector(state =>
     selectMovieSearchIsFetching(state, searchValue)
@@ -85,10 +85,11 @@ function MovieAutoSearch({ history, autoFocus }) {
 
   return (
     <AutoSearch
+      className={className}
       extractSuggestionKey={suggestion =>
         `${suggestion.suggestionType}_${suggestion.id}`
       }
-      placeholder="Search Movies"
+      placeholder="Search Movies & People"
       suggestions={suggestions}
       renderSuggestion={suggestion =>
         suggestion.suggestionType === "movie" ? (
@@ -122,4 +123,4 @@ function MovieAutoSearch({ history, autoFocus }) {
   );
 }
 
-export default withRouter(MovieAutoSearch);
+export default withRouter(MultiAutoSearch);
