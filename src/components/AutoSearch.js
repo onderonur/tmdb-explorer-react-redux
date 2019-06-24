@@ -83,7 +83,8 @@ function AutoSearch({
   onItemSelect,
   onPressEnter,
   debounceMs = 250,
-  autoFocus
+  autoFocus,
+  extractSuggestionKey
 }) {
   const classes = useStyles();
   const [inputValue, setInputValue] = useState("");
@@ -178,7 +179,7 @@ function AutoSearch({
                     {suggestions.map((suggestion, index) => {
                       return (
                         <AutoSearchSuggestion
-                          key={suggestion.id}
+                          key={extractSuggestionKey(suggestion)}
                           suggestion={suggestion}
                           renderSuggestion={renderSuggestion}
                           index={index}
