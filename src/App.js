@@ -7,6 +7,7 @@ import LoadingIndicator from "components/LoadingIndicator";
 import Header from "components/Header";
 import { makeStyles } from "@material-ui/styles";
 import { selectGenresIsFetching } from "reducers/isFetching";
+import AppDrawer from "containers/AppDrawer";
 
 const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
@@ -28,6 +29,7 @@ function App() {
     <>
       <CssBaseline />
       <Header />
+      <AppDrawer />
       <Container className={classes.main} component="main">
         <div className={classes.toolbar} />
         <LoadingIndicator loading={isFetching}>

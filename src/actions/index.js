@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   selectMovieById,
   selectMovieCreditsByMovieId,
@@ -8,24 +7,15 @@ import {
   selectMovieRecommendations
 } from "reducers/entities";
 import * as schemas from "schemas";
+import { get } from "utils";
 
 // TODO: image url'i function'la filan oku. Copy-paste'leri düzelt.
 export const BASE_IMG_API = "//image.tmdb.org/t/p";
-export const BASE_API_URL = "//api.themoviedb.org/3";
 
-const api_key = process.env.REACT_APP_API_KEY;
+export const TOGGLE_DRAWER = "TOGGLE_DRAWER";
 
-function createQueryParams(params = {}) {
-  return {
-    ...params,
-    api_key
-  };
-}
-
-function get(endpoint, params) {
-  return axios.get(`${BASE_API_URL}${endpoint}`, {
-    params: createQueryParams(params)
-  });
+export function toggleDrawer() {
+  return { type: TOGGLE_DRAWER };
 }
 
 export const FETCH_POPULAR_MOVIES_REQUEST = "FETCH_POPULAR_MOVIES_REQUEST";
