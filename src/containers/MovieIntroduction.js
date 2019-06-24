@@ -4,12 +4,10 @@ import { selectMovieById } from "reducers/entities";
 import BaseImage from "components/BaseImage";
 import { BASE_IMG_API } from "actions";
 import { Typography, makeStyles, Box, Grid, Link } from "@material-ui/core";
-import LoadingIndicator from "components/LoadingIndicator";
 import Rating from "components/Rating";
 import MovieGenreChip from "./MovieGenreChip";
 import ImdbLogo from "components/ImdbLogo";
 import { getMovieReleaseYear } from "utils";
-import { selectMovieIsFetching } from "reducers/isFetching";
 
 const useStyles = makeStyles(theme => ({
   backdrop: {
@@ -44,91 +42,85 @@ const useStyles = makeStyles(theme => ({
 
 function MovieIntroduction({ movieId }) {
   const movie = useSelector(state => selectMovieById(state, movieId));
-  const isFetching = useSelector(state =>
-    selectMovieIsFetching(state, movieId)
-  );
   const classes = useStyles({
-    backgroundImage:
-      isFetching || !movie ? null : `${BASE_IMG_API}/w500${movie.backdrop_path}`
+    backgroundImage: !movie
+      ? null
+      : `${BASE_IMG_API}/w500${movie.backdrop_path}`
   });
 
-  return isFetching || !movie ? (
-    <LoadingIndicator />
-  ) : (
-    <>
-      <Box position="relative">
-        <div className={classes.backdrop} />
-        <Box
-          className={classes.top}
-          display="flex"
-          flexWrap="wrap"
-          justifyContent="center"
-          position="relative"
-          zIndex={1}
-        >
-          <Box flexBasis={300}>
-            <BaseImage
-              src={`${BASE_IMG_API}/w500${movie.poster_path}`}
-              alt={movie.title}
-              aspectRatio="2:3"
-            />
-          </Box>
-          <Box p={2} flex={1} flexBasis={300}>
-            <Typography variant="h5" gutterBottom={!movie.tagline}>
-              {movie.title}{" "}
-              <span className={classes.year}>{`(${getMovieReleaseYear(
-                movie
-              )})`}</span>
-            </Typography>
-            <Typography
-              className={classes.tagline}
-              color="textSecondary"
-              gutterBottom
-            >
-              {`"${movie.tagline}"`}
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Box display="flex" alignItems="center">
-                  <Rating value={movie.vote_average * 10} />
-                  <Box marginLeft={2}>
-                    <Link
-                      href={`https://www.imdb.com/title/${movie.imdb_id}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <ImdbLogo />
-                    </Link>
-                  </Box>
+  return movie ? (
+    <Box position="relative">
+      <div className={classes.backdrop} />
+      <Box
+        className={classes.top}
+        display="flex"
+        flexWrap="wrap"
+        justifyContent="center"
+        position="relative"
+        zIndex={1}
+      >
+        <Box flexBasis={300}>
+          <BaseImage
+            src={`${BASE_IMG_API}/w500${movie.poster_path}`}
+            alt={movie.title}
+            aspectRatio="2:3"
+          />
+        </Box>
+        <Box p={2} flex={1} flexBasis={300}>
+          <Typography variant="h5" gutterBottom={!movie.tagline}>
+            {movie.title}{" "}
+            <span className={classes.year}>{`(${getMovieReleaseYear(
+              movie
+            )})`}</span>
+          </Typography>
+          <Typography
+            className={classes.tagline}
+            color="textSecondary"
+            gutterBottom
+          >
+            {`"${movie.tagline}"`}
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Box display="flex" alignItems="center">
+                <Rating value={movie.vote_average * 10} />
+                <Box marginLeft={2}>
+                  <Link
+                    href={`https://www.imdb.com/title/${movie.imdb_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ImdbLogo />
+                  </Link>
                 </Box>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="h6" gutterBottom>
-                  Genres
-                </Typography>
-                {movie.genres &&
-                  movie.genres.map(genreId => (
-                    <MovieGenreChip
-                      className={classes.genreChip}
-                      key={genreId}
-                      genreId={genreId}
-                    />
-                  ))}
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="h6" gutterBottom>
-                  Overview
-                </Typography>
-                <Typography className={classes.overview}>
-                  {movie.overview}
-                </Typography>
-              </Grid>
+              </Box>
             </Grid>
-          </Box>
+            <Grid item xs={12}>
+              <Typography variant="h6" gutterBottom>
+                Genres
+              </Typography>
+              {movie.genres &&
+                movie.genres.map(genreId => (
+                  <MovieGenreChip
+                    className={classes.genreChip}
+                    key={genreId}
+                    genreId={genreId}
+                  />
+                ))}
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h6" gutterBottom>
+                Overview
+              </Typography>
+              <Typography className={classes.overview}>
+                {movie.overview}
+              </Typography>
+            </Grid>
+          </Grid>
         </Box>
       </Box>
-    </>
-  );
+    </Box>
+  ) : null;
 }
 
 export default MovieIntroduction;

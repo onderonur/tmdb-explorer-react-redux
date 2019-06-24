@@ -9,10 +9,8 @@ function FlexGridList({
   spacing = 1,
   minItemWidth = 250
 }) {
-  return !items && loading ? (
-    <LoadingIndicator />
-  ) : items ? (
-    <>
+  return (
+    <LoadingIndicator loading={loading && !items}>
       <Box display="flex" flexWrap="wrap" margin={-spacing / 2}>
         {items.map((item, index) => (
           <Box
@@ -26,9 +24,9 @@ function FlexGridList({
           </Box>
         ))}
       </Box>
-      {loading && <LoadingIndicator />}
-    </>
-  ) : null;
+      <LoadingIndicator loading={loading} />
+    </LoadingIndicator>
+  );
 }
 
 export default FlexGridList;

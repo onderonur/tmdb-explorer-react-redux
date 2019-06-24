@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectMovieCreditsByMovieId } from "reducers/entities";
 import ColGridList from "components/ColGridList";
 import MovieCastListItem from "./MovieCastListItem";
-import LoadingIndicator from "components/LoadingIndicator";
-import { selectMovieCreditsIsFetching } from "reducers/isFetching";
 
 function MovieCredits({ movieId }) {
   const dispatch = useDispatch();
@@ -13,17 +11,12 @@ function MovieCredits({ movieId }) {
     selectMovieCreditsByMovieId(state, movieId)
   );
   const castCreditIds = movieCredits ? movieCredits.cast : [];
-  const isFetching = useSelector(state =>
-    selectMovieCreditsIsFetching(state, movieId)
-  );
 
   useEffect(() => {
     dispatch(fetchMovieCredits(movieId));
   }, [movieId, dispatch]);
 
-  return isFetching ? (
-    <LoadingIndicator />
-  ) : (
+  return (
     <ColGridList
       items={castCreditIds}
       spacing={1}

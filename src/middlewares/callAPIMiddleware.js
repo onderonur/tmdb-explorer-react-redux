@@ -7,7 +7,7 @@ const callAPIMiddleware = ({ dispatch, getState }) => next => action => {
     callAPI,
     shouldCallAPI = () => true,
     payload = {},
-    // Added this field to add or change data that will be normalized.
+    // Added this callback to add or change API response data that will be normalized.
     // But it may be used for other use cases too.
     processResponse,
     schema
@@ -44,13 +44,13 @@ const callAPIMiddleware = ({ dispatch, getState }) => next => action => {
 
   return callAPI()
     .then(response => {
+      let responseData = response.data;
+
+      if (processResponse) {
+        responseData = processResponse(responseData);
+      }
+
       if (schema) {
-        let responseData = response.data;
-
-        if (processResponse) {
-          responseData = processResponse(responseData);
-        }
-
         // TODO: Bu payload olayına bi bak real-world example'dan vs de
         const normalizedData = normalize(responseData, schema);
         dispatch({ ...payload, response: normalizedData, type: successType });
