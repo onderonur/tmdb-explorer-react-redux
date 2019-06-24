@@ -30,7 +30,9 @@ function App() {
       <Header />
       <Container className={classes.main} component="main">
         <div className={classes.toolbar} />
-        {isFetching ? <LoadingIndicator /> : <Routes />}
+        <LoadingIndicator loading={isFetching}>
+          <Routes />
+        </LoadingIndicator>
       </Container>
     </>
   );

@@ -4,9 +4,7 @@ import { selectPersonById } from "reducers/entities";
 import BaseImage from "components/BaseImage";
 import { BASE_IMG_API } from "actions";
 import { Typography, makeStyles, Box, Grid, Link } from "@material-ui/core";
-import LoadingIndicator from "components/LoadingIndicator";
 import ImdbLogo from "components/ImdbLogo";
-import { selectPersonIsFetching } from "reducers/isFetching";
 
 const useStyles = makeStyles(theme => ({
   backdrop: {
@@ -32,19 +30,13 @@ const useStyles = makeStyles(theme => ({
 
 function PersonIntroduction({ personId }) {
   const person = useSelector(state => selectPersonById(state, personId));
-  const isFetching = useSelector(state =>
-    selectPersonIsFetching(state, personId)
-  );
   const classes = useStyles({
-    backgroundImage:
-      isFetching || !person
-        ? null
-        : `${BASE_IMG_API}/w500${person.profile_path}`
+    backgroundImage: !person
+      ? null
+      : `${BASE_IMG_API}/w500${person.profile_path}`
   });
 
-  return isFetching || !person ? (
-    <LoadingIndicator />
-  ) : (
+  return person ? (
     <>
       <Box position="relative">
         <div className={classes.backdrop} />
@@ -92,7 +84,7 @@ function PersonIntroduction({ personId }) {
         </Box>
       </Box>
     </>
-  );
+  ) : null;
 }
 
 export default PersonIntroduction;

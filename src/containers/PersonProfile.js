@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { Typography, Box, Card, CardContent } from "@material-ui/core";
 import PersonIntroduction from "containers/PersonIntroduction";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchPerson } from "actions";
 import PersonCastingList from "containers/PersonCastingList";
-import PersonInfoSection from "./PersonInfoSection";
+import PersonInfoSection from "containers/PersonInfoSection";
+import { selectPersonIsFetching } from "reducers/isFetching";
+import LoadingIndicator from "components/LoadingIndicator";
 
 function PersonProfile({
   match: {
@@ -12,6 +14,9 @@ function PersonProfile({
   }
 }) {
   const dispatch = useDispatch();
+  const isFetching = useSelector(state =>
+    selectPersonIsFetching(state, personId)
+  );
 
   useEffect(() => {
     dispatch(fetchPerson(personId, ["biography", "imdb_id"]));
@@ -19,7 +24,9 @@ function PersonProfile({
 
   return (
     <>
-      <PersonIntroduction personId={personId} />
+      <LoadingIndicator loading={isFetching}>
+        <PersonIntroduction personId={personId} />
+      </LoadingIndicator>
       <Box my={1}>
         <Box display="flex" flexWrap="wrap">
           <Box flex={1} flexBasis={250}>

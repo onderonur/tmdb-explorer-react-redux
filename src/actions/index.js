@@ -9,11 +9,24 @@ import {
 } from "reducers/entities";
 import * as schemas from "schemas";
 
-const API_KEY = process.env.REACT_APP_API_KEY;
-
-export const BASE_API_URL = "//api.themoviedb.org/3";
 // TODO: image url'i function'la filan oku. Copy-paste'leri düzelt.
 export const BASE_IMG_API = "//image.tmdb.org/t/p";
+export const BASE_API_URL = "//api.themoviedb.org/3";
+
+const api_key = process.env.REACT_APP_API_KEY;
+
+function createQueryParams(params = {}) {
+  return {
+    ...params,
+    api_key
+  };
+}
+
+function get(endpoint, params) {
+  return axios.get(`${BASE_API_URL}${endpoint}`, {
+    params: createQueryParams(params)
+  });
+}
 
 export const FETCH_POPULAR_MOVIES_REQUEST = "FETCH_POPULAR_MOVIES_REQUEST";
 export const FETCH_POPULAR_MOVIES_SUCCESS = "FETCH_POPULAR_MOVIES_SUCCESS";
@@ -73,7 +86,9 @@ export function fetchPopularMovies(pageId) {
       FETCH_POPULAR_MOVIES_ERROR
     ],
     callAPI: () =>
-      axios.get(`/movie/popular?api_key=${API_KEY}&page=${pageId}`),
+      get("/movie/popular", {
+        page: pageId
+      }),
     payload: { pageId },
     schema: { results: [schemas.movieSchema] }
   };
@@ -95,7 +110,7 @@ export function fetchMovie(movieId, requiredFields = []) {
       const movie = selectMovieById(state, movieId);
       return !movie || !checkRequiredFields(movie, requiredFields);
     },
-    callAPI: () => axios.get(`/movie/${movieId}?api_key=${API_KEY}`),
+    callAPI: () => get(`/movie/${movieId}`),
     schema: schemas.movieSchema,
     payload: { movieId }
   };
@@ -116,8 +131,7 @@ export function fetchRecommendations(movieId) {
       FETCH_MOVIE_RECOMMENDATIONS_ERROR
     ],
     shouldCallAPI: state => !selectMovieRecommendations(state, movieId),
-    callAPI: () =>
-      axios.get(`movie/${movieId}/recommendations?api_key=${API_KEY}`),
+    callAPI: () => get(`/movie/${movieId}/recommendations`),
     processResponse: data => ({ ...data, movieId }),
     schema: schemas.movieRecommendationSchema,
     payload: { movieId }
@@ -131,7 +145,7 @@ export const FETCH_GENRES_ERROR = "FETCH_GENRES_ERROR";
 export function fetchGenres() {
   return {
     types: [FETCH_GENRES_REQUEST, FETCH_GENRES_SUCCESS, FETCH_GENRES_ERROR],
-    callAPI: () => axios.get(`genre/movie/list?api_key=${API_KEY}`),
+    callAPI: () => get("/genre/movie/list"),
     schema: { genres: [schemas.genreSchema] }
   };
 }
@@ -148,7 +162,7 @@ export function fetchMovieCredits(movieId) {
       FETCH_MOVIE_CREDITS_ERROR
     ],
     shouldCallAPI: state => !selectMovieCreditsByMovieId(state, movieId),
-    callAPI: () => axios.get(`movie/${movieId}/credits?api_key=${API_KEY}`),
+    callAPI: () => get(`/movie/${movieId}/credits`),
     schema: schemas.movieCreditSchema,
     payload: { movieId }
   };
@@ -165,7 +179,7 @@ export function fetchPerson(personId, requiredFields = []) {
       const person = selectPersonById(state, personId);
       return !person || !checkRequiredFields(person, requiredFields);
     },
-    callAPI: () => axios.get(`person/${personId}?api_key=${API_KEY}`),
+    callAPI: () => get(`/person/${personId}`),
     schema: schemas.personSchema,
     payload: { personId }
   };
@@ -186,8 +200,7 @@ export function fetchPersonMovieCredits(personId) {
       FETCH_PERSON_MOVIE_CREDITS_ERROR
     ],
     shouldCallAPI: state => !selectCreditsOfPerson(state, personId),
-    callAPI: () =>
-      axios.get(`person/${personId}/movie_credits?api_key=${API_KEY}`),
+    callAPI: () => get(`/person/${personId}/movie_credits`),
     schema: schemas.creditsOfPersonSchema
   };
 }
@@ -205,7 +218,9 @@ export function fetchPopularPeople(pageId) {
     ],
     shouldCallAPI: state => !selectCreditsOfPerson(state, pageId),
     callAPI: () =>
-      axios.get(`person/popular?api_key=${API_KEY}&page=${pageId}`),
+      get("/person/popular", {
+        page: pageId
+      }),
     schema: { results: [schemas.personSchema] },
     payload: { pageId }
   };
@@ -223,7 +238,7 @@ export function fetchMovieVideos(movieId) {
       FETCH_MOVIE_VIDEOS_ERROR
     ],
     shouldCallAPI: state => !selectMovieVideos(state, movieId),
-    callAPI: () => axios.get(`movie/${movieId}/videos?api_key=${API_KEY}`),
+    callAPI: () => get(`/movie/${movieId}/videos`),
     schema: schemas.movieVideosSchema,
     payload: { movieId }
   };
@@ -241,9 +256,10 @@ export function fetchMovieSearch(query, pageId) {
       FETCH_MOVIE_SEARCH_ERROR
     ],
     callAPI: () =>
-      axios.get(
-        `/search/movie?api_key=${API_KEY}&query=${query}&page=${pageId}`
-      ),
+      get("/search/movie", {
+        query,
+        page: pageId
+      }),
     schema: { results: [schemas.movieSchema] },
     payload: { query }
   };

@@ -35,10 +35,8 @@ function ColGridList({
 
   const flexBasis = `${100 / getColCount()}%`;
 
-  return !items && loading ? (
-    <LoadingIndicator />
-  ) : items ? (
-    <>
+  return (
+    <LoadingIndicator loading={loading && !items}>
       <Box display="flex" flexWrap="wrap" margin={-spacing / 2}>
         {items.map((item, index) => (
           <Box
@@ -51,9 +49,9 @@ function ColGridList({
           </Box>
         ))}
       </Box>
-      {loading && <LoadingIndicator />}
-    </>
-  ) : null;
+      <LoadingIndicator loading={loading} />
+    </LoadingIndicator>
+  );
 }
 
 export default ColGridList;

@@ -1,8 +1,8 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import PopularMovies from "containers/PopularMovies";
-import MovieProfile from "components/MovieProfile";
-import PersonProfile from "components/PersonProfile";
+import MovieProfile from "containers/MovieProfile";
+import PersonProfile from "containers/PersonProfile";
 import PopularPeople from "containers/PopularPeople";
 import MovieSearchResults from "containers/MovieSearchResults";
 
