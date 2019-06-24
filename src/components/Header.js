@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import RouterLink from "./RouteLink";
 import MovieAutoSearch from "containers/MovieAutoSearch";
+import DrawerToggleButton from "containers/DrawerToggleButton";
 
 const useStyles = makeStyles(theme => ({
   titleLink: {
@@ -37,6 +38,7 @@ function Header() {
             <MovieAutoSearch />
           </Box>
         </Box>
+        <DrawerToggleButton />
       </Toolbar>
     </AppBar>
   );
