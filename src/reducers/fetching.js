@@ -13,6 +13,9 @@ function fetching({ types, mapActionToKey }) {
 
   const [requestType, successType, failureType] = types;
 
+  // TODO: state false'tan başlayıp hemen true olup tekrar false'a dönünce flicker oluyor.
+  // Nasıl çözülür bak
+  // Initial loading state'i "true" yapmak belki?
   function updateIsFetching(state = false, action) {
     return produce(state, draft => {
       switch (action.type) {
