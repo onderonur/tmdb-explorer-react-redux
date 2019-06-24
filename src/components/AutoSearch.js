@@ -8,6 +8,7 @@ import LoadingIndicator from "components/LoadingIndicator";
 import { InputAdornment, IconButton } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import useDebounce from "hooks/useDebounce";
+import clsx from "clsx";
 
 function AutoSearchInput({ InputProps, classes, ref, ...other }) {
   return (
@@ -74,6 +75,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function AutoSearch({
+  className,
   label,
   placeholder = "Search",
   loading,
@@ -132,7 +134,7 @@ function AutoSearch({
         });
 
         return (
-          <div className={classes.container}>
+          <div className={clsx(classes.container, className)}>
             <AutoSearchInput
               fullWidth={true}
               classes={classes}
