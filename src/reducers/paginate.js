@@ -60,24 +60,26 @@ export function paginate({ types, mapActionToKey }) {
   // `state = mapActionToKey ? {} : initialPaginationItemState`
   return (state = mapActionToKey ? {} : initialPaginationItemState, action) => {
     // Update pagination by key
-    switch (action.type) {
-      case requestType:
-      case successType:
-      case failureType:
-        if (mapActionToKey) {
-          const key = mapActionToKey(action);
-          if (typeof key !== "string") {
-            throw new Error("Expected key to be a string");
+    return produce(state, draft => {
+      switch (action.type) {
+        case requestType:
+        case successType:
+        case failureType:
+          if (mapActionToKey) {
+            const key = mapActionToKey(action);
+            if (typeof key !== "string") {
+              throw new Error("Expected key to be a string");
+            }
+
+            draft[key] = updatePagination(draft[key], action);
+          } else {
+            return updatePagination(state, action);
           }
 
-          return produce(state, draft => {
-            draft[key] = updatePagination(draft[key], action);
-          });
-        } else {
-          return updatePagination(state, action);
-        }
-      default:
-        return state;
-    }
+          break;
+        default:
+          return;
+      }
+    });
   };
 }

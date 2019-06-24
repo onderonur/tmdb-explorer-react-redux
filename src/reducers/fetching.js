@@ -14,16 +14,18 @@ function fetching({ types, mapActionToKey }) {
   const [requestType, successType, failureType] = types;
 
   function updateIsFetching(state = false, action) {
-    switch (action.type) {
-      case requestType:
-        return true;
-      case successType:
-        return false;
-      case failureType:
-        return false;
-      default:
-        return state;
-    }
+    return produce(state, draft => {
+      switch (action.type) {
+        case requestType:
+          return true;
+        case successType:
+          return false;
+        case failureType:
+          return false;
+        default:
+          return state;
+      }
+    });
   }
 
   // I explained why we are initializing state according to "mapActionToKey" at "reducers/paginate.js"
