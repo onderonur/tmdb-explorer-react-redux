@@ -1,33 +1,33 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMovieSearch } from "actions";
+import { fetchPersonSearch } from "actions";
 import InfiniteGridFeed from "components/InfiniteGridFeed";
-import MovieCard from "./MovieCard";
+import PersonCard from "./PersonCard";
 import { Typography } from "@material-ui/core";
 import {
-  selectMovieSearchResultIds,
-  selectMovieSearchIsFetching,
-  selectMovieSearchNextPage,
-  selectMovieSearchTotalCount
+  selectPersonSearchResultIds,
+  selectPersonSearchIsFetching,
+  selectPersonSearchNextPage,
+  selectPersonSearchTotalCount
 } from "reducers/pagination";
 
-function MovieSearchResults({ query }) {
+function PersonSearchResults({ query }) {
   const dispatch = useDispatch();
-  const movieIds = useSelector(state =>
-    selectMovieSearchResultIds(state, query)
+  const personIds = useSelector(state =>
+    selectPersonSearchResultIds(state, query)
   );
   const isFetching = useSelector(state =>
-    selectMovieSearchIsFetching(state, query)
+    selectPersonSearchIsFetching(state, query)
   );
   const nextPage = useSelector(state =>
-    selectMovieSearchNextPage(state, query)
+    selectPersonSearchNextPage(state, query)
   );
   const totalResults = useSelector(state =>
-    selectMovieSearchTotalCount(state, query)
+    selectPersonSearchTotalCount(state, query)
   );
 
   function handleLoadMore() {
-    dispatch(fetchMovieSearch(query, nextPage));
+    dispatch(fetchPersonSearch(query, nextPage));
   }
 
   return (
@@ -37,14 +37,16 @@ function MovieSearchResults({ query }) {
         Total {totalResults} Results
       </Typography>
       <InfiniteGridFeed
-        items={movieIds}
+        items={personIds}
         loading={isFetching}
         hasNextPage={!!nextPage}
         onLoadMore={handleLoadMore}
-        renderItem={movieId => <MovieCard key={movieId} movieId={movieId} />}
+        renderItem={personId => (
+          <PersonCard key={personId} personId={personId} />
+        )}
       />
     </>
   );
 }
 
-export default MovieSearchResults;
+export default PersonSearchResults;

@@ -40,22 +40,24 @@ function MovieAutoSearch({ history, autoFocus }) {
 
   function handleRedirect(inputValue) {
     if (inputValue) {
-      history.push(`/movie/search?query=${inputValue}`);
+      history.push(`/search/movie?query=${inputValue}`);
     } else {
       history.push("/movie/popular");
     }
   }
 
   function handleSelectSuggestion(selectedSuggestion) {
-    switch (selectedSuggestion.suggestionType) {
-      case "movie":
-        history.push(`/movie/${selectedSuggestion.id}`);
-        break;
-      case "person":
-        history.push(`/person/${selectedSuggestion.id}`);
-        break;
-      default:
-        return;
+    if (selectedSuggestion) {
+      switch (selectedSuggestion.suggestionType) {
+        case "movie":
+          history.push(`/movie/${selectedSuggestion.id}`);
+          break;
+        case "person":
+          history.push(`/person/${selectedSuggestion.id}`);
+          break;
+        default:
+          return;
+      }
     }
   }
 
