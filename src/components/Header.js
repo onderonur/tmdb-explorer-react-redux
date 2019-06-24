@@ -4,9 +4,11 @@ import {
   Toolbar,
   Typography,
   Link,
-  makeStyles
+  makeStyles,
+  Box
 } from "@material-ui/core";
 import RouterLink from "./RouteLink";
+import MovieAutoSearch from "containers/MovieAutoSearch";
 
 const useStyles = makeStyles(theme => ({
   titleLink: {
@@ -30,6 +32,11 @@ function Header() {
         >
           <Typography variant="h6">TMDB</Typography>
         </Link>
+        <Box display="flex" justifyContent="center" width="100%">
+          <Box mx={2} flex={1} maxWidth={680}>
+            <MovieAutoSearch />
+          </Box>
+        </Box>
       </Toolbar>
     </AppBar>
   );

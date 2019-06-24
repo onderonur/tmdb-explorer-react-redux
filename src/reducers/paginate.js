@@ -34,11 +34,22 @@ export function paginate({ types, mapActionToKey }) {
           break;
         case successType:
           draft.isFetching = false;
-          draft.ids = union(draft.ids, action.response.result.results);
-          draft.nextPage = draft.nextPage + 1;
+
+          const {
+            response: {
+              result: { results, total_pages, total_results }
+            }
+          } = action;
+
+          draft.ids = union(draft.ids, results);
+          draft.nextPage =
+            draft.nextPage < total_pages
+              ? draft.nextPage + 1
+              : // No next page if the previous "nextPage" is not less than "total_pages"
+                null;
 
           draft.pageCount = draft.pageCount + 1;
-          draft.totalCount = action.response.result.total_results;
+          draft.totalCount = total_results;
           break;
         case failureType:
           draft.isFetching = false;
