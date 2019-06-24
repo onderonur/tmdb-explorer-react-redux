@@ -264,3 +264,24 @@ export function fetchMovieSearch(query, pageId) {
     payload: { query }
   };
 }
+
+export const FETCH_PERSON_SEARCH_REQUEST = "FETCH_PERSON_SEARCH_REQUEST";
+export const FETCH_PERSON_SEARCH_SUCCESS = "FETCH_PERSON_SEARCH_SUCCESS";
+export const FETCH_PERSON_SEARCH_ERROR = "FETCH_PERSON_SEARCH_ERROR";
+
+export function fetchPersonSearch(query, pageId) {
+  return {
+    types: [
+      FETCH_PERSON_SEARCH_REQUEST,
+      FETCH_PERSON_SEARCH_SUCCESS,
+      FETCH_PERSON_SEARCH_ERROR
+    ],
+    callAPI: () =>
+      get("/search/person", {
+        query,
+        page: pageId
+      }),
+    schema: { results: [schemas.personSchema] },
+    payload: { query }
+  };
+}

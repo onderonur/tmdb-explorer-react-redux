@@ -9,7 +9,10 @@ import {
   FETCH_MOVIE_CREDITS_ERROR,
   FETCH_MOVIE_SEARCH_REQUEST,
   FETCH_MOVIE_SEARCH_SUCCESS,
-  FETCH_MOVIE_SEARCH_ERROR
+  FETCH_MOVIE_SEARCH_ERROR,
+  FETCH_PERSON_SEARCH_REQUEST,
+  FETCH_PERSON_SEARCH_SUCCESS,
+  FETCH_PERSON_SEARCH_ERROR
 } from "actions";
 
 export const pagination = combineReducers({
@@ -33,6 +36,14 @@ export const pagination = combineReducers({
       FETCH_MOVIE_SEARCH_REQUEST,
       FETCH_MOVIE_SEARCH_SUCCESS,
       FETCH_MOVIE_SEARCH_ERROR
+    ]
+  }),
+  personSearchResultsByQuery: paginate({
+    mapActionToKey: action => action.query,
+    types: [
+      FETCH_PERSON_SEARCH_REQUEST,
+      FETCH_PERSON_SEARCH_SUCCESS,
+      FETCH_PERSON_SEARCH_ERROR
     ]
   })
 });
@@ -101,4 +112,20 @@ export function selectMovieSearchNextPage(state, query) {
 
 export function selectMovieSearchTotalCount(state, query) {
   return selectTotalCount(state, "movieSearchResultsByQuery", query);
+}
+
+export function selectPersonSearchResultIds(state, query) {
+  return selectPaginationIds(state, "personSearchResultsByQuery", query);
+}
+
+export function selectPersonSearchIsFetching(state, query) {
+  return selectIsFetching(state, "personSearchResultsByQuery", query);
+}
+
+export function selectPersonSearchNextPage(state, query) {
+  return selectNextPage(state, "personSearchResultsByQuery", query);
+}
+
+export function selectPersonSearchTotalCount(state, query) {
+  return selectTotalCount(state, "personSearchResultsByQuery", query);
 }
