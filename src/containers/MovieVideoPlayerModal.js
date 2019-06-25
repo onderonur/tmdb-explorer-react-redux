@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectMovieVideos, selectVideo } from "reducers/entities";
+import { selectMovieVideos, selectVideo } from "reducers";
 import { MobileStepper, Button } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import YouTubePlayer from "components/YouTubePlayer";

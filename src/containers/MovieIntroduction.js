@@ -1,13 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectMovieById } from "reducers/entities";
+import { selectMovieById } from "reducers";
 import BaseImage from "components/BaseImage";
-import { BASE_IMG_API } from "actions";
 import { Typography, makeStyles, Box, Grid, Link } from "@material-ui/core";
 import Rating from "components/Rating";
 import MovieGenreChip from "./MovieGenreChip";
 import ImdbLogo from "components/ImdbLogo";
-import { getMovieReleaseYear } from "utils";
+import { getMovieReleaseYear, getImageUrl } from "utils";
 
 const useStyles = makeStyles(theme => ({
   backdrop: {
@@ -43,9 +42,7 @@ const useStyles = makeStyles(theme => ({
 function MovieIntroduction({ movieId }) {
   const movie = useSelector(state => selectMovieById(state, movieId));
   const classes = useStyles({
-    backgroundImage: !movie
-      ? null
-      : `${BASE_IMG_API}/w500${movie.backdrop_path}`
+    backgroundImage: !movie ? null : getImageUrl(movie.backdrop_path)
   });
 
   return movie ? (
@@ -61,7 +58,7 @@ function MovieIntroduction({ movieId }) {
       >
         <Box flexBasis={300}>
           <BaseImage
-            src={`${BASE_IMG_API}/w500${movie.poster_path}`}
+            src={getImageUrl(movie.poster_path)}
             alt={movie.title}
             aspectRatio="2:3"
           />

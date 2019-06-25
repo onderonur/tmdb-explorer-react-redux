@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { fetchMovieCredits } from "actions";
 import { useDispatch, useSelector } from "react-redux";
-import { selectMovieCreditsByMovieId } from "reducers/entities";
+import { selectMovieCreditsByMovieId } from "reducers";
 import ColGridList from "components/ColGridList";
 import MovieCastListItem from "./MovieCastListItem";
 

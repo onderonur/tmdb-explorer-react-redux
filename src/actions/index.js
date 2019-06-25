@@ -1,3 +1,4 @@
+import * as actionTypes from "constants/actionTypes";
 import {
   selectMovieById,
   selectMovieCreditsByMovieId,
@@ -5,22 +6,15 @@ import {
   selectPersonById,
   selectMovieVideos,
   selectMovieRecommendations
-} from "reducers/entities";
+} from "reducers";
 import * as schemas from "schemas";
 import { get } from "utils";
 
 // TODO: image url'i function'la filan oku. Copy-paste'leri düzelt.
-export const BASE_IMG_API = "//image.tmdb.org/t/p";
-
-export const TOGGLE_DRAWER = "TOGGLE_DRAWER";
 
 export function toggleDrawer() {
-  return { type: TOGGLE_DRAWER };
+  return { type: actionTypes.TOGGLE_DRAWER };
 }
-
-export const FETCH_POPULAR_MOVIES_REQUEST = "FETCH_POPULAR_MOVIES_REQUEST";
-export const FETCH_POPULAR_MOVIES_SUCCESS = "FETCH_POPULAR_MOVIES_SUCCESS";
-export const FETCH_POPULAR_MOVIES_ERROR = "FETCH_POPULAR_MOVIES_ERROR";
 
 // Without callAPIMiddleware
 // function fetchPopularMoviesRequest() {
@@ -71,9 +65,9 @@ export const FETCH_POPULAR_MOVIES_ERROR = "FETCH_POPULAR_MOVIES_ERROR";
 export function fetchPopularMovies(pageId) {
   return {
     types: [
-      FETCH_POPULAR_MOVIES_REQUEST,
-      FETCH_POPULAR_MOVIES_SUCCESS,
-      FETCH_POPULAR_MOVIES_ERROR
+      actionTypes.FETCH_POPULAR_MOVIES_REQUEST,
+      actionTypes.FETCH_POPULAR_MOVIES_SUCCESS,
+      actionTypes.FETCH_POPULAR_MOVIES_ERROR
     ],
     callAPI: () =>
       get("/movie/popular", {
@@ -89,13 +83,13 @@ function checkRequiredFields(cachedData, requiredFields) {
   return requiredFields.every(key => cachedData.hasOwnProperty(key));
 }
 
-export const FETCH_MOVIE_REQUEST = "FETCH_MOVIE_REQUEST";
-export const FETCH_MOVIE_SUCCESS = "FETCH_MOVIE_SUCCESS";
-export const FETCH_MOVIE_ERROR = "FETCH_MOVIE_ERROR";
-
 export function fetchMovie(movieId, requiredFields = []) {
   return {
-    types: [FETCH_MOVIE_REQUEST, FETCH_MOVIE_SUCCESS, FETCH_MOVIE_ERROR],
+    types: [
+      actionTypes.FETCH_MOVIE_REQUEST,
+      actionTypes.FETCH_MOVIE_SUCCESS,
+      actionTypes.FETCH_MOVIE_ERROR
+    ],
     shouldCallAPI: state => {
       const movie = selectMovieById(state, movieId);
       return !movie || !checkRequiredFields(movie, requiredFields);
@@ -106,19 +100,12 @@ export function fetchMovie(movieId, requiredFields = []) {
   };
 }
 
-export const FETCH_MOVIE_RECOMMENDATIONS_REQUEST =
-  "FETCH_MOVIE_RECOMMENDATIONS_REQUEST";
-export const FETCH_MOVIE_RECOMMENDATIONS_SUCCESS =
-  "FETCH_MOVIE_RECOMMENDATIONS_SUCCESS";
-export const FETCH_MOVIE_RECOMMENDATIONS_ERROR =
-  "FETCH_MOVIE_RECOMMENDATIONS_ERROR";
-
 export function fetchRecommendations(movieId) {
   return {
     types: [
-      FETCH_MOVIE_RECOMMENDATIONS_REQUEST,
-      FETCH_MOVIE_RECOMMENDATIONS_SUCCESS,
-      FETCH_MOVIE_RECOMMENDATIONS_ERROR
+      actionTypes.FETCH_MOVIE_RECOMMENDATIONS_REQUEST,
+      actionTypes.FETCH_MOVIE_RECOMMENDATIONS_SUCCESS,
+      actionTypes.FETCH_MOVIE_RECOMMENDATIONS_ERROR
     ],
     shouldCallAPI: state => !selectMovieRecommendations(state, movieId),
     callAPI: () => get(`/movie/${movieId}/recommendations`),
@@ -128,28 +115,24 @@ export function fetchRecommendations(movieId) {
   };
 }
 
-export const FETCH_GENRES_REQUEST = "FETCH_GENRES_REQUEST";
-export const FETCH_GENRES_SUCCESS = "FETCH_GENRES_SUCCESS";
-export const FETCH_GENRES_ERROR = "FETCH_GENRES_ERROR";
-
 export function fetchGenres() {
   return {
-    types: [FETCH_GENRES_REQUEST, FETCH_GENRES_SUCCESS, FETCH_GENRES_ERROR],
+    types: [
+      actionTypes.FETCH_GENRES_REQUEST,
+      actionTypes.FETCH_GENRES_SUCCESS,
+      actionTypes.FETCH_GENRES_ERROR
+    ],
     callAPI: () => get("/genre/movie/list"),
     schema: { genres: [schemas.genreSchema] }
   };
 }
 
-export const FETCH_MOVIE_CREDITS_REQUEST = "FETCH_MOVIE_CREDITS_REQUEST";
-export const FETCH_MOVIE_CREDITS_SUCCESS = "FETCH_MOVIE_CREDITS_SUCCESS";
-export const FETCH_MOVIE_CREDITS_ERROR = "FETCH_MOVIE_CREDITS_ERROR";
-
 export function fetchMovieCredits(movieId) {
   return {
     types: [
-      FETCH_MOVIE_CREDITS_REQUEST,
-      FETCH_MOVIE_CREDITS_SUCCESS,
-      FETCH_MOVIE_CREDITS_ERROR
+      actionTypes.FETCH_MOVIE_CREDITS_REQUEST,
+      actionTypes.FETCH_MOVIE_CREDITS_SUCCESS,
+      actionTypes.FETCH_MOVIE_CREDITS_ERROR
     ],
     shouldCallAPI: state => !selectMovieCreditsByMovieId(state, movieId),
     callAPI: () => get(`/movie/${movieId}/credits`),
@@ -158,13 +141,13 @@ export function fetchMovieCredits(movieId) {
   };
 }
 
-export const FETCH_PERSON_REQUEST = "FETCH_PERSON_REQUEST";
-export const FETCH_PERSON_SUCCESS = "FETCH_PERSON_SUCCESS";
-export const FETCH_PERSON_ERROR = "FETCH_PERSON_ERROR";
-
 export function fetchPerson(personId, requiredFields = []) {
   return {
-    types: [FETCH_PERSON_REQUEST, FETCH_PERSON_SUCCESS, FETCH_PERSON_ERROR],
+    types: [
+      actionTypes.FETCH_PERSON_REQUEST,
+      actionTypes.FETCH_PERSON_SUCCESS,
+      actionTypes.FETCH_PERSON_ERROR
+    ],
     shouldCallAPI: state => {
       const person = selectPersonById(state, personId);
       return !person || !checkRequiredFields(person, requiredFields);
@@ -175,19 +158,12 @@ export function fetchPerson(personId, requiredFields = []) {
   };
 }
 
-export const FETCH_PERSON_MOVIE_CREDITS_REQUEST =
-  "FETCH_PERSON_MOVIE_CREDITS_REQUEST";
-export const FETCH_PERSON_MOVIE_CREDITS_SUCCESS =
-  "FETCH_PERSON_MOVIE_CREDITS_SUCCESS";
-export const FETCH_PERSON_MOVIE_CREDITS_ERROR =
-  "FETCH_PERSON_MOVIE_CREDITS_ERROR";
-
 export function fetchPersonMovieCredits(personId) {
   return {
     types: [
-      FETCH_PERSON_MOVIE_CREDITS_REQUEST,
-      FETCH_PERSON_MOVIE_CREDITS_SUCCESS,
-      FETCH_PERSON_MOVIE_CREDITS_ERROR
+      actionTypes.FETCH_PERSON_MOVIE_CREDITS_REQUEST,
+      actionTypes.FETCH_PERSON_MOVIE_CREDITS_SUCCESS,
+      actionTypes.FETCH_PERSON_MOVIE_CREDITS_ERROR
     ],
     shouldCallAPI: state => !selectCreditsOfPerson(state, personId),
     callAPI: () => get(`/person/${personId}/movie_credits`),
@@ -195,16 +171,12 @@ export function fetchPersonMovieCredits(personId) {
   };
 }
 
-export const FETCH_POPULAR_PEOPLE_REQUEST = "FETCH_POPULAR_PEOPLE_REQUEST";
-export const FETCH_POPULAR_PEOPLE_SUCCESS = "FETCH_POPULAR_PEOPLE_SUCCESS";
-export const FETCH_POPULAR_PEOPLE_ERROR = "FETCH_POPULAR_PEOPLE_ERROR";
-
 export function fetchPopularPeople(pageId) {
   return {
     types: [
-      FETCH_POPULAR_PEOPLE_REQUEST,
-      FETCH_POPULAR_PEOPLE_SUCCESS,
-      FETCH_POPULAR_PEOPLE_ERROR
+      actionTypes.FETCH_POPULAR_PEOPLE_REQUEST,
+      actionTypes.FETCH_POPULAR_PEOPLE_SUCCESS,
+      actionTypes.FETCH_POPULAR_PEOPLE_ERROR
     ],
     shouldCallAPI: state => !selectCreditsOfPerson(state, pageId),
     callAPI: () =>
@@ -216,16 +188,12 @@ export function fetchPopularPeople(pageId) {
   };
 }
 
-export const FETCH_MOVIE_VIDEOS_REQUEST = "FETCH_MOVIE_VIDEOS_REQUEST";
-export const FETCH_MOVIE_VIDEOS_SUCCESS = "FETCH_MOVIE_VIDEOS_SUCCESS";
-export const FETCH_MOVIE_VIDEOS_ERROR = "FETCH_MOVIE_VIDEOS_ERROR";
-
 export function fetchMovieVideos(movieId) {
   return {
     types: [
-      FETCH_MOVIE_VIDEOS_REQUEST,
-      FETCH_MOVIE_VIDEOS_SUCCESS,
-      FETCH_MOVIE_VIDEOS_ERROR
+      actionTypes.FETCH_MOVIE_VIDEOS_REQUEST,
+      actionTypes.FETCH_MOVIE_VIDEOS_SUCCESS,
+      actionTypes.FETCH_MOVIE_VIDEOS_ERROR
     ],
     shouldCallAPI: state => !selectMovieVideos(state, movieId),
     callAPI: () => get(`/movie/${movieId}/videos`),
@@ -234,16 +202,12 @@ export function fetchMovieVideos(movieId) {
   };
 }
 
-export const FETCH_MOVIE_SEARCH_REQUEST = "FETCH_MOVIE_SEARCH_REQUEST";
-export const FETCH_MOVIE_SEARCH_SUCCESS = "FETCH_MOVIE_SEARCH_SUCCESS";
-export const FETCH_MOVIE_SEARCH_ERROR = "FETCH_MOVIE_SEARCH_ERROR";
-
 export function fetchMovieSearch(query, pageId) {
   return {
     types: [
-      FETCH_MOVIE_SEARCH_REQUEST,
-      FETCH_MOVIE_SEARCH_SUCCESS,
-      FETCH_MOVIE_SEARCH_ERROR
+      actionTypes.FETCH_MOVIE_SEARCH_REQUEST,
+      actionTypes.FETCH_MOVIE_SEARCH_SUCCESS,
+      actionTypes.FETCH_MOVIE_SEARCH_ERROR
     ],
     callAPI: () =>
       get("/search/movie", {
@@ -255,16 +219,12 @@ export function fetchMovieSearch(query, pageId) {
   };
 }
 
-export const FETCH_PERSON_SEARCH_REQUEST = "FETCH_PERSON_SEARCH_REQUEST";
-export const FETCH_PERSON_SEARCH_SUCCESS = "FETCH_PERSON_SEARCH_SUCCESS";
-export const FETCH_PERSON_SEARCH_ERROR = "FETCH_PERSON_SEARCH_ERROR";
-
 export function fetchPersonSearch(query, pageId) {
   return {
     types: [
-      FETCH_PERSON_SEARCH_REQUEST,
-      FETCH_PERSON_SEARCH_SUCCESS,
-      FETCH_PERSON_SEARCH_ERROR
+      actionTypes.FETCH_PERSON_SEARCH_REQUEST,
+      actionTypes.FETCH_PERSON_SEARCH_SUCCESS,
+      actionTypes.FETCH_PERSON_SEARCH_ERROR
     ],
     callAPI: () =>
       get("/search/person", {

@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchRecommendations } from "actions";
 import MovieCard from "./MovieCard";
 import FlexGridList from "components/FlexGridList";
-import { selectMovieRecommendations } from "reducers/entities";
-import { selectMovieRecommendationsIsFetching } from "reducers/isFetching";
+import { selectMovieRecommendations } from "reducers";
+import { selectMovieRecommendationsIsFetching } from "reducers";
 
 function Recommendations({ movieId }) {
   const recommendationIds = useSelector(

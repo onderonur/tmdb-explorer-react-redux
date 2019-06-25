@@ -1,12 +1,12 @@
 import React from "react";
-import { BASE_IMG_API } from "actions";
 import { CardHeader } from "@material-ui/core";
 import BaseImage from "components/BaseImage";
 import BaseCard from "components/BaseCard";
-import { selectMovieById } from "reducers/entities";
+import { selectMovieById } from "reducers";
 import { useSelector } from "react-redux";
 import RouterLink from "components/RouteLink";
 import { makeStyles } from "@material-ui/styles";
+import { getImageUrl } from "utils";
 
 const useStyles = makeStyles(theme => ({
   link: {
@@ -25,7 +25,7 @@ function MovieCard({ movieId, subheader }) {
     <RouterLink className={classes.link} to={`/movie/${movieId}`}>
       <BaseCard hasActionArea>
         <BaseImage
-          src={`${BASE_IMG_API}/w500${movie.poster_path}`}
+          src={getImageUrl(movie.poster_path)}
           alt={movie.title}
           aspectRatio="2:3"
         />

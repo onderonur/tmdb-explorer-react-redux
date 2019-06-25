@@ -10,7 +10,7 @@ import {
   selectMovieCreditsIsFetching,
   selectMovieIsFetching,
   selectMovieVideosIsFetching
-} from "reducers/isFetching";
+} from "reducers";
 import LoadingIndicator from "components/LoadingIndicator";
 
 function MovieProfile({

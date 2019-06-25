@@ -78,6 +78,7 @@ export function paginate({ types, mapActionToKey }) {
         case failureType:
           if (mapActionToKey) {
             const key = mapActionToKey(action);
+
             if (typeof key !== "string") {
               throw new Error("Expected key to be a string");
             }
