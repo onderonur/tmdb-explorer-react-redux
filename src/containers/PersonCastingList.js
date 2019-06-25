@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectCreditsOfPerson } from "reducers/entities";
+import { selectCreditsOfPerson } from "reducers";
 import { fetchPersonMovieCredits } from "actions";
 import PersonCastingListItem from "./PersonCastingListItem";
 import ColGridList from "components/ColGridList";

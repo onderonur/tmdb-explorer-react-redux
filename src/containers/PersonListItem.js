@@ -1,13 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectPersonById } from "reducers/entities";
+import { selectPersonById } from "reducers";
 import {
   ListItem,
   ListItemText,
   ListItemAvatar,
   Avatar
 } from "@material-ui/core";
-import { BASE_IMG_API } from "actions";
+import { getImageUrl } from "utils";
 
 function PersonListItem({ personId }) {
   const person = useSelector(state => selectPersonById(state, personId));
@@ -16,7 +16,7 @@ function PersonListItem({ personId }) {
     <ListItem>
       <ListItemAvatar>
         <Avatar
-          src={`${BASE_IMG_API}/w500${person.profile_path}`}
+          src={getImageUrl(person.person.profile_path)}
           alt={person.name}
         />
       </ListItemAvatar>

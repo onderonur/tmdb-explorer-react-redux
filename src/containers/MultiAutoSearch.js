@@ -7,9 +7,9 @@ import {
   selectPersonSearchIsFetching,
   selectPersonSearchResultIds
 } from "reducers/pagination";
-import { selectMovieById, selectPersonById } from "reducers/entities";
+import { selectMovieById, selectPersonById } from "reducers";
 import AutoSearch from "components/AutoSearch";
-import { fetchMovieSearch, BASE_IMG_API, fetchPersonSearch } from "actions";
+import { fetchMovieSearch, fetchPersonSearch } from "actions";
 import { DEFAULT_FIRST_PAGE } from "reducers/paginate";
 import {
   ListItem,
@@ -17,6 +17,7 @@ import {
   ListItemAvatar,
   Avatar
 } from "@material-ui/core";
+import { getImageUrl } from "utils";
 
 function MultiAutoSearch({ className, history, autoFocus }) {
   const [searchValue, setSearchValue] = useState("");
@@ -96,7 +97,7 @@ function MultiAutoSearch({ className, history, autoFocus }) {
           <ListItem>
             <ListItemAvatar>
               <Avatar
-                src={`${BASE_IMG_API}/w500${suggestion.poster_path}`}
+                src={getImageUrl(suggestion.poster_path)}
                 alt={suggestion.title}
               />
             </ListItemAvatar>
@@ -106,7 +107,7 @@ function MultiAutoSearch({ className, history, autoFocus }) {
           <ListItem>
             <ListItemAvatar>
               <Avatar
-                src={`${BASE_IMG_API}/w500${suggestion.profile_path}`}
+                src={getImageUrl(suggestion.profile_path)}
                 alt={suggestion.title}
               />
             </ListItemAvatar>

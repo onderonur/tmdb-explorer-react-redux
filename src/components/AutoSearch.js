@@ -10,22 +10,6 @@ import SearchIcon from "@material-ui/icons/Search";
 import useDebounce from "hooks/useDebounce";
 import clsx from "clsx";
 
-function AutoSearchInput({ InputProps, classes, ref, ...other }) {
-  return (
-    <TextField
-      InputProps={{
-        inputRef: ref,
-        classes: {
-          root: classes.inputRoot,
-          input: classes.inputInput
-        },
-        ...InputProps
-      }}
-      {...other}
-    />
-  );
-}
-
 function AutoSearchSuggestion({
   suggestion,
   index,
@@ -64,9 +48,6 @@ const useStyles = makeStyles(theme => ({
     right: 0,
     maxHeight: 380,
     overflow: "auto"
-  },
-  inputRoot: {
-    flexWrap: "wrap"
   },
   inputInput: {
     width: "auto",
@@ -135,14 +116,16 @@ function AutoSearch({
 
         return (
           <div className={clsx(classes.container, className)}>
-            <AutoSearchInput
+            <TextField
               fullWidth={true}
-              classes={classes}
               label={label}
               autoFocus={autoFocus}
               InputLabelProps={getLabelProps({ shrink: true })}
               InputProps={{
                 ...inputProps,
+                classes: {
+                  input: classes.inputInput
+                },
                 onChange: event => {
                   openMenu();
                   handleInputChange(event);

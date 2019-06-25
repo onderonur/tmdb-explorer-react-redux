@@ -1,49 +1,36 @@
 import { combineReducers } from "redux";
 import { paginate, DEFAULT_FIRST_PAGE } from "./paginate";
-import {
-  FETCH_POPULAR_MOVIES_REQUEST,
-  FETCH_POPULAR_MOVIES_SUCCESS,
-  FETCH_POPULAR_MOVIES_ERROR,
-  FETCH_POPULAR_PEOPLE_SUCCESS,
-  FETCH_POPULAR_PEOPLE_REQUEST,
-  FETCH_POPULAR_PEOPLE_ERROR,
-  FETCH_MOVIE_SEARCH_REQUEST,
-  FETCH_MOVIE_SEARCH_SUCCESS,
-  FETCH_MOVIE_SEARCH_ERROR,
-  FETCH_PERSON_SEARCH_REQUEST,
-  FETCH_PERSON_SEARCH_SUCCESS,
-  FETCH_PERSON_SEARCH_ERROR
-} from "actions";
+import * as actionTypes from "constants/actionTypes";
 
 export const pagination = combineReducers({
   popularMovies: paginate({
     types: [
-      FETCH_POPULAR_MOVIES_REQUEST,
-      FETCH_POPULAR_MOVIES_SUCCESS,
-      FETCH_POPULAR_MOVIES_ERROR
+      actionTypes.FETCH_POPULAR_MOVIES_REQUEST,
+      actionTypes.FETCH_POPULAR_MOVIES_SUCCESS,
+      actionTypes.FETCH_POPULAR_MOVIES_ERROR
     ]
   }),
   popularPeople: paginate({
     types: [
-      FETCH_POPULAR_PEOPLE_REQUEST,
-      FETCH_POPULAR_PEOPLE_SUCCESS,
-      FETCH_POPULAR_PEOPLE_ERROR
+      actionTypes.FETCH_POPULAR_PEOPLE_REQUEST,
+      actionTypes.FETCH_POPULAR_PEOPLE_SUCCESS,
+      actionTypes.FETCH_POPULAR_PEOPLE_ERROR
     ]
   }),
   movieSearchResultsByQuery: paginate({
     mapActionToKey: action => action.query,
     types: [
-      FETCH_MOVIE_SEARCH_REQUEST,
-      FETCH_MOVIE_SEARCH_SUCCESS,
-      FETCH_MOVIE_SEARCH_ERROR
+      actionTypes.FETCH_MOVIE_SEARCH_REQUEST,
+      actionTypes.FETCH_MOVIE_SEARCH_SUCCESS,
+      actionTypes.FETCH_MOVIE_SEARCH_ERROR
     ]
   }),
   personSearchResultsByQuery: paginate({
     mapActionToKey: action => action.query,
     types: [
-      FETCH_PERSON_SEARCH_REQUEST,
-      FETCH_PERSON_SEARCH_SUCCESS,
-      FETCH_PERSON_SEARCH_ERROR
+      actionTypes.FETCH_PERSON_SEARCH_REQUEST,
+      actionTypes.FETCH_PERSON_SEARCH_SUCCESS,
+      actionTypes.FETCH_PERSON_SEARCH_ERROR
     ]
   })
 });

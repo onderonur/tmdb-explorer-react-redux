@@ -6,7 +6,7 @@ import { fetchGenres } from "actions";
 import LoadingIndicator from "components/LoadingIndicator";
 import Header from "components/Header";
 import { makeStyles } from "@material-ui/styles";
-import { selectGenresIsFetching } from "reducers/isFetching";
+import { selectGenresIsFetching } from "reducers";
 import AppDrawer from "containers/AppDrawer";
 
 const useStyles = makeStyles(theme => ({

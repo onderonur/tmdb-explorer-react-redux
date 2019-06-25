@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectVideo } from "reducers/entities";
+import { selectVideo } from "reducers";
 import { ListItem, ListItemText } from "@material-ui/core";
 import RouterLink from "components/RouteLink";
 import { withRouter } from "react-router-dom";

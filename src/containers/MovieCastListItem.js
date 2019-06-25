@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectCastCreditById, selectPersonById } from "reducers/entities";
+import { selectCastCreditById, selectPersonById } from "reducers";
 import {
   ListItem,
   ListItemAvatar,
@@ -8,8 +8,8 @@ import {
   ListItemText,
   makeStyles
 } from "@material-ui/core";
-import { BASE_IMG_API } from "actions";
 import RouterLink from "components/RouteLink";
+import { getImageUrl } from "utils";
 
 const useStyles = makeStyles(theme => ({
   secondaryText: {
@@ -31,14 +31,7 @@ function MovieCastListItem({ castCreditId }) {
       component={RouterLink}
     >
       <ListItemAvatar>
-        <Avatar
-          src={
-            person.profile_path
-              ? `${BASE_IMG_API}/w300${person.profile_path}`
-              : ""
-          }
-          alt={person.name}
-        />
+        <Avatar src={getImageUrl(person.profile_path)} alt={person.name} />
       </ListItemAvatar>
       <ListItemText
         classes={{ secondary: classes.secondaryText }}

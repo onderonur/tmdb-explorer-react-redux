@@ -1,12 +1,12 @@
 import React from "react";
-import { BASE_IMG_API } from "actions";
 import { CardHeader } from "@material-ui/core";
 import BaseImage from "components/BaseImage";
 import BaseCard from "components/BaseCard";
 import { useSelector } from "react-redux";
 import RouterLink from "components/RouteLink";
 import { makeStyles } from "@material-ui/styles";
-import { selectPersonById } from "reducers/entities";
+import { selectPersonById } from "reducers";
+import { getImageUrl } from "utils";
 
 const useStyles = makeStyles(theme => ({
   link: {
@@ -25,7 +25,7 @@ function PersonCard({ personId }) {
     <RouterLink className={classes.link} to={`/person/${personId}`}>
       <BaseCard hasActionArea>
         <BaseImage
-          src={`${BASE_IMG_API}/w500${person.profile_path}`}
+          src={getImageUrl(person.profile_path)}
           alt={person.name}
           aspectRatio="2:3"
         />

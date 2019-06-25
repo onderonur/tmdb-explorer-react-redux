@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPerson } from "actions";
 import PersonCastingList from "containers/PersonCastingList";
 import PersonInfoSection from "containers/PersonInfoSection";
-import { selectPersonIsFetching } from "reducers/isFetching";
+import { selectPersonIsFetching } from "reducers";
 import LoadingIndicator from "components/LoadingIndicator";
 
 function PersonProfile({

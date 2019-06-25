@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovieVideos } from "actions";
-import { selectMovieVideos } from "reducers/entities";
+import { selectMovieVideos } from "reducers";
 import { List } from "@material-ui/core";
 import MovieVideoListItem from "./MovieVideoListItem";
 import MovieVideoPlayerModal from "./MovieVideoPlayerModal";

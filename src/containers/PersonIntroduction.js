@@ -1,10 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectPersonById } from "reducers/entities";
+import { selectPersonById } from "reducers";
 import BaseImage from "components/BaseImage";
-import { BASE_IMG_API } from "actions";
 import { Typography, makeStyles, Box, Grid, Link } from "@material-ui/core";
 import ImdbLogo from "components/ImdbLogo";
+import { getImageUrl } from "utils";
 
 const useStyles = makeStyles(theme => ({
   backdrop: {
@@ -31,9 +31,7 @@ const useStyles = makeStyles(theme => ({
 function PersonIntroduction({ personId }) {
   const person = useSelector(state => selectPersonById(state, personId));
   const classes = useStyles({
-    backgroundImage: !person
-      ? null
-      : `${BASE_IMG_API}/w500${person.profile_path}`
+    backgroundImage: !person ? null : getImageUrl(person.profile_path)
   });
 
   return person ? (
@@ -50,7 +48,7 @@ function PersonIntroduction({ personId }) {
         >
           <Box flexBasis={300}>
             <BaseImage
-              src={`${BASE_IMG_API}/w500${person.profile_path}`}
+              src={getImageUrl(person.profile_path)}
               alt={person.name}
               aspectRatio="2:3"
             />

@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectCastCreditById } from "reducers/entities";
+import { selectCastCreditById } from "reducers";
 import MovieCard from "./MovieCard";
 
 function PersonCastingListItem({ castCreditId }) {

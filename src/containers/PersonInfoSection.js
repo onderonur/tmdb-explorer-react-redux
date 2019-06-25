@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import { selectPersonById } from "reducers/entities";
+import { selectPersonById } from "reducers";
 import InfoWithLabel from "components/InfoWithLabel";
 
 function PersonInfoSection({ personId }) {
