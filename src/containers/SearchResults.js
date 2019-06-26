@@ -4,13 +4,13 @@ import useQueryString from "hooks/useQueryString";
 import PersonSearchResults from "./PersonSearchResults";
 import { Tabs, Tab, Box } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import {
-  selectMovieSearchTotalCount,
-  selectPersonSearchTotalCount
-} from "reducers/pagination";
 import { useDispatch } from "react-redux";
 import { fetchMovieSearch, fetchPersonSearch } from "actions";
-import { DEFAULT_FIRST_PAGE } from "reducers/paginate";
+import { DEFAULT_FIRST_PAGE } from "reducers/createPagination";
+import {
+  selectMovieSearchResultsTotalCount,
+  selectPersonSearchResultsTotalCount
+} from "reducers";
 
 function SearchResults({
   location,
@@ -22,10 +22,10 @@ function SearchResults({
   const { query } = useQueryString({ location });
   const dispatch = useDispatch();
   const totalMovieCount = useSelector(state =>
-    selectMovieSearchTotalCount(state, query)
+    selectMovieSearchResultsTotalCount(state, query)
   );
   const totalPersonCount = useSelector(state =>
-    selectPersonSearchTotalCount(state, query)
+    selectPersonSearchResultsTotalCount(state, query)
   );
 
   function handleChange(event, newValue) {

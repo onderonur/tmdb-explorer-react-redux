@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectCastCreditById, selectPersonById } from "reducers";
 import {
   ListItem,
   ListItemAvatar,
@@ -10,6 +9,7 @@ import {
 } from "@material-ui/core";
 import RouterLink from "components/RouteLink";
 import { getImageUrl } from "utils";
+import { selectCastCredits, selectPerson } from "reducers";
 
 const useStyles = makeStyles(theme => ({
   secondaryText: {
@@ -19,8 +19,8 @@ const useStyles = makeStyles(theme => ({
 
 function MovieCastListItem({ castCreditId }) {
   const classes = useStyles();
-  const cast = useSelector(state => selectCastCreditById(state, castCreditId));
-  const person = useSelector(state => selectPersonById(state, cast.person));
+  const cast = useSelector(state => selectCastCredits(state, castCreditId));
+  const person = useSelector(state => selectPerson(state, cast.person));
 
   return (
     <ListItem

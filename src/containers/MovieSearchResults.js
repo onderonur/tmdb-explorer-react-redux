@@ -6,10 +6,10 @@ import MovieCard from "./MovieCard";
 import { Typography } from "@material-ui/core";
 import {
   selectMovieSearchResultIds,
-  selectMovieSearchIsFetching,
-  selectMovieSearchNextPage,
-  selectMovieSearchTotalCount
-} from "reducers/pagination";
+  selectIsFetchingMovieSearchResults,
+  selectMovieSearchResultsNextPage,
+  selectMovieSearchResultsTotalCount
+} from "reducers";
 
 function MovieSearchResults({ query }) {
   const dispatch = useDispatch();
@@ -17,13 +17,13 @@ function MovieSearchResults({ query }) {
     selectMovieSearchResultIds(state, query)
   );
   const isFetching = useSelector(state =>
-    selectMovieSearchIsFetching(state, query)
+    selectIsFetchingMovieSearchResults(state, query)
   );
   const nextPage = useSelector(state =>
-    selectMovieSearchNextPage(state, query)
+    selectMovieSearchResultsNextPage(state, query)
   );
   const totalResults = useSelector(state =>
-    selectMovieSearchTotalCount(state, query)
+    selectMovieSearchResultsTotalCount(state, query)
   );
 
   function handleLoadMore() {

@@ -4,14 +4,14 @@ import { fetchPopularPeople } from "actions";
 import PersonCard from "./PersonCard";
 import InfiniteGridFeed from "components/InfiniteGridFeed";
 import {
-  selectPopularPeopleIsFetching,
+  selectIsFetchingPopularPeople,
   selectPopularPeopleNextPage,
   selectPopularPeopleIds
-} from "reducers/pagination";
+} from "reducers";
 
 function PopularPeople() {
   const dispatch = useDispatch();
-  const isFetching = useSelector(state => selectPopularPeopleIsFetching(state));
+  const isFetching = useSelector(state => selectIsFetchingPopularPeople(state));
   const nextPage = useSelector(state => selectPopularPeopleNextPage(state));
   const personIds = useSelector(state => selectPopularPeopleIds(state));
 

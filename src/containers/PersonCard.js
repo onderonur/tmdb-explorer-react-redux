@@ -5,7 +5,7 @@ import BaseCard from "components/BaseCard";
 import { useSelector } from "react-redux";
 import RouterLink from "components/RouteLink";
 import { makeStyles } from "@material-ui/styles";
-import { selectPersonById } from "reducers";
+import { selectPerson } from "reducers";
 import { getImageUrl } from "utils";
 
 const useStyles = makeStyles(theme => ({
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 
 function PersonCard({ personId }) {
   const classes = useStyles();
-  const person = useSelector(state => selectPersonById(state, personId));
+  const person = useSelector(state => selectPerson(state, personId));
 
   return (
     <RouterLink className={classes.link} to={`/person/${personId}`}>

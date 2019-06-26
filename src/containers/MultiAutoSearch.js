@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  selectIsFetchingMovieSearchResults,
   selectMovieSearchResultIds,
-  selectMovieSearchIsFetching,
-  selectPersonSearchIsFetching,
-  selectPersonSearchResultIds
-} from "reducers/pagination";
-import { selectMovieById, selectPersonById } from "reducers";
+  selectIsFetchingPersonSearchResults,
+  selectPersonSearchResultIds,
+  selectPeople
+} from "reducers";
 import AutoSearch from "components/AutoSearch";
 import { fetchMovieSearch, fetchPersonSearch } from "actions";
-import { DEFAULT_FIRST_PAGE } from "reducers/paginate";
+import { DEFAULT_FIRST_PAGE } from "reducers/createPagination";
 import {
   ListItem,
   ListItemText,
@@ -18,25 +18,26 @@ import {
   Avatar
 } from "@material-ui/core";
 import { getImageUrl } from "utils";
+import { selectMovies } from "reducers";
 
 function MultiAutoSearch({ className, history, autoFocus }) {
   const [searchValue, setSearchValue] = useState("");
   const isFetchingMovies = useSelector(state =>
-    selectMovieSearchIsFetching(state, searchValue)
+    selectIsFetchingMovieSearchResults(state, searchValue)
   );
   const movieIds =
-    useSelector(state => selectMovieSearchResultIds(state, searchValue)) || [];
-  const movies = useSelector(state =>
-    movieIds.map(movieId => selectMovieById(state, movieId))
-  );
+    useSelector(state =>
+      selectMovieSearchResultIds(state, searchValue)
+    ) || [];
+  const movies = useSelector(state => selectMovies(state, movieIds));
   const isFetchingPeople = useSelector(state =>
-    selectPersonSearchIsFetching(state, searchValue)
+    selectIsFetchingPersonSearchResults(state, searchValue)
   );
   const personIds =
-    useSelector(state => selectPersonSearchResultIds(state, searchValue)) || [];
-  const people = useSelector(state =>
-    personIds.map(personId => selectPersonById(state, personId))
-  );
+    useSelector(state =>
+      selectPersonSearchResultIds(state, searchValue)
+    ) || [];
+  const people = useSelector(state => selectPeople(state, personIds));
   const dispatch = useDispatch();
 
   function handleRedirect(inputValue) {

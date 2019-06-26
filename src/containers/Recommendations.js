@@ -3,15 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchRecommendations } from "actions";
 import MovieCard from "./MovieCard";
 import FlexGridList from "components/FlexGridList";
-import { selectMovieRecommendations } from "reducers";
-import { selectMovieRecommendationsIsFetching } from "reducers";
+import {
+  selectMovieRecommendations,
+  selectIsFetchingMovieRecommendations
+} from "reducers";
 
 function Recommendations({ movieId }) {
   const recommendationIds = useSelector(
     state => selectMovieRecommendations(state, movieId) || []
   );
   const isFetching = useSelector(state =>
-    selectMovieRecommendationsIsFetching(state, movieId)
+    selectIsFetchingMovieRecommendations(state, movieId)
   );
   const dispatch = useDispatch();
 

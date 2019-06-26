@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPerson } from "actions";
 import PersonCastingList from "containers/PersonCastingList";
 import PersonInfoSection from "containers/PersonInfoSection";
-import { selectPersonIsFetching } from "reducers";
 import LoadingIndicator from "components/LoadingIndicator";
+import { selectIsFetchingPerson } from "reducers";
 
 function PersonProfile({
   match: {
@@ -15,7 +15,7 @@ function PersonProfile({
 }) {
   const dispatch = useDispatch();
   const isFetching = useSelector(state =>
-    selectPersonIsFetching(state, personId)
+    selectIsFetchingPerson(state, personId)
   );
 
   useEffect(() => {

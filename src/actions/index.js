@@ -1,16 +1,14 @@
 import * as actionTypes from "constants/actionTypes";
-import {
-  selectMovieById,
-  selectMovieCreditsByMovieId,
-  selectCreditsOfPerson,
-  selectPersonById,
-  selectMovieVideos,
-  selectMovieRecommendations
-} from "reducers";
 import * as schemas from "schemas";
 import { get } from "utils";
-
-// TODO: image url'i function'la filan oku. Copy-paste'leri düzelt.
+import {
+  selectMovie,
+  selectMovieRecommendations,
+  selectMovieCredits,
+  selectPerson,
+  selectCreditsOfPerson,
+  selectMovieVideos
+} from "reducers";
 
 export function toggleDrawer() {
   return { type: actionTypes.TOGGLE_DRAWER };
@@ -91,7 +89,7 @@ export function fetchMovie(movieId, requiredFields = []) {
       actionTypes.FETCH_MOVIE_ERROR
     ],
     shouldCallAPI: state => {
-      const movie = selectMovieById(state, movieId);
+      const movie = selectMovie(state, movieId);
       return !movie || !checkRequiredFields(movie, requiredFields);
     },
     callAPI: () => get(`/movie/${movieId}`),
@@ -134,7 +132,7 @@ export function fetchMovieCredits(movieId) {
       actionTypes.FETCH_MOVIE_CREDITS_SUCCESS,
       actionTypes.FETCH_MOVIE_CREDITS_ERROR
     ],
-    shouldCallAPI: state => !selectMovieCreditsByMovieId(state, movieId),
+    shouldCallAPI: state => !selectMovieCredits(state, movieId),
     callAPI: () => get(`/movie/${movieId}/credits`),
     schema: schemas.movieCreditSchema,
     payload: { movieId }
@@ -149,7 +147,7 @@ export function fetchPerson(personId, requiredFields = []) {
       actionTypes.FETCH_PERSON_ERROR
     ],
     shouldCallAPI: state => {
-      const person = selectPersonById(state, personId);
+      const person = selectPerson(state, personId);
       return !person || !checkRequiredFields(person, requiredFields);
     },
     callAPI: () => get(`/person/${personId}`),

@@ -13,6 +13,7 @@ import { withRouter } from "react-router-dom";
 import { toggleDrawer } from "actions";
 import MovieIcon from "@material-ui/icons/LocalMovies";
 import PersonIcon from "@material-ui/icons/RecentActors";
+import { selectIsDrawerOpen } from "reducers";
 
 const useStyles = makeStyles(theme => ({
   drawerPaper: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 function AppDrawer({ location }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const isOpen = useSelector(state => state.drawer.isOpen);
+  const isOpen = useSelector(state => selectIsDrawerOpen(state));
   const prevLocation = useRef();
 
   useEffect(() => {

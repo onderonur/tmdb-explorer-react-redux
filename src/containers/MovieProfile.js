@@ -6,12 +6,12 @@ import MovieCredits from "containers/MovieCredits";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovie } from "actions";
 import MovieVideoList from "containers/MovieVideoList";
-import {
-  selectMovieCreditsIsFetching,
-  selectMovieIsFetching,
-  selectMovieVideosIsFetching
-} from "reducers";
 import LoadingIndicator from "components/LoadingIndicator";
+import {
+  selectIsFetchingMovie,
+  selectIsFetchingMovieCredits,
+  selectIsFetchingMovieVideos
+} from "reducers";
 
 function MovieProfile({
   match: {
@@ -20,13 +20,13 @@ function MovieProfile({
 }) {
   const dispatch = useDispatch();
   const isFetchingMovie = useSelector(state =>
-    selectMovieIsFetching(state, movieId)
+    selectIsFetchingMovie(state, movieId)
   );
   const isFetchingCredits = useSelector(state =>
-    selectMovieCreditsIsFetching(state, movieId)
+    selectIsFetchingMovieCredits(state, movieId)
   );
   const isFetchingVideos = useSelector(state =>
-    selectMovieVideosIsFetching(state, movieId)
+    selectIsFetchingMovieVideos(state, movieId)
   );
 
   useEffect(() => {

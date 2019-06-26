@@ -1,79 +1,107 @@
 import { combineReducers } from "redux";
 import * as actionTypes from "constants/actionTypes";
-import fetching from "./fetching";
+import createIsFetching from "./createIsFetching";
+import createByKey from "./createByKey";
 
 const isFetching = combineReducers({
-  moviesById: fetching({
-    mapActionToKey: action => action.movieId,
-    types: [
+  genres: createIsFetching([
+    actionTypes.FETCH_GENRES_REQUEST,
+    actionTypes.FETCH_GENRES_SUCCESS,
+    actionTypes.FETCH_GENRES_ERROR
+  ]),
+  moviesById: createByKey(
+    action => action.movieId,
+    createIsFetching([
       actionTypes.FETCH_MOVIE_REQUEST,
       actionTypes.FETCH_MOVIE_SUCCESS,
       actionTypes.FETCH_MOVIE_ERROR
-    ]
-  }),
-  peopleById: fetching({
-    mapActionToKey: action => action.personId,
-    types: [
+    ])
+  ),
+  peopleById: createByKey(
+    action => action.personId,
+    createIsFetching([
       actionTypes.FETCH_PERSON_REQUEST,
       actionTypes.FETCH_PERSON_SUCCESS,
       actionTypes.FETCH_PERSON_ERROR
-    ]
-  }),
-  genres: fetching({
-    types: [
-      actionTypes.FETCH_GENRES_REQUEST,
-      actionTypes.FETCH_GENRES_SUCCESS,
-      actionTypes.FETCH_GENRES_ERROR
-    ]
-  }),
-  movieVideosByMovieId: fetching({
-    mapActionToKey: action => action.movieId,
-    types: [
+    ])
+  ),
+  movieVideosByMovieId: createByKey(
+    action => action.movieId,
+    createIsFetching([
       actionTypes.FETCH_MOVIE_VIDEOS_REQUEST,
       actionTypes.FETCH_MOVIE_VIDEOS_SUCCESS,
       actionTypes.FETCH_MOVIE_VIDEOS_ERROR
-    ]
-  }),
-  movieCreditsByMovieId: fetching({
-    mapActionToKey: action => action.movieId,
-    types: [
+    ])
+  ),
+  movieCreditsByMovieId: createByKey(
+    action => action.movieId,
+    createIsFetching([
       actionTypes.FETCH_MOVIE_CREDITS_REQUEST,
       actionTypes.FETCH_MOVIE_CREDITS_SUCCESS,
       actionTypes.FETCH_MOVIE_CREDITS_ERROR
-    ]
-  }),
-  movieRecommendationsByMovieId: fetching({
-    mapActionToKey: action => action.movieId,
-    types: [
+    ])
+  ),
+  movieRecommendationsByMovieId: createByKey(
+    action => action.movieId,
+    createIsFetching([
       actionTypes.FETCH_MOVIE_RECOMMENDATIONS_REQUEST,
       actionTypes.FETCH_MOVIE_RECOMMENDATIONS_SUCCESS,
       actionTypes.FETCH_MOVIE_RECOMMENDATIONS_ERROR
-    ]
-  })
+    ])
+  ),
+  popularMovies: createIsFetching([
+    actionTypes.FETCH_POPULAR_MOVIES_REQUEST,
+    actionTypes.FETCH_POPULAR_MOVIES_SUCCESS,
+    actionTypes.FETCH_POPULAR_MOVIES_ERROR
+  ]),
+  popularPeople: createIsFetching([
+    actionTypes.FETCH_POPULAR_PEOPLE_REQUEST,
+    actionTypes.FETCH_POPULAR_PEOPLE_SUCCESS,
+    actionTypes.FETCH_POPULAR_PEOPLE_ERROR
+  ]),
+  movieSearchResultsByQuery: createByKey(
+    action => action.query,
+    createIsFetching([
+      actionTypes.FETCH_MOVIE_SEARCH_REQUEST,
+      actionTypes.FETCH_MOVIE_SEARCH_SUCCESS,
+      actionTypes.FETCH_MOVIE_SEARCH_ERROR
+    ])
+  ),
+  personSearchResultsByQuery: createByKey(
+    action => action.query,
+    createIsFetching([
+      actionTypes.FETCH_PERSON_SEARCH_REQUEST,
+      actionTypes.FETCH_PERSON_SEARCH_SUCCESS,
+      actionTypes.FETCH_PERSON_SEARCH_ERROR
+    ])
+  )
 });
 
 export default isFetching;
 
-export function selectMovieIsFetching(state, movieId) {
-  return state.moviesById[movieId];
-}
+export const selectIsFetchingGenres = state => state.genres;
 
-export function selectPersonIsFetching(state, personId) {
-  return state.peopleById[personId];
-}
+export const selectIsFetchingMovie = (state, movieId) =>
+  state.moviesById[movieId];
 
-export function selectGenresIsFetching(state) {
-  return state.genres;
-}
+export const selectIsFetchingPerson = (state, personId) =>
+  state.peopleById[personId];
 
-export function selectMovieVideosIsFetching(state, movieId) {
-  return state.movieVideosByMovieId[movieId];
-}
+export const selectIsFetchingPopularMovies = state => state.popularMovies;
 
-export function selectMovieCreditsIsFetching(state, movieId) {
-  return state.movieCreditsByMovieId[movieId];
-}
+export const selectIsFetchingPopularPeople = state => state.popularPeople;
 
-export function selectMovieRecommendationsIsFetching(state, movieId) {
-  return state.movieRecommendationsByMovieId[movieId];
-}
+export const selectIsFetchingMovieCredits = (state, movieId) =>
+  state.movieCreditsByMovieId[movieId];
+
+export const selectIsFetchingMovieVideos = (state, movieId) =>
+  state.movieVideosByMovieId[movieId];
+
+export const selectIsFetchingMovieRecommendations = (state, movieId) =>
+  state.movieRecommendationsByMovieId[movieId];
+
+export const selectIsFetchingMovieSearchResults = (state, query) =>
+  state.movieSearchResultsByQuery[query];
+
+export const selectIsFetchingPersonSearchResults = (state, query) =>
+  state.personSearchResultsByQuery[query];

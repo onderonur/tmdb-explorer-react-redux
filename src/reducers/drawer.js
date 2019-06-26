@@ -18,3 +18,7 @@ function drawer(state = initialState, action) {
 }
 
 export default drawer;
+
+export function selectIsDrawerOpen(state) {
+  return state.isOpen;
+}
