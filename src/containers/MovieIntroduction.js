@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectMovieById } from "reducers";
+import { selectMovie } from "reducers";
 import BaseImage from "components/BaseImage";
 import { Typography, makeStyles, Box, Grid, Link } from "@material-ui/core";
 import Rating from "components/Rating";
@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function MovieIntroduction({ movieId }) {
-  const movie = useSelector(state => selectMovieById(state, movieId));
+  const movie = useSelector(state => selectMovie(state, movieId));
   const classes = useStyles({
     backgroundImage: !movie ? null : getImageUrl(movie.backdrop_path)
   });

@@ -27,42 +27,34 @@ export default entities;
 // All the named exports are "selectors" of this state slice.
 // The "state" parameter here is the same state slice as the "entities" reducer itself.
 // No need to use it like "state.entities...".
-export function selectMovieById(state, id) {
-  return state.movies[id];
-}
+export const selectMovie = (state, id) => state.movies[id];
 
-export function selectGenreById(state, id) {
-  return state.genres[id];
-}
+export const selectMovies = (state, movieIds) =>
+  movieIds.map(movieId => selectMovie(state, movieId));
 
-export function selectMovieCreditsByMovieId(state, movieId) {
-  return state.movieCredits[movieId];
-}
+export const selectGenre = (state, id) => state.genres[id];
+
+export const selectMovieCredits = (state, movieId) =>
+  state.movieCredits[movieId];
 
 // TODO: Genel olarak "cast" ve "creditCast" vs kullanımlarına bak. Basitleştir.
-export function selectCastCreditById(state, castCreditId) {
-  return state.castCredits[castCreditId];
-}
+export const selectCastCredits = (state, castCreditId) =>
+  state.castCredits[castCreditId];
 
-export function selectPersonById(state, id) {
-  return state.people[id];
-}
+export const selectPerson = (state, id) => state.people[id];
 
-export function selectCreditsOfPerson(state, personId) {
-  return state.creditsOfPeople[personId];
-}
+export const selectPeople = (state, personIds) =>
+  personIds.map(personId => selectPerson(state, personId));
 
-export function selectVideo(state, videoId) {
-  return state.videos[videoId];
-}
+export const selectCreditsOfPerson = (state, personId) =>
+  state.creditsOfPeople[personId];
 
-export function selectMovieVideos(state, movieId) {
-  return state.movieVideos[movieId]
-    ? state.movieVideos[movieId].videos
-    : undefined;
-}
+export const selectVideo = (state, videoId) => state.videos[videoId];
 
-export function selectMovieRecommendations(state, movieId) {
+export const selectMovieVideos = (state, movieId) =>
+  state.movieVideos[movieId] ? state.movieVideos[movieId].videos : undefined;
+
+export const selectMovieRecommendations = (state, movieId) => {
   const recommendations = state.movieRecommendations[movieId];
   return recommendations ? recommendations.movies : undefined;
-}
+};

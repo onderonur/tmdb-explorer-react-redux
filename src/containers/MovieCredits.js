@@ -1,15 +1,13 @@
 import React, { useEffect } from "react";
 import { fetchMovieCredits } from "actions";
 import { useDispatch, useSelector } from "react-redux";
-import { selectMovieCreditsByMovieId } from "reducers";
+import { selectMovieCredits } from "reducers";
 import ColGridList from "components/ColGridList";
 import MovieCastListItem from "./MovieCastListItem";
 
 function MovieCredits({ movieId }) {
   const dispatch = useDispatch();
-  const movieCredits = useSelector(state =>
-    selectMovieCreditsByMovieId(state, movieId)
-  );
+  const movieCredits = useSelector(state => selectMovieCredits(state, movieId));
   const castCreditIds = movieCredits ? movieCredits.cast : [];
 
   useEffect(() => {

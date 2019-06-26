@@ -4,14 +4,14 @@ import { fetchPopularMovies } from "actions";
 import MovieCard from "./MovieCard";
 import InfiniteGridFeed from "components/InfiniteGridFeed";
 import {
-  selectPopularMovieIds,
-  selectPopularMoviesIsFetching,
-  selectPopularMoviesNextPage
-} from "reducers/pagination";
+  selectIsFetchingPopularMovies,
+  selectPopularMoviesNextPage,
+  selectPopularMovieIds
+} from "reducers";
 
 function PopularMovies() {
   const dispatch = useDispatch();
-  const isFetching = useSelector(state => selectPopularMoviesIsFetching(state));
+  const isFetching = useSelector(state => selectIsFetchingPopularMovies(state));
   const nextPage = useSelector(state => selectPopularMoviesNextPage(state));
   const movieIds = useSelector(state => selectPopularMovieIds(state));
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectPersonById } from "reducers";
+import { selectPerson } from "reducers";
 import BaseImage from "components/BaseImage";
 import { Typography, makeStyles, Box, Grid, Link } from "@material-ui/core";
 import ImdbLogo from "components/ImdbLogo";
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function PersonIntroduction({ personId }) {
-  const person = useSelector(state => selectPersonById(state, personId));
+  const person = useSelector(state => selectPerson(state, personId));
   const classes = useStyles({
     backgroundImage: !person ? null : getImageUrl(person.profile_path)
   });

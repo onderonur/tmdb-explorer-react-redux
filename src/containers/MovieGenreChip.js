@@ -1,10 +1,10 @@
 import React from "react";
 import { Chip } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import { selectGenreById } from "reducers";
+import { selectGenre } from "reducers";
 
 function MovieGenreChip({ className, genreId }) {
-  const genre = useSelector(state => selectGenreById(state, genreId));
+  const genre = useSelector(state => selectGenre(state, genreId));
 
   return <Chip className={className} label={genre.name} />;
 }

@@ -5,11 +5,11 @@ import InfiniteGridFeed from "components/InfiniteGridFeed";
 import PersonCard from "./PersonCard";
 import { Typography } from "@material-ui/core";
 import {
-  selectPersonSearchResultIds,
-  selectPersonSearchIsFetching,
-  selectPersonSearchNextPage,
-  selectPersonSearchTotalCount
-} from "reducers/pagination";
+  selectIsFetchingPersonSearchResults,
+  selectPersonSearchResultsNextPage,
+  selectPersonSearchResultsTotalCount,
+  selectPersonSearchResultIds
+} from "reducers";
 
 function PersonSearchResults({ query }) {
   const dispatch = useDispatch();
@@ -17,13 +17,13 @@ function PersonSearchResults({ query }) {
     selectPersonSearchResultIds(state, query)
   );
   const isFetching = useSelector(state =>
-    selectPersonSearchIsFetching(state, query)
+    selectIsFetchingPersonSearchResults(state, query)
   );
   const nextPage = useSelector(state =>
-    selectPersonSearchNextPage(state, query)
+    selectPersonSearchResultsNextPage(state, query)
   );
   const totalResults = useSelector(state =>
-    selectPersonSearchTotalCount(state, query)
+    selectPersonSearchResultsTotalCount(state, query)
   );
 
   function handleLoadMore() {
