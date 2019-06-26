@@ -1,19 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  makeStyles
-} from "@material-ui/core";
-import RouterLink from "components/RouteLink";
+import { Drawer, makeStyles, MenuList } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { toggleDrawer } from "actions";
 import MovieIcon from "@material-ui/icons/LocalMovies";
 import PersonIcon from "@material-ui/icons/RecentActors";
 import { selectIsDrawerOpen } from "reducers";
+import AppDrawerItem from "./AppDrawerItem";
 
 const useStyles = makeStyles(theme => ({
   drawerPaper: {
@@ -48,20 +41,18 @@ function AppDrawer({ location }) {
       classes={{ paper: classes.drawerPaper }}
       onClose={handleClose}
     >
-      <List>
-        <ListItem to="/movies/popular" button component={RouterLink}>
-          <ListItemIcon>
-            <MovieIcon />
-          </ListItemIcon>
-          <ListItemText primary="Popular Movies" />
-        </ListItem>
-        <ListItem to="/person/popular" button component={RouterLink}>
-          <ListItemIcon>
-            <PersonIcon />
-          </ListItemIcon>
-          <ListItemText primary="Popular People" />
-        </ListItem>
-      </List>
+      <MenuList>
+        <AppDrawerItem
+          to="/movie/popular"
+          icon={<MovieIcon />}
+          title="Popular Movies"
+        />
+        <AppDrawerItem
+          to="/person/popular"
+          icon={<PersonIcon />}
+          title="Popular People"
+        />
+      </MenuList>
     </Drawer>
   );
 }
