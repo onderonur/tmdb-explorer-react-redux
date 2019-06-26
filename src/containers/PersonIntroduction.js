@@ -48,7 +48,7 @@ function PersonIntroduction({ personId }) {
         >
           <Box flexBasis={300}>
             <BaseImage
-              // src={getImageUrl(person.profile_path)}
+              src={getImageUrl(person.profile_path)}
               alt={person.name}
               aspectRatio="2:3"
             />
