@@ -34,11 +34,7 @@ function useVisibilityTracker({
       if (node) {
         const observer = new IntersectionObserver(
           ([entry]) => {
-            if (entry.isIntersecting) {
-              setIsVisible(true);
-            } else {
-              setIsVisible(false);
-            }
+            setIsVisible(entry.isIntersecting);
           },
           { root, rootMargin, threshold }
         );
