@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+// https://usehooks.com/useDebounce/
 function useDebounce(value, delay = 250) {
   // State and setters for debounced value
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -12,8 +13,8 @@ function useDebounce(value, delay = 250) {
       }, delay);
 
       // Cancel the timeout if value changes (also on delay change or unmount)
-      // This is how we prevent debounced value from updating if value is changed ...
-      // .. within the delay period. Timeout gets cleared and restarted.
+      // This is how we prevent debounced value from updating if value is changed
+      // within the delay period. Timeout gets cleared and restarted.
       return () => {
         clearTimeout(handler);
       };
