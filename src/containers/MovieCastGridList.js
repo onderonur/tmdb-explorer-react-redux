@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { fetchMovieCredits } from "actions";
 import { useDispatch, useSelector } from "react-redux";
 import { selectMovieCredits } from "reducers";
-import ColGridList from "components/ColGridList";
-import MovieCastListItem from "./MovieCastListItem";
+import MovieCastGridListItem from "./MovieCastGridListItem";
+import FlexGridList from "components/FlexGridList";
 
-function MovieCredits({ movieId }) {
+function MovieCastGridList({ movieId }) {
   const dispatch = useDispatch();
   const movieCredits = useSelector(state => selectMovieCredits(state, movieId));
   const castCreditIds = movieCredits ? movieCredits.cast : [];
@@ -15,14 +15,14 @@ function MovieCredits({ movieId }) {
   }, [movieId, dispatch]);
 
   return (
-    <ColGridList
+    <FlexGridList
       items={castCreditIds}
-      spacing={1}
+      minItemWidth={230}
       renderItem={castCreditId => (
-        <MovieCastListItem key={castCreditId} castCreditId={castCreditId} />
+        <MovieCastGridListItem key={castCreditId} castCreditId={castCreditId} />
       )}
     />
   );
 }
 
-export default MovieCredits;
+export default MovieCastGridList;

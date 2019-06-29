@@ -11,6 +11,7 @@ import {
   selectMovieSearchResultsTotalCount,
   selectPersonSearchResultsTotalCount
 } from "reducers";
+import SearchResultsHeader from "./SearchResultsHeader";
 
 function SearchResults({
   location,
@@ -45,6 +46,16 @@ function SearchResults({
         <Tab value="person" label={`People (${totalPersonCount})`} />
       </Tabs>
       <Box marginTop={2}>
+        <SearchResultsHeader
+          query={query}
+          totalResults={
+            searchType === "movie"
+              ? totalMovieCount
+              : searchType === "person"
+              ? totalPersonCount
+              : ""
+          }
+        />
         {searchType === "movie" && <MovieSearchResults query={query} />}
         {searchType === "person" && <PersonSearchResults query={query} />}
       </Box>

@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function MovieCastListItem({ castCreditId }) {
+function MovieCastGridListItem({ castCreditId }) {
   const classes = useStyles();
   const cast = useSelector(state => selectCastCredits(state, castCreditId));
   const person = useSelector(state => selectPerson(state, cast.person));
@@ -42,4 +42,4 @@ function MovieCastListItem({ castCreditId }) {
   );
 }
 
-export default MovieCastListItem;
+export default MovieCastGridListItem;

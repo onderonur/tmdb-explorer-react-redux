@@ -35,53 +35,51 @@ function PersonIntroduction({ personId }) {
   });
 
   return person ? (
-    <>
-      <Box position="relative">
-        <div className={classes.backdrop} />
-        <Box
-          className={classes.top}
-          display="flex"
-          flexWrap="wrap"
-          justifyContent="center"
-          position="relative"
-          zIndex={1}
-        >
-          <Box flexBasis={300}>
-            <BaseImage
-              src={getImageUrl(person.profile_path)}
-              alt={person.name}
-              aspectRatio="2:3"
-            />
-          </Box>
-          <Box p={2} flex={1} flexBasis={300}>
-            <Typography variant="h5" gutterBottom>
-              {person.name}
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Box display="flex" alignItems="center">
-                  <Link
-                    href={`https://www.imdb.com/title/${person.imdb_id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <ImdbLogo />
-                  </Link>
-                </Box>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="h6" gutterBottom>
-                  Biography
-                </Typography>
-                <Typography className={classes.biography}>
-                  {person.biography}
-                </Typography>
-              </Grid>
+    <Box position="relative">
+      <div className={classes.backdrop} />
+      <Box
+        className={classes.top}
+        display="flex"
+        flexWrap="wrap"
+        justifyContent="center"
+        position="relative"
+        zIndex={1}
+      >
+        <Box flexBasis={300}>
+          <BaseImage
+            src={getImageUrl(person.profile_path)}
+            alt={person.name}
+            aspectRatio="2:3"
+          />
+        </Box>
+        <Box p={2} flex={1} flexBasis={300}>
+          <Typography variant="h5" gutterBottom>
+            {person.name}
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Box display="flex" alignItems="center">
+                <Link
+                  href={`https://www.imdb.com/title/${person.imdb_id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <ImdbLogo />
+                </Link>
+              </Box>
             </Grid>
-          </Box>
+            <Grid item xs={12}>
+              <Typography variant="h6" gutterBottom>
+                Biography
+              </Typography>
+              <Typography className={classes.biography}>
+                {person.biography}
+              </Typography>
+            </Grid>
+          </Grid>
         </Box>
       </Box>
-    </>
+    </Box>
   ) : null;
 }
 

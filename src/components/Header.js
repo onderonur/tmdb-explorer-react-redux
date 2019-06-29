@@ -57,26 +57,24 @@ function Header() {
         )}
 
         {isMobile ? (
-          <>
-            {isMobileSearch ? (
-              <>
-                <IconButton
-                  className={classes.closeMobileSearchButton}
-                  onClick={hideMobileSearch}
-                >
-                  <CloseIcon />
-                </IconButton>
-                <MultiAutoSearch autoFocus />
-              </>
-            ) : (
-              <>
-                <Box flex={1} />
-                <IconButton onClick={showMobileSearch}>
-                  <SearchIcon />
-                </IconButton>
-              </>
-            )}
-          </>
+          isMobileSearch ? (
+            <>
+              <IconButton
+                className={classes.closeMobileSearchButton}
+                onClick={hideMobileSearch}
+              >
+                <CloseIcon />
+              </IconButton>
+              <MultiAutoSearch autoFocus />
+            </>
+          ) : (
+            <>
+              <Box flex={1} />
+              <IconButton onClick={showMobileSearch}>
+                <SearchIcon />
+              </IconButton>
+            </>
+          )
         ) : (
           <Box flex={1} mx={2} display="flex" justifyContent="center">
             <MultiAutoSearch className={classes.searcher} />

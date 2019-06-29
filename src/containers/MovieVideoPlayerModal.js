@@ -1,7 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectMovieVideos, selectVideo } from "reducers";
-import { MobileStepper, Button } from "@material-ui/core";
+import {
+  MobileStepper,
+  Button,
+  Typography,
+  DialogTitle
+} from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import YouTubePlayer from "components/YouTubePlayer";
 import useQueryString from "hooks/useQueryString";
@@ -34,7 +39,17 @@ function MovieVideoPlayerModal({ movieId, location, history }) {
 
   return (
     <BaseDialog
-      title={videoToWatch ? videoToWatch.name : ""}
+      title={
+        videoToWatch ? (
+          <DialogTitle disableTypography>
+            <Typography variant="h6" noWrap>
+              {videoToWatch.name}
+            </Typography>
+          </DialogTitle>
+        ) : (
+          ""
+        )
+      }
       open={!!videoToWatch}
       onExited={handleClose}
     >

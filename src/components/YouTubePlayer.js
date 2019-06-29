@@ -19,7 +19,8 @@ function YouTubePlayer({ youtubeId }) {
     <AspectRatio aspectRatio="16:9">
       <iframe
         className={classes.player}
-        // Key is added to unmount the iframe everytime youtubeId changes. Otherwise, iframe messes up with the browser history.
+        // Key is added to unmount the iframe everytime youtubeId changes.
+        // Otherwise, iframe messes up with the browser history.
         key={youtubeId}
         title="youtubePlayer"
         src={`https://www.youtube.com/embed/${youtubeId}`}

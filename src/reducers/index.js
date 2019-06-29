@@ -20,7 +20,7 @@ export default rootReducer;
 // So, we won't need to update every single of those selector calls if the state shape changes in the future.
 // By this usage, the "state" parameter of selectors in the reducer files will be the state slice of the same reducer in that file.
 // Because of we are using the same selector name in the reducer file, we can't use same name again.
-// Thus, we used namespace import syntax ("* as fromEntities").
+// Thus, we used "namespace import syntax" (i.e. "* as fromEntities").
 
 // Entities Selectors
 export const selectMovie = (state, id) =>
@@ -44,8 +44,8 @@ export const selectPerson = (state, id) =>
 export const selectPeople = (state, personIds) =>
   fromEntities.selectPeople(state.entities, personIds);
 
-export const selectCreditsOfPerson = (state, personId) =>
-  fromEntities.selectCreditsOfPerson(state.entities, personId);
+export const selectPersonCredits = (state, personId) =>
+  fromEntities.selectPersonCredits(state.entities, personId);
 
 export const selectVideo = (state, videoId) =>
   fromEntities.selectVideo(state.entities, videoId);
@@ -89,16 +89,10 @@ export const selectIsFetchingMovieRecommendations = (state, movieId) =>
   );
 
 export const selectIsFetchingMovieSearchResults = (state, query) =>
-  fromIsFetching.selectIsFetchingMovieSearchResults(
-    state.isFetching,
-    query
-  );
+  fromIsFetching.selectIsFetchingMovieSearchResults(state.isFetching, query);
 
 export const selectIsFetchingPersonSearchResults = (state, query) =>
-  fromIsFetching.selectIsFetchingPersonSearchResults(
-    state.isFetching,
-    query
-  );
+  fromIsFetching.selectIsFetchingPersonSearchResults(state.isFetching, query);
 
 // Pagination Selectors
 export const selectPopularMovieIds = state =>
@@ -114,25 +108,13 @@ export const selectPopularPeopleNextPage = state =>
 export const selectMovieSearchResultIds = (state, query) =>
   fromPagination.selectMovieSearchResultIds(state.pagination, query);
 export const selectMovieSearchResultsNextPage = (state, query) =>
-  fromPagination.selectMovieSearchResultsNextPage(
-    state.pagination,
-    query
-  );
+  fromPagination.selectMovieSearchResultsNextPage(state.pagination, query);
 export const selectMovieSearchResultsTotalCount = (state, query) =>
-  fromPagination.selectMovieSearchResultsTotalCount(
-    state.pagination,
-    query
-  );
+  fromPagination.selectMovieSearchResultsTotalCount(state.pagination, query);
 
 export const selectPersonSearchResultIds = (state, query) =>
   fromPagination.selectPersonSearchResultIds(state.pagination, query);
 export const selectPersonSearchResultsNextPage = (state, query) =>
-  fromPagination.selectPersonSearchResultsNextPage(
-    state.pagination,
-    query
-  );
+  fromPagination.selectPersonSearchResultsNextPage(state.pagination, query);
 export const selectPersonSearchResultsTotalCount = (state, query) =>
-  fromPagination.selectPersonSearchResultsTotalCount(
-    state.pagination,
-    query
-  );
+  fromPagination.selectPersonSearchResultsTotalCount(state.pagination, query);

@@ -1,13 +1,24 @@
 import { normalize } from "normalizr";
 
+// Checking cached data to see if it exists and has all the required fields
+function verifyCachedData(cachedData, requiredFields = []) {
+  if (!cachedData) {
+    return false;
+  }
+
+  return requiredFields.every(key => cachedData.hasOwnProperty(key));
+}
+
 // https://redux.js.org/recipes/reducing-boilerplate
 const callAPIMiddleware = ({ dispatch, getState }) => next => action => {
   const {
     types,
     callAPI,
+    selectCachedData = () => undefined,
+    requiredFields = [],
     shouldCallAPI = () => true,
     payload = {},
-    // Added this callback to add or change API response data that will be normalized.
+    // Added this callback to change API response data that will be normalized.
     // But it may be used for other use cases too.
     processResponse,
     schema
@@ -30,12 +41,26 @@ const callAPIMiddleware = ({ dispatch, getState }) => next => action => {
     throw new Error("Expected callAPI to be a function.");
   }
 
-  if (!shouldCallAPI(getState())) {
-    return;
+  if (!Array.isArray(requiredFields)) {
+    throw new Error("Expected requiredFields to be an array.");
+  }
+
+  if (typeof shouldCallAPI !== "function") {
+    throw new Error("Expected shouldCallAPI to be a function.");
   }
 
   if (processResponse && typeof processResponse !== "function") {
     throw new Error("Expected processResponse to be a function.");
+  }
+
+  const currentState = getState();
+
+  if (!shouldCallAPI(currentState)) {
+    return;
+  }
+
+  if (verifyCachedData(selectCachedData(currentState), requiredFields)) {
+    return;
   }
 
   const [requestType, successType, failureType] = types;
@@ -51,7 +76,6 @@ const callAPIMiddleware = ({ dispatch, getState }) => next => action => {
       }
 
       if (schema) {
-        // TODO: Bu payload olayına bi bak real-world example'dan vs de
         const normalizedData = normalize(responseData, schema);
         dispatch({ ...payload, response: normalizedData, type: successType });
       } else {

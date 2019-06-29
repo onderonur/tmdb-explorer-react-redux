@@ -6,57 +6,13 @@ import {
   selectMovieRecommendations,
   selectMovieCredits,
   selectPerson,
-  selectCreditsOfPerson,
+  selectPersonCredits,
   selectMovieVideos
 } from "reducers";
 
 export function toggleDrawer() {
   return { type: actionTypes.TOGGLE_DRAWER };
 }
-
-// Without callAPIMiddleware
-// function fetchPopularMoviesRequest() {
-//   return {
-//     type: FETCH_POPULAR_MOVIES_REQUEST
-//   };
-// }
-
-// function fetchPopularMoviesSuccess(movies) {
-//   return {
-//     type: FETCH_POPULAR_MOVIES_SUCCESS,
-//     movies
-//   };
-// }
-
-// function fetchPopularMoviesError(error) {
-//   return {
-//     type: FETCH_POPULAR_MOVIES_ERROR,
-//     error
-//   };
-// }
-
-// This is an "async action creator"
-// export function fetchPopularMovies(page) {
-//   return function(dispatch, getState) {
-//     const state = getState();
-//     if (selectPopularMoviesByPage(page)(state)) {
-//       // There is cached data! Don't do anything.
-//       return;
-//     }
-
-//     dispatch(fetchPopularMoviesRequest());
-
-//     axios
-//       .get(`${BASE_API_URL}/movie/popular?api_key=${API_KEY}&page=${page}`)
-//       .then(response => {
-//         const movies = response.data;
-//         dispatch(fetchPopularMoviesSuccess(movies));
-//       })
-//       .catch(error => {
-//         dispatch(fetchPopularMoviesError(error));
-//       });
-//   };
-// }
 
 // With callAPIMiddleware
 // This is an "async action creator"
@@ -76,22 +32,15 @@ export function fetchPopularMovies(pageId) {
   };
 }
 
-// Checking cached data to see if it has all the required fields
-function checkRequiredFields(cachedData, requiredFields) {
-  return requiredFields.every(key => cachedData.hasOwnProperty(key));
-}
-
-export function fetchMovie(movieId, requiredFields = []) {
+export function fetchMovie(movieId, requiredFields) {
   return {
     types: [
       actionTypes.FETCH_MOVIE_REQUEST,
       actionTypes.FETCH_MOVIE_SUCCESS,
       actionTypes.FETCH_MOVIE_ERROR
     ],
-    shouldCallAPI: state => {
-      const movie = selectMovie(state, movieId);
-      return !movie || !checkRequiredFields(movie, requiredFields);
-    },
+    selectCachedData: state => selectMovie(state, movieId),
+    requiredFields,
     callAPI: () => get(`/movie/${movieId}`),
     schema: schemas.movieSchema,
     payload: { movieId }
@@ -105,7 +54,7 @@ export function fetchRecommendations(movieId) {
       actionTypes.FETCH_MOVIE_RECOMMENDATIONS_SUCCESS,
       actionTypes.FETCH_MOVIE_RECOMMENDATIONS_ERROR
     ],
-    shouldCallAPI: state => !selectMovieRecommendations(state, movieId),
+    selectCachedData: state => selectMovieRecommendations(state, movieId),
     callAPI: () => get(`/movie/${movieId}/recommendations`),
     processResponse: data => ({ ...data, movieId }),
     schema: schemas.movieRecommendationSchema,
@@ -132,40 +81,38 @@ export function fetchMovieCredits(movieId) {
       actionTypes.FETCH_MOVIE_CREDITS_SUCCESS,
       actionTypes.FETCH_MOVIE_CREDITS_ERROR
     ],
-    shouldCallAPI: state => !selectMovieCredits(state, movieId),
+    selectCachedData: state => selectMovieCredits(state, movieId),
     callAPI: () => get(`/movie/${movieId}/credits`),
     schema: schemas.movieCreditSchema,
     payload: { movieId }
   };
 }
 
-export function fetchPerson(personId, requiredFields = []) {
+export function fetchPerson(personId, requiredFields) {
   return {
     types: [
       actionTypes.FETCH_PERSON_REQUEST,
       actionTypes.FETCH_PERSON_SUCCESS,
       actionTypes.FETCH_PERSON_ERROR
     ],
-    shouldCallAPI: state => {
-      const person = selectPerson(state, personId);
-      return !person || !checkRequiredFields(person, requiredFields);
-    },
+    selectCachedData: state => selectPerson(state, personId),
+    requiredFields,
     callAPI: () => get(`/person/${personId}`),
     schema: schemas.personSchema,
     payload: { personId }
   };
 }
 
-export function fetchPersonMovieCredits(personId) {
+export function fetchPersonCredits(personId) {
   return {
     types: [
       actionTypes.FETCH_PERSON_MOVIE_CREDITS_REQUEST,
       actionTypes.FETCH_PERSON_MOVIE_CREDITS_SUCCESS,
       actionTypes.FETCH_PERSON_MOVIE_CREDITS_ERROR
     ],
-    shouldCallAPI: state => !selectCreditsOfPerson(state, personId),
+    selectCachedData: state => selectPersonCredits(state, personId),
     callAPI: () => get(`/person/${personId}/movie_credits`),
-    schema: schemas.creditsOfPersonSchema
+    schema: schemas.personCreditSchema
   };
 }
 
@@ -176,7 +123,6 @@ export function fetchPopularPeople(pageId) {
       actionTypes.FETCH_POPULAR_PEOPLE_SUCCESS,
       actionTypes.FETCH_POPULAR_PEOPLE_ERROR
     ],
-    shouldCallAPI: state => !selectCreditsOfPerson(state, pageId),
     callAPI: () =>
       get("/person/popular", {
         page: pageId
@@ -193,7 +139,7 @@ export function fetchMovieVideos(movieId) {
       actionTypes.FETCH_MOVIE_VIDEOS_SUCCESS,
       actionTypes.FETCH_MOVIE_VIDEOS_ERROR
     ],
-    shouldCallAPI: state => !selectMovieVideos(state, movieId),
+    selectCachedData: state => selectMovieVideos(state, movieId),
     callAPI: () => get(`/movie/${movieId}/videos`),
     schema: schemas.movieVideosSchema,
     payload: { movieId }
