@@ -109,18 +109,18 @@ export const castCreditSchema = new schema.Entity(
   }
 );
 
-export const creditsOfPersonSchema = new schema.Entity(
-  "creditsOfPeople",
+export const personCreditSchema = new schema.Entity(
+  "personCredits",
   {
     castings: [castCreditSchema]
   },
   {
     processStrategy: value => {
       // Omittig crew values
-      const { crew, cast, ...rest } = value;
+      const { id, cast } = value;
 
       return {
-        ...rest,
+        personId: id,
         castings: cast
       };
     }
@@ -135,12 +135,11 @@ export const movieCreditSchema = new schema.Entity(
   {
     processStrategy: (value, parent, key) => {
       // Omittig crew values and formatting cast fields
-      const { crew, cast, ...rest } = value;
+      const { id, cast } = value;
 
       const formattedCast = cast.map(
         ({ id, name, gender, profile_path, ...rest }) => ({
           ...rest,
-          movie: parent.id,
           person: {
             id,
             name,
@@ -151,7 +150,7 @@ export const movieCreditSchema = new schema.Entity(
       );
 
       return {
-        ...rest,
+        movieId: id,
         cast: formattedCast
       };
     }
@@ -186,8 +185,8 @@ export const movieRecommendationSchema = new schema.Entity(
     idAttribute: value => value.movieId,
     processStrategy: value => {
       // Omitting unnecessary fields
-      const { results } = value;
-      return { movies: results };
+      const { movieId, results } = value;
+      return { movieId, movies: results };
     }
   }
 );

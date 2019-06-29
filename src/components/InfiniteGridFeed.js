@@ -1,13 +1,15 @@
 import React from "react";
 import InfiniteScrollWrapper from "components/InfiniteScrollWrapper";
-import ColGridList from "components/ColGridList";
+import FlexGridList from "./FlexGridList";
 
 function InfiniteGridFeed({
   items,
   loading,
   hasNextPage,
   onLoadMore,
-  renderItem
+  renderItem,
+  minItemWidth = 250,
+  spacing = 1
 }) {
   return (
     <InfiniteScrollWrapper
@@ -15,15 +17,11 @@ function InfiniteGridFeed({
       loading={loading}
       onLoadMore={onLoadMore}
     >
-      <ColGridList
+      <FlexGridList
         items={items}
         loading={loading}
-        colCount={{
-          xs: 2,
-          sm: 3,
-          md: 4,
-          lg: 5
-        }}
+        minItemWidth={minItemWidth}
+        spacing={spacing}
         renderItem={renderItem}
       />
     </InfiniteScrollWrapper>

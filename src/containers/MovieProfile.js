@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Typography, Box } from "@material-ui/core";
 import Recommendations from "containers/Recommendations";
 import MovieIntroduction from "containers/MovieIntroduction";
-import MovieCredits from "containers/MovieCredits";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovie } from "actions";
 import MovieVideoList from "containers/MovieVideoList";
@@ -12,6 +11,7 @@ import {
   selectIsFetchingMovieCredits,
   selectIsFetchingMovieVideos
 } from "reducers";
+import MovieCastGridList from "./MovieCastGridList";
 
 function MovieProfile({
   match: {
@@ -45,7 +45,7 @@ function MovieProfile({
               <Typography variant="h6" gutterBottom>
                 Cast
               </Typography>
-              <MovieCredits movieId={movieId} />
+              <MovieCastGridList movieId={movieId} />
             </LoadingIndicator>
             <LoadingIndicator loading={isFetchingVideos}>
               <Typography variant="h6" gutterBottom>

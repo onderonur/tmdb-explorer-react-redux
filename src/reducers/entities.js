@@ -7,7 +7,7 @@ const initialState = {
   movieCredits: {},
   castCredits: {},
   people: {},
-  creditsOfPeople: {},
+  personCredits: {},
   videos: {},
   movieVideos: {},
   movieRecommendations: {}
@@ -37,7 +37,6 @@ export const selectGenre = (state, id) => state.genres[id];
 export const selectMovieCredits = (state, movieId) =>
   state.movieCredits[movieId];
 
-// TODO: Genel olarak "cast" ve "creditCast" vs kullanımlarına bak. Basitleştir.
 export const selectCastCredits = (state, castCreditId) =>
   state.castCredits[castCreditId];
 
@@ -46,8 +45,8 @@ export const selectPerson = (state, id) => state.people[id];
 export const selectPeople = (state, personIds) =>
   personIds.map(personId => selectPerson(state, personId));
 
-export const selectCreditsOfPerson = (state, personId) =>
-  state.creditsOfPeople[personId];
+export const selectPersonCredits = (state, personId) =>
+  state.personCredits[personId];
 
 export const selectVideo = (state, videoId) => state.videos[videoId];
 

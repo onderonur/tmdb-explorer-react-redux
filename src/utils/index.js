@@ -24,7 +24,7 @@ export function getMovieReleaseYear(movie) {
 
 export function getImageUrl(path) {
   if (!path) {
-    // TODO: Fallback bir image döndürülebilir.
+    // TODO: Maybe return some placeholder image? 🤔
     return null;
   }
 

@@ -4,7 +4,7 @@ import LoadingIndicator from "components/LoadingIndicator";
 
 function FlexGridList({
   items = [],
-  loading,
+  loading = false,
   renderItem,
   spacing = 1,
   minItemWidth = 250
