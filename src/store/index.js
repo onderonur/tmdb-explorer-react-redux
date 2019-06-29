@@ -10,8 +10,9 @@ function configureStore(preloadedState) {
   const middlewareEnhancer = applyMiddleware(...middlewares);
 
   const enhancers = [middlewareEnhancer];
-  // Without devTool;
-  // "compose" is from redux
+
+  // Without devTools:
+  // ("compose" is from redux)
   // const composedEnhancers = compose(...enhancers);
   const composedEnhancers = composeWithDevTools(...enhancers);
 
