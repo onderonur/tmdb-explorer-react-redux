@@ -10,7 +10,9 @@ function verifyCachedData(cachedData, requiredFields = []) {
 }
 
 // https://redux.js.org/recipes/reducing-boilerplate
-const callAPIMiddleware = ({ dispatch, getState }) => next => action => {
+const callAPIMiddleware = store => next => action => {
+  const { dispatch, getState } = store;
+
   const {
     types,
     callAPI,

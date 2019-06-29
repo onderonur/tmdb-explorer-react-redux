@@ -5,7 +5,7 @@ export const BASE_IMG_API = "//image.tmdb.org/t/p";
 
 const api_key = process.env.REACT_APP_API_KEY;
 
-function createQueryParams(params = {}) {
+function addApiKeyToQueryParams(params = {}) {
   return {
     ...params,
     api_key
@@ -14,7 +14,7 @@ function createQueryParams(params = {}) {
 
 export function get(endpoint, params) {
   return axios.get(`${BASE_API_URL}${endpoint}`, {
-    params: createQueryParams(params)
+    params: addApiKeyToQueryParams(params)
   });
 }
 

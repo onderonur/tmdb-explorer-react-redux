@@ -71,9 +71,14 @@ function AutoSearch({
 }) {
   const classes = useStyles();
   const [inputValue, setInputValue] = useState("");
-  const prevDebouncedInputValue = useRef();
 
   const debouncedInputValue = useDebounce(inputValue, debounceMs);
+  const prevDebouncedInputValue = useRef();
+
+  function handleInputChange(event) {
+    const value = event.target.value;
+    setInputValue(value);
+  }
 
   useEffect(() => {
     if (debouncedInputValue !== prevDebouncedInputValue.current) {
@@ -87,11 +92,6 @@ function AutoSearch({
   useEffect(() => {
     prevDebouncedInputValue.current = debouncedInputValue;
   }, [debouncedInputValue]);
-
-  function handleInputChange(event) {
-    const value = event.target.value;
-    setInputValue(value);
-  }
 
   return (
     <Downshift
