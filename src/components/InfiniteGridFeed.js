@@ -8,7 +8,7 @@ function InfiniteGridFeed({
   hasNextPage,
   onLoadMore,
   renderItem,
-  itemWrapWidth,
+  minItemWidth,
   spacing,
   keyExtractor
 }) {
@@ -22,7 +22,7 @@ function InfiniteGridFeed({
         keyExtractor={keyExtractor}
         items={items}
         loading={loading || hasNextPage}
-        itemWrapWidth={itemWrapWidth}
+        minItemWidth={minItemWidth}
         spacing={spacing}
         renderItem={renderItem}
       />
