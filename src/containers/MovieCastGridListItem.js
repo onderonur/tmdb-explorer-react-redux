@@ -7,7 +7,7 @@ import {
   ListItemText,
   makeStyles
 } from "@material-ui/core";
-import RouterLink from "components/RouteLink";
+import RouterLink from "components/RouterLink";
 import { getImageUrl } from "utils";
 import { selectCastCredits, selectPerson } from "reducers";
 

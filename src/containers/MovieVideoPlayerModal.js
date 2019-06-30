@@ -19,7 +19,7 @@ function MovieVideoPlayerModal({ movieId, location, history }) {
   const theme = useTheme();
   const movieVideoIds =
     useSelector(state => selectMovieVideos(state, movieId)) || [];
-  const { watch } = useQueryString({ location });
+  const { watch } = useQueryString(location);
   const videoToWatch = useSelector(state => selectVideo(state, watch));
 
   const videoCount = movieVideoIds.length;
@@ -34,7 +34,7 @@ function MovieVideoPlayerModal({ movieId, location, history }) {
     : null;
 
   function handleClose() {
-    history.push(`${location.pathname}`);
+    history.push({ pathname: location.pathname, state: { keepScroll: true } });
   }
 
   return (
@@ -64,7 +64,11 @@ function MovieVideoPlayerModal({ movieId, location, history }) {
             size="small"
             disabled={isLastVideo}
             onClick={() =>
-              history.push(`${location.pathname}?watch=${nextVideoIdToWatch}`)
+              history.push({
+                pathname: location.pathname,
+                search: `?watch=${nextVideoIdToWatch}`,
+                state: { keepScroll: true }
+              })
             }
           >
             Next
@@ -80,7 +84,11 @@ function MovieVideoPlayerModal({ movieId, location, history }) {
             size="small"
             disabled={isFirstVideo}
             onClick={() =>
-              history.push(`${location.pathname}?watch=${previousVideoToWatch}`)
+              history.push({
+                pathname: location.pathname,
+                search: `?watch=${previousVideoToWatch}`,
+                state: { keepScroll: true }
+              })
             }
           >
             {theme.direction === "rtl" ? (

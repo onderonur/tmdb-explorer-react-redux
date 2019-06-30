@@ -1,6 +1,6 @@
 import React from "react";
 import { ListItemIcon, ListItemText, MenuItem } from "@material-ui/core";
-import RouterLink from "components/RouteLink";
+import RouterLink from "components/RouterLink";
 import { withRouter } from "react-router-dom";
 
 function AppDrawerItem({ to, icon, title, location }) {
