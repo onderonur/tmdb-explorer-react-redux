@@ -1,6 +1,6 @@
 import React from "react";
 import InfiniteScrollWrapper from "components/InfiniteScrollWrapper";
-import FlexGridList from "./FlexGridList";
+import GridList from "./GridList";
 
 function InfiniteGridFeed({
   items,
@@ -18,7 +18,7 @@ function InfiniteGridFeed({
       loading={loading}
       onLoadMore={onLoadMore}
     >
-      <FlexGridList
+      <GridList
         keyExtractor={keyExtractor}
         items={items}
         loading={loading || hasNextPage}

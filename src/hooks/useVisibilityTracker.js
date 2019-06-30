@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 
 // For more info: https://developers.google.com/web/updates/2016/04/intersectionobserver
 function useVisibilityTracker({
@@ -16,43 +16,42 @@ function useVisibilityTracker({
   // ratio of the observed element crosses a threshold in the list.
   threshold = [0]
 } = {}) {
-  const [isVisible, setIsVisible] = useState();
   const observerRef = useRef();
-  const nodeRef = useRef();
+  const [isVisible, setIsVisible] = useState();
 
-  // TODO: MoviesApp'teki resizeobserver'ı düzelt. Dep'leri vs
-  const trackedNodeRef = useCallback(
+  function clearPreviousObserver() {
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+      observerRef.current = null;
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      clearPreviousObserver();
+      setIsVisible(false);
+    };
+  }, []);
+
+  const refCallback = useCallback(
     node => {
-      if (observerRef.current && nodeRef.current) {
-        // Unobserving the previous node with previous observer
-        observerRef.current.unobserve(nodeRef.current);
-
-        observerRef.current = null;
-        nodeRef.current = null;
-      }
+      clearPreviousObserver();
 
       if (node) {
-        const observer = new IntersectionObserver(
+        observerRef.current = new IntersectionObserver(
           ([entry]) => {
-            if (entry.isIntersecting) {
-              setIsVisible(true);
-            } else {
-              setIsVisible(false);
-            }
+            setIsVisible(entry.isIntersecting);
           },
           { root, rootMargin, threshold }
         );
 
-        observer.observe(node);
-
-        observerRef.current = observer;
-        nodeRef.current = node;
+        observerRef.current.observe(node);
       }
     },
     [root, rootMargin, threshold]
   );
 
-  return [trackedNodeRef, { isVisible }];
+  return [refCallback, { isVisible }];
 }
 
 export default useVisibilityTracker;
