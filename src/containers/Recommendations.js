@@ -25,7 +25,7 @@ function Recommendations({ movieId }) {
     <FlexGridList
       items={recommendationIds}
       loading={isFetching}
-      minItemWidth={250}
+      itemWrapWidth={250}
       spacing={1}
       renderItem={movieId => <MovieCard movieId={movieId} />}
     />

@@ -17,7 +17,7 @@ function MovieCastGridList({ movieId }) {
   return (
     <FlexGridList
       items={castCreditIds}
-      minItemWidth={230}
+      itemWrapWidth={230}
       renderItem={castCreditId => (
         <MovieCastGridListItem key={castCreditId} castCreditId={castCreditId} />
       )}

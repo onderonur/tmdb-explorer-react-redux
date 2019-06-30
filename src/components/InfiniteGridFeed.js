@@ -8,7 +8,7 @@ function InfiniteGridFeed({
   hasNextPage,
   onLoadMore,
   renderItem,
-  minItemWidth = 250,
+  itemWrapWidth = 250,
   spacing = 1
 }) {
   return (
@@ -20,7 +20,7 @@ function InfiniteGridFeed({
       <FlexGridList
         items={items}
         loading={loading}
-        minItemWidth={minItemWidth}
+        itemWrapWidth={itemWrapWidth}
         spacing={spacing}
         renderItem={renderItem}
       />
