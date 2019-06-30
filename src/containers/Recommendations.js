@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRecommendations } from "actions";
 import MovieCard from "./MovieCard";
-import FlexGridList from "components/FlexGridList";
+import GridList from "components/GridList";
 import {
   selectMovieRecommendations,
   selectIsFetchingMovieRecommendations
@@ -22,7 +22,7 @@ function Recommendations({ movieId }) {
   }, [movieId, dispatch]);
 
   return (
-    <FlexGridList
+    <GridList
       items={recommendationIds}
       loading={isFetching}
       keyExtractor={movieId => movieId}

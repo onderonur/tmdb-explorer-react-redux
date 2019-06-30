@@ -1,6 +1,7 @@
 import React from "react";
 import LoadingIndicator from "components/LoadingIndicator";
 import { makeStyles } from "@material-ui/styles";
+import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   flexList: {
@@ -13,7 +14,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function FlexGridList({
+function GridList({
   items = [],
   loading,
   renderItem,
@@ -22,15 +23,6 @@ function FlexGridList({
   keyExtractor
 }) {
   const classes = useStyles({ minItemWidth, spacing });
-  // const [resizeObserverRef, { width }] = useResizeObserver();
-  // const [itemsPerRow, setItemsPerRow] = useState(1);
-
-  // useEffect(() => {
-  //   if (width) {
-  //     const itemsPerRow = Math.floor(width / minItemWidth) || 1;
-  //     setItemsPerRow(itemsPerRow);
-  //   }
-  // }, [width, minItemWidth]);
 
   function extractItemKey(item, index) {
     return typeof keyExtractor === "string"
@@ -42,14 +34,24 @@ function FlexGridList({
 
   return (
     <LoadingIndicator loading={isInitialFetch}>
-      <ul className={classes.flexList}>
+      <Grid container spacing={2}>
         {items.map((item, index) => (
-          <li key={extractItemKey(item, index)}>{renderItem(item, index)}</li>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+            xl={2}
+            key={extractItemKey(item, index)}
+          >
+            {renderItem(item, index)}
+          </Grid>
         ))}
-      </ul>
+      </Grid>
       <LoadingIndicator loading={loading} />
     </LoadingIndicator>
   );
 }
 
-export default FlexGridList;
+export default GridList;

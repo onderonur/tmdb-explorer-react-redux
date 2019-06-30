@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectPersonCredits, selectIsFetchingPersonCredits } from "reducers";
 import { fetchPersonCredits } from "actions";
 import PersonCastingGridListItem from "./PersonCastingGridListItem";
-import FlexGridList from "components/FlexGridList";
+import GridList from "components/GridList";
 
 function PersonCastingGridList({ personId }) {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ function PersonCastingGridList({ personId }) {
   }, [personId, dispatch]);
 
   return (
-    <FlexGridList
+    <GridList
       items={castingIds}
       loading={isFetching}
       spacing={2}

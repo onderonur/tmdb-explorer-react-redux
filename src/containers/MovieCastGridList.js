@@ -3,7 +3,7 @@ import { fetchMovieCredits } from "actions";
 import { useDispatch, useSelector } from "react-redux";
 import { selectMovieCredits, selectIsFetchingMovieCredits } from "reducers";
 import MovieCastGridListItem from "./MovieCastGridListItem";
-import FlexGridList from "components/FlexGridList";
+import GridList from "components/GridList";
 
 function MovieCastGridList({ movieId }) {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ function MovieCastGridList({ movieId }) {
   }, [movieId, dispatch]);
 
   return (
-    <FlexGridList
+    <GridList
       items={castCreditIds}
       loading={isFetchingCredits}
       minItemWidth={230}
