@@ -1,5 +1,7 @@
 import axios from "axios";
 import placeholderPng from "assets/placeholder.png";
+import produce from "immer";
+import merge from "lodash/merge";
 
 export const BASE_API_URL = "//api.themoviedb.org/3";
 export const BASE_IMG_API = "//image.tmdb.org/t/p";
@@ -37,10 +39,10 @@ export function getImdbProfileUrl(imdbId) {
 
 export function addStateToLocation(to, state = {}) {
   let toObject;
+
   if (typeof to === "string") {
     const [pathname, search] = to.split("?");
     toObject = {
-      ...to,
       pathname,
       search: search ? `?${search}` : ""
     };
@@ -48,11 +50,7 @@ export function addStateToLocation(to, state = {}) {
     toObject = to;
   }
 
-  return {
-    ...toObject,
-    state: {
-      ...toObject.state,
-      ...state
-    }
-  };
+  return produce(toObject, draft => {
+    draft.state = merge(draft.state, state);
+  });
 }
