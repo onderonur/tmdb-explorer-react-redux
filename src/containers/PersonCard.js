@@ -25,7 +25,7 @@ function PersonCard({ personId }) {
     <RouterLink className={classes.link} to={`/person/${personId}`}>
       <BaseCard hasActionArea>
         <BaseImage
-          // src={getImageUrl(person.profile_path)}
+          src={getImageUrl(person.profile_path)}
           alt={person.name}
           aspectRatio="2:3"
         />
