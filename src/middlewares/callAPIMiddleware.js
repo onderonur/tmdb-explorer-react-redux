@@ -19,7 +19,6 @@ const callAPIMiddleware = store => next => action => {
     isFetching = () => false,
     selectCachedData = () => undefined,
     requiredFields = [],
-    shouldCallAPI = () => true,
     payload = {},
     // Added this callback to change API response data that will be normalized.
     // But it may be used for other use cases too.
@@ -48,10 +47,6 @@ const callAPIMiddleware = store => next => action => {
     throw new Error("Expected requiredFields to be an array.");
   }
 
-  if (typeof shouldCallAPI !== "function") {
-    throw new Error("Expected shouldCallAPI to be a function.");
-  }
-
   if (processResponse && typeof processResponse !== "function") {
     throw new Error("Expected processResponse to be a function.");
   }
@@ -59,10 +54,6 @@ const callAPIMiddleware = store => next => action => {
   const currentState = getState();
 
   if (isFetching(currentState)) {
-    return;
-  }
-
-  if (!shouldCallAPI(currentState)) {
     return;
   }
 
