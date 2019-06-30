@@ -42,7 +42,7 @@ function FlexGridList({
 
   return (
     <div ref={resizeObserverRef}>
-      <LoadingIndicator loading={isInitialFetch || !width}>
+      <LoadingIndicator loading={isInitialFetch}>
         <Box
           display="flex"
           flexWrap="wrap"
