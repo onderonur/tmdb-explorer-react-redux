@@ -21,7 +21,7 @@ function InfiniteGridFeed({
       <FlexGridList
         keyExtractor={keyExtractor}
         items={items}
-        loading={loading}
+        loading={loading || hasNextPage}
         itemWrapWidth={itemWrapWidth}
         spacing={spacing}
         renderItem={renderItem}
