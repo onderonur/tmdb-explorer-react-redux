@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box } from "@material-ui/core";
 import LoadingIndicator from "components/LoadingIndicator";
 import { makeStyles } from "@material-ui/styles";
-import useResizeObserver from "hooks/useResizeObserver";
 
 const useStyles = makeStyles(theme => ({
   flexList: {
     listStyle: "none",
-    padding: 0
+    padding: 0,
+    display: "grid",
+    gridGap: theme.spacing(1),
+    gridTemplateColumns: ({ itemWrapWidth }) =>
+      `repeat(auto-fill, minmax(${itemWrapWidth}px, 1fr))`
   }
 }));
 
@@ -19,16 +22,16 @@ function FlexGridList({
   itemWrapWidth = 250,
   keyExtractor
 }) {
-  const classes = useStyles();
-  const [resizeObserverRef, { width }] = useResizeObserver();
-  const [itemsPerRow, setItemsPerRow] = useState(1);
+  const classes = useStyles({ itemWrapWidth });
+  // const [resizeObserverRef, { width }] = useResizeObserver();
+  // const [itemsPerRow, setItemsPerRow] = useState(1);
 
-  useEffect(() => {
-    if (width) {
-      const itemsPerRow = Math.floor(width / itemWrapWidth) || 1;
-      setItemsPerRow(itemsPerRow);
-    }
-  }, [width, itemWrapWidth]);
+  // useEffect(() => {
+  //   if (width) {
+  //     const itemsPerRow = Math.floor(width / itemWrapWidth) || 1;
+  //     setItemsPerRow(itemsPerRow);
+  //   }
+  // }, [width, itemWrapWidth]);
 
   function extractItemKey(item, index) {
     return typeof keyExtractor === "string"
@@ -36,35 +39,35 @@ function FlexGridList({
       : keyExtractor(item, index);
   }
 
-  const flexBasis = `${100 / itemsPerRow}%`;
+  // const flexBasis = `${100 / itemsPerRow}%`;
   const halfOfSpacing = spacing / 2;
   const isInitialFetch = loading && !items;
 
   return (
-    <div ref={resizeObserverRef}>
-      <LoadingIndicator loading={isInitialFetch}>
-        <Box
-          display="flex"
-          flexWrap="wrap"
-          margin={-halfOfSpacing}
-          component="ul"
-          className={classes.flexList}
-        >
-          {items.map((item, index) => (
-            <Box
-              key={extractItemKey(item, index)}
-              flexBasis={flexBasis}
-              minWidth={flexBasis}
-              padding={halfOfSpacing}
-              component="li"
-            >
-              {renderItem(item, index)}
-            </Box>
-          ))}
-        </Box>
-        <LoadingIndicator loading={loading} />
-      </LoadingIndicator>
-    </div>
+    <LoadingIndicator loading={isInitialFetch}>
+      <Box
+        // display="flex"
+        // flexWrap="wrap"
+        // justifyContent="space-around"
+        margin={-halfOfSpacing}
+        component="ul"
+        className={classes.flexList}
+      >
+        {items.map((item, index) => (
+          <Box
+            key={extractItemKey(item, index)}
+            // flexBasis={itemWrapWidth}
+            // minWidth={itemWrapWidth}
+            // flex={1}
+            padding={halfOfSpacing}
+            component="li"
+          >
+            {renderItem(item, index)}
+          </Box>
+        ))}
+      </Box>
+      <LoadingIndicator loading={loading} />
+    </LoadingIndicator>
   );
 }
 
