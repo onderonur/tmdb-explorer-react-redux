@@ -41,29 +41,30 @@ function FlexGridList({
   const isInitialFetch = loading && !items;
 
   return (
-    <LoadingIndicator loading={isInitialFetch}>
-      <Box
-        ref={resizeObserverRef}
-        display="flex"
-        flexWrap="wrap"
-        margin={-halfOfSpacing}
-        component="ul"
-        className={classes.flexList}
-      >
-        {items.map((item, index) => (
-          <Box
-            key={extractItemKey(item, index)}
-            flexBasis={flexBasis}
-            minWidth={flexBasis}
-            padding={halfOfSpacing}
-            component="li"
-          >
-            {renderItem(item, index)}
-          </Box>
-        ))}
-      </Box>
-      <LoadingIndicator loading={loading} />
-    </LoadingIndicator>
+    <div ref={resizeObserverRef}>
+      <LoadingIndicator loading={isInitialFetch || !width}>
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          margin={-halfOfSpacing}
+          component="ul"
+          className={classes.flexList}
+        >
+          {items.map((item, index) => (
+            <Box
+              key={extractItemKey(item, index)}
+              flexBasis={flexBasis}
+              minWidth={flexBasis}
+              padding={halfOfSpacing}
+              component="li"
+            >
+              {renderItem(item, index)}
+            </Box>
+          ))}
+        </Box>
+        <LoadingIndicator loading={loading} />
+      </LoadingIndicator>
+    </div>
   );
 }
 
