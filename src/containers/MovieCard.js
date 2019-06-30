@@ -25,7 +25,7 @@ function MovieCard({ movieId, subheader }) {
     <RouterLink className={classes.link} to={`/movie/${movieId}`}>
       <BaseCard hasActionArea>
         <BaseImage
-          // src={getImageUrl(movie.poster_path)}
+          src={getImageUrl(movie.poster_path)}
           alt={movie.title}
           aspectRatio="2:3"
         />
