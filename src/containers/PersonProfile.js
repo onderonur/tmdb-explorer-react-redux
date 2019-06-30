@@ -3,10 +3,12 @@ import { Typography, Card, CardContent } from "@material-ui/core";
 import PersonIntroduction from "containers/PersonIntroduction";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPerson } from "actions";
-import PersonInfoSection from "containers/PersonInfoSection";
+import PersonInfo from "containers/PersonInfo";
 import { selectIsFetchingPerson } from "reducers";
 import PersonCastingGridList from "./PersonCastingGridList";
 import Profile from "components/Profile";
+
+const REQUIRED_FIELDS = ["biography", "imdb_id"];
 
 function PersonProfile({
   match: {
@@ -19,15 +21,14 @@ function PersonProfile({
   );
 
   useEffect(() => {
-    const requiredFields = ["biography", "imdb_id"];
-    dispatch(fetchPerson(personId, requiredFields));
+    dispatch(fetchPerson(personId, REQUIRED_FIELDS));
   }, [personId, dispatch]);
 
   return (
     <Profile
       loading={isFetching}
       introduction={<PersonIntroduction personId={personId} />}
-      mainSection={
+      main={
         <>
           <Typography variant="h6" gutterBottom>
             Castings
@@ -35,13 +36,13 @@ function PersonProfile({
           <PersonCastingGridList personId={personId} />
         </>
       }
-      sideSection={
+      side={
         <Card>
           <CardContent>
             <Typography variant="h6" gutterBottom>
               Personal Info
             </Typography>
-            <PersonInfoSection personId={personId} />
+            <PersonInfo personId={personId} />
           </CardContent>
         </Card>
       }
