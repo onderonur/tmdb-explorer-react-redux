@@ -3,7 +3,7 @@ import { CardHeader } from "@material-ui/core";
 import BaseImage from "components/BaseImage";
 import BaseCard from "components/BaseCard";
 import { useSelector } from "react-redux";
-import RouterLink from "components/RouteLink";
+import RouterLink from "components/RouterLink";
 import { makeStyles } from "@material-ui/styles";
 import { getImageUrl } from "utils";
 import { selectMovie } from "reducers";

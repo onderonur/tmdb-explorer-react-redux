@@ -8,7 +8,7 @@ import {
   Box,
   IconButton
 } from "@material-ui/core";
-import RouterLink from "./RouteLink";
+import RouterLink from "./RouterLink";
 import MultiAutoSearch from "containers/MultiAutoSearch";
 import DrawerToggleButton from "containers/DrawerToggleButton";
 import useDetectMobile from "hooks/useDetectMobile";
