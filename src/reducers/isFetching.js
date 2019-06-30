@@ -49,6 +49,14 @@ const isFetching = combineReducers({
       actionTypes.FETCH_MOVIE_RECOMMENDATIONS_ERROR
     ])
   ),
+  personCreditsByPersonId: createByKey(
+    action => action.personId,
+    createIsFetching([
+      actionTypes.FETCH_PERSON_MOVIE_CREDITS_REQUEST,
+      actionTypes.FETCH_PERSON_MOVIE_CREDITS_SUCCESS,
+      actionTypes.FETCH_PERSON_MOVIE_CREDITS_ERROR
+    ])
+  ),
   popularMovies: createIsFetching([
     actionTypes.FETCH_POPULAR_MOVIES_REQUEST,
     actionTypes.FETCH_POPULAR_MOVIES_SUCCESS,
@@ -99,6 +107,9 @@ export const selectIsFetchingMovieVideos = (state, movieId) =>
 
 export const selectIsFetchingMovieRecommendations = (state, movieId) =>
   state.movieRecommendationsByMovieId[movieId];
+
+export const selectIsFetchingPersonCredits = (state, personId) =>
+  state.personCreditsByPersonId[personId];
 
 export const selectIsFetchingMovieSearchResults = (state, query) =>
   state.movieSearchResultsByQuery[query];

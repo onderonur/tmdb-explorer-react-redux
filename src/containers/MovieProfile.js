@@ -1,17 +1,13 @@
 import React, { useEffect } from "react";
-import { Typography, Box } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import Recommendations from "containers/Recommendations";
 import MovieIntroduction from "containers/MovieIntroduction";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovie } from "actions";
 import MovieVideoList from "containers/MovieVideoList";
-import LoadingIndicator from "components/LoadingIndicator";
-import {
-  selectIsFetchingMovie,
-  selectIsFetchingMovieCredits,
-  selectIsFetchingMovieVideos
-} from "reducers";
+import { selectIsFetchingMovie } from "reducers";
 import MovieCastGridList from "./MovieCastGridList";
+import Profile from "components/Profile";
 
 function MovieProfile({
   match: {
@@ -19,50 +15,40 @@ function MovieProfile({
   }
 }) {
   const dispatch = useDispatch();
-  const isFetchingMovie = useSelector(state =>
+  const isFetching = useSelector(state =>
     selectIsFetchingMovie(state, movieId)
-  );
-  const isFetchingCredits = useSelector(state =>
-    selectIsFetchingMovieCredits(state, movieId)
-  );
-  const isFetchingVideos = useSelector(state =>
-    selectIsFetchingMovieVideos(state, movieId)
   );
 
   useEffect(() => {
-    dispatch(fetchMovie(movieId, ["tagline"]));
+    const requiredFields = ["tagline"];
+    dispatch(fetchMovie(movieId, requiredFields));
   }, [movieId, dispatch]);
 
   return (
-    <>
-      <LoadingIndicator loading={isFetchingMovie}>
-        <MovieIntroduction movieId={movieId} />
-      </LoadingIndicator>
-      <Box my={1}>
-        <Box display="flex" flexWrap="wrap">
-          <Box flex={10} flexBasis={500} marginRight={1}>
-            <LoadingIndicator loading={isFetchingCredits}>
-              <Typography variant="h6" gutterBottom>
-                Cast
-              </Typography>
-              <MovieCastGridList movieId={movieId} />
-            </LoadingIndicator>
-            <LoadingIndicator loading={isFetchingVideos}>
-              <Typography variant="h6" gutterBottom>
-                Videos
-              </Typography>
-              <MovieVideoList movieId={movieId} />
-            </LoadingIndicator>
-          </Box>
-          <Box flex={1} flexBasis={180}>
-            <Typography variant="h6" gutterBottom>
-              Recommendations
-            </Typography>
-            <Recommendations movieId={movieId} />
-          </Box>
-        </Box>
-      </Box>
-    </>
+    <Profile
+      loading={isFetching}
+      introduction={<MovieIntroduction movieId={movieId} />}
+      mainSection={
+        <>
+          <Typography variant="h6" gutterBottom>
+            Cast
+          </Typography>
+          <MovieCastGridList movieId={movieId} />
+          <Typography variant="h6" gutterBottom>
+            Videos
+          </Typography>
+          <MovieVideoList movieId={movieId} />
+        </>
+      }
+      sideSection={
+        <>
+          <Typography variant="h6" gutterBottom>
+            Recommendations
+          </Typography>
+          <Recommendations movieId={movieId} />
+        </>
+      }
+    />
   );
 }
 

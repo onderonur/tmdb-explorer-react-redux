@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectPersonCredits } from "reducers";
+import { selectPersonCredits, selectIsFetchingPersonCredits } from "reducers";
 import { fetchPersonCredits } from "actions";
 import PersonCastingGridListItem from "./PersonCastingGridListItem";
 import FlexGridList from "components/FlexGridList";
@@ -11,6 +11,9 @@ function PersonCastingGridList({ personId }) {
     selectPersonCredits(state, personId)
   );
   const castingIds = personCredits ? personCredits.castings : [];
+  const isFetching = useSelector(state =>
+    selectIsFetchingPersonCredits(state, personId)
+  );
 
   useEffect(() => {
     dispatch(fetchPersonCredits(personId));
@@ -19,7 +22,9 @@ function PersonCastingGridList({ personId }) {
   return (
     <FlexGridList
       items={castingIds}
+      loading={isFetching}
       spacing={2}
+      keyExtractor={castingId => castingId}
       renderItem={castingId => (
         <PersonCastingGridListItem key={castingId} castCreditId={castingId} />
       )}

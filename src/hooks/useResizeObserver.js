@@ -2,9 +2,9 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import ResizeObserver from "resize-observer-polyfill";
 import useThrottle from "./useThrottle";
 
-function useResizeObserver({ wait } = {}) {
+function useResizeObserver({ wait = 200 } = {}) {
   const observerRef = useRef();
-  const [rect, setRect] = useState({});
+  const [rect, setRect] = useState();
   const throttledRect = useThrottle(rect, wait);
 
   function clearPreviousObserver() {
@@ -17,7 +17,7 @@ function useResizeObserver({ wait } = {}) {
   useEffect(() => {
     return () => {
       clearPreviousObserver();
-      setRect(false);
+      setRect({});
     };
   }, []);
 
@@ -33,7 +33,12 @@ function useResizeObserver({ wait } = {}) {
     }
   }, []);
 
-  return [refCallback, throttledRect];
+  // If we directly return "throttledRect", when the component mounts it initializes as undefined.
+  // But "rect" is actually has values. This is due to "wait"ing of throttle.
+  // This may cause some flickering on screen etc.
+  // To return the initial "rect" value, we check if "rect" is initialized and "throttledRect" is not yet.
+  // In this case we return the original "rect". Otherwise, we return the "throttledRect".
+  return [refCallback, rect && !throttledRect ? rect : throttledRect || {}];
 }
 
 export default useResizeObserver;

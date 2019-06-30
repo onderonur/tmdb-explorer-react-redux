@@ -26,7 +26,7 @@ function Recommendations({ movieId }) {
       items={recommendationIds}
       loading={isFetching}
       itemWrapWidth={250}
-      spacing={1}
+      keyExtractor={movieId => movieId}
       renderItem={movieId => <MovieCard movieId={movieId} />}
     />
   );

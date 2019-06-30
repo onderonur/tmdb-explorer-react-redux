@@ -112,7 +112,8 @@ export function fetchPersonCredits(personId) {
     ],
     selectCachedData: state => selectPersonCredits(state, personId),
     callAPI: () => get(`/person/${personId}/movie_credits`),
-    schema: schemas.personCreditSchema
+    schema: schemas.personCreditSchema,
+    payload: { personId }
   };
 }
 

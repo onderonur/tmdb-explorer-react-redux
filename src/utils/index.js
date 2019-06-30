@@ -30,3 +30,7 @@ export function getImageUrl(path) {
 
   return `${BASE_IMG_API}/w500${path}`;
 }
+
+export function getImdbProfileUrl(imdbId) {
+  return `https://www.imdb.com/title/${imdbId}`;
+}

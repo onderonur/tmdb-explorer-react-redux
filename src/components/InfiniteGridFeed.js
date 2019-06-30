@@ -8,8 +8,9 @@ function InfiniteGridFeed({
   hasNextPage,
   onLoadMore,
   renderItem,
-  itemWrapWidth = 250,
-  spacing = 1
+  itemWrapWidth,
+  spacing,
+  keyExtractor
 }) {
   return (
     <InfiniteScrollWrapper
@@ -18,6 +19,7 @@ function InfiniteGridFeed({
       onLoadMore={onLoadMore}
     >
       <FlexGridList
+        keyExtractor={keyExtractor}
         items={items}
         loading={loading}
         itemWrapWidth={itemWrapWidth}
