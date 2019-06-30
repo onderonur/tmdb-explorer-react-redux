@@ -28,15 +28,7 @@ function PersonProfile({
     <Profile
       loading={isFetching}
       introduction={<PersonIntroduction personId={personId} />}
-      main={
-        <>
-          <Typography variant="h6" gutterBottom>
-            Castings
-          </Typography>
-          <PersonCastingGridList personId={personId} />
-        </>
-      }
-      side={
+      leftSide={
         <Card>
           <CardContent>
             <Typography variant="h6" gutterBottom>
@@ -45,6 +37,14 @@ function PersonProfile({
             <PersonInfo personId={personId} />
           </CardContent>
         </Card>
+      }
+      main={
+        <>
+          <Typography variant="h6" gutterBottom>
+            Castings
+          </Typography>
+          <PersonCastingGridList personId={personId} />
+        </>
       }
     />
   );

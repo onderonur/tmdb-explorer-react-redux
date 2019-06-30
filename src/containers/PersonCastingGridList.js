@@ -25,6 +25,7 @@ function PersonCastingGridList({ personId }) {
       loading={isFetching}
       spacing={2}
       keyExtractor={castingId => castingId}
+      itemWrapWidth={200}
       renderItem={castingId => (
         <PersonCastingGridListItem key={castingId} castCreditId={castingId} />
       )}

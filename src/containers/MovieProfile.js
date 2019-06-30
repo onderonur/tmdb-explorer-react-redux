@@ -41,7 +41,7 @@ function MovieProfile({
           <MovieVideoList movieId={movieId} />
         </>
       }
-      side={
+      rightSide={
         <>
           <Typography variant="h6" gutterBottom>
             Recommendations
