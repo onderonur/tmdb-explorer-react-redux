@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback } from "react";
 
 // For more info: https://developers.google.com/web/updates/2016/04/intersectionobserver
 function useVisibilityTracker({
@@ -16,42 +16,43 @@ function useVisibilityTracker({
   // ratio of the observed element crosses a threshold in the list.
   threshold = [0]
 } = {}) {
-  const observerRef = useRef();
   const [isVisible, setIsVisible] = useState();
+  const observerRef = useRef();
+  const nodeRef = useRef();
 
-  function clearPreviousObserver() {
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-      observerRef.current = null;
-    }
-  }
-
-  useEffect(() => {
-    return () => {
-      clearPreviousObserver();
-      setIsVisible(false);
-    };
-  }, []);
-
-  const refCallback = useCallback(
+  // TODO: MoviesApp'teki resizeobserver'ı düzelt. Dep'leri vs
+  const trackedNodeRef = useCallback(
     node => {
-      clearPreviousObserver();
+      if (observerRef.current && nodeRef.current) {
+        // Unobserving the previous node with previous observer
+        observerRef.current.unobserve(nodeRef.current);
+
+        observerRef.current = null;
+        nodeRef.current = null;
+      }
 
       if (node) {
-        observerRef.current = new IntersectionObserver(
+        const observer = new IntersectionObserver(
           ([entry]) => {
-            setIsVisible(entry.isIntersecting);
+            if (entry.isIntersecting) {
+              setIsVisible(true);
+            } else {
+              setIsVisible(false);
+            }
           },
           { root, rootMargin, threshold }
         );
 
-        observerRef.current.observe(node);
+        observer.observe(node);
+
+        observerRef.current = observer;
+        nodeRef.current = node;
       }
     },
     [root, rootMargin, threshold]
   );
 
-  return [refCallback, { isVisible }];
+  return [trackedNodeRef, { isVisible }];
 }
 
 export default useVisibilityTracker;
