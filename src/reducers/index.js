@@ -88,6 +88,9 @@ export const selectIsFetchingMovieRecommendations = (state, movieId) =>
     movieId
   );
 
+export const selectIsFetchingPersonCredits = (state, personId) =>
+  fromIsFetching.selectIsFetchingPersonCredits(state.isFetching, personId);
+
 export const selectIsFetchingMovieSearchResults = (state, query) =>
   fromIsFetching.selectIsFetchingMovieSearchResults(state.isFetching, query);
 

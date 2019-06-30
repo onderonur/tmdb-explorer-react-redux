@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { fetchMovieCredits } from "actions";
 import { useDispatch, useSelector } from "react-redux";
-import { selectMovieCredits } from "reducers";
+import { selectMovieCredits, selectIsFetchingMovieCredits } from "reducers";
 import MovieCastGridListItem from "./MovieCastGridListItem";
 import FlexGridList from "components/FlexGridList";
 
@@ -9,6 +9,9 @@ function MovieCastGridList({ movieId }) {
   const dispatch = useDispatch();
   const movieCredits = useSelector(state => selectMovieCredits(state, movieId));
   const castCreditIds = movieCredits ? movieCredits.cast : [];
+  const isFetchingCredits = useSelector(state =>
+    selectIsFetchingMovieCredits(state, movieId)
+  );
 
   useEffect(() => {
     dispatch(fetchMovieCredits(movieId));
@@ -17,9 +20,11 @@ function MovieCastGridList({ movieId }) {
   return (
     <FlexGridList
       items={castCreditIds}
+      loading={isFetchingCredits}
       itemWrapWidth={230}
+      keyExtractor={castCreditId => castCreditId}
       renderItem={castCreditId => (
-        <MovieCastGridListItem key={castCreditId} castCreditId={castCreditId} />
+        <MovieCastGridListItem castCreditId={castCreditId} />
       )}
     />
   );

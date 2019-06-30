@@ -6,7 +6,7 @@ import MovieCard from "./MovieCard";
 import {
   selectMovieSearchResultIds,
   selectIsFetchingMovieSearchResults,
-  selectMovieSearchResultsNextPage,
+  selectMovieSearchResultsNextPage
 } from "reducers";
 
 function MovieSearchResults({ query }) {
@@ -31,6 +31,7 @@ function MovieSearchResults({ query }) {
       loading={isFetching}
       hasNextPage={!!nextPage}
       onLoadMore={handleLoadMore}
+      keyExtractor={movieId => movieId}
       renderItem={movieId => <MovieCard key={movieId} movieId={movieId} />}
     />
   );

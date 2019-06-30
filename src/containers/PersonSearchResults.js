@@ -31,6 +31,7 @@ function PersonSearchResults({ query }) {
       loading={isFetching}
       hasNextPage={!!nextPage}
       onLoadMore={handleLoadMore}
+      keyExtractor={personId => personId}
       renderItem={personId => <PersonCard key={personId} personId={personId} />}
     />
   );

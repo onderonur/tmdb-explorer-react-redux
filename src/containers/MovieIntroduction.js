@@ -1,30 +1,14 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectMovie } from "reducers";
-import BaseImage from "components/BaseImage";
 import { Typography, makeStyles, Box, Grid, Link } from "@material-ui/core";
 import Rating from "components/Rating";
 import MovieGenreChip from "./MovieGenreChip";
 import ImdbLogo from "components/ImdbLogo";
-import { getMovieReleaseYear, getImageUrl } from "utils";
+import { getMovieReleaseYear, getImageUrl, getImdbProfileUrl } from "utils";
+import Introduction from "components/Introduction";
 
 const useStyles = makeStyles(theme => ({
-  backdrop: {
-    backgroundImage: ({ backgroundImage }) => `url(${backgroundImage})`,
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    filter: "opacity(100) grayscale(100%) contrast(130%)",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%"
-  },
-  top: {
-    backgroundImage:
-      "radial-gradient(circle at 20% 50%, rgba(12.55%, 24.71%, 34.51%, 0.98) 0%, rgba(12.55%, 24.71%, 34.51%, 0.88) 100%)"
-  },
   year: {
     color: theme.palette.text.secondary
   },
@@ -46,24 +30,11 @@ function MovieIntroduction({ movieId }) {
   });
 
   return movie ? (
-    <Box position="relative">
-      <div className={classes.backdrop} />
-      <Box
-        className={classes.top}
-        display="flex"
-        flexWrap="wrap"
-        justifyContent="center"
-        position="relative"
-        zIndex={1}
-      >
-        <Box flexBasis={300}>
-          <BaseImage
-            src={getImageUrl(movie.poster_path)}
-            alt={movie.title}
-            aspectRatio="2:3"
-          />
-        </Box>
-        <Box p={2} flex={1} flexBasis={300}>
+    <Introduction
+      backgroundImage={movie.backdrop_path}
+      imageSrc={movie.poster_path}
+      title={
+        <>
           <Typography variant="h5" gutterBottom={!movie.tagline}>
             {movie.title}{" "}
             <span className={classes.year}>{`(${getMovieReleaseYear(
@@ -77,13 +48,17 @@ function MovieIntroduction({ movieId }) {
           >
             {`"${movie.tagline}"`}
           </Typography>
+        </>
+      }
+      content={
+        <>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Box display="flex" alignItems="center">
                 <Rating value={movie.vote_average * 10} />
                 <Box marginLeft={2}>
                   <Link
-                    href={`https://www.imdb.com/title/${movie.imdb_id}`}
+                    href={getImdbProfileUrl(movie.imdb_id)}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -114,9 +89,9 @@ function MovieIntroduction({ movieId }) {
               </Typography>
             </Grid>
           </Grid>
-        </Box>
-      </Box>
-    </Box>
+        </>
+      }
+    />
   ) : null;
 }
 

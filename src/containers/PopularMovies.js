@@ -25,6 +25,7 @@ function PopularMovies() {
       loading={isFetching}
       hasNextPage={!!nextPage}
       onLoadMore={handleLoadMore}
+      keyExtractor={movieId => movieId}
       renderItem={movieId => <MovieCard key={movieId} movieId={movieId} />}
     />
   );
