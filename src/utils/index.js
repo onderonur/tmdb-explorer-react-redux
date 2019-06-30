@@ -34,3 +34,25 @@ export function getImageUrl(path) {
 export function getImdbProfileUrl(imdbId) {
   return `https://www.imdb.com/title/${imdbId}`;
 }
+
+export function addStateToLocation(to, state = {}) {
+  let toObject;
+  if (typeof to === "string") {
+    const [pathname, search] = to.split("?");
+    toObject = {
+      ...to,
+      pathname,
+      search: search ? `?${search}` : ""
+    };
+  } else {
+    toObject = to;
+  }
+
+  return {
+    ...toObject,
+    state: {
+      ...toObject.state,
+      ...state
+    }
+  };
+}

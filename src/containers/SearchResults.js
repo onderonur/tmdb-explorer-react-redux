@@ -20,7 +20,7 @@ function SearchResults({
     params: { searchType }
   }
 }) {
-  const { query } = useQueryString({ location });
+  const { query } = useQueryString(location);
   const dispatch = useDispatch();
   const totalMovieCount = useSelector(state =>
     selectMovieSearchResultsTotalCount(state, query)
