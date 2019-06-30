@@ -1,4 +1,5 @@
 import axios from "axios";
+import placeholderPng from "assets/placeholder.png";
 
 export const BASE_API_URL = "//api.themoviedb.org/3";
 export const BASE_IMG_API = "//image.tmdb.org/t/p";
@@ -24,8 +25,7 @@ export function getMovieReleaseYear(movie) {
 
 export function getImageUrl(path) {
   if (!path) {
-    // TODO: Maybe return some placeholder image? 🤔
-    return null;
+    return placeholderPng;
   }
 
   return `${BASE_IMG_API}/w500${path}`;

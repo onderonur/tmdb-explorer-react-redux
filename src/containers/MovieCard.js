@@ -5,7 +5,7 @@ import BaseCard from "components/BaseCard";
 import { useSelector } from "react-redux";
 import RouterLink from "components/RouteLink";
 import { makeStyles } from "@material-ui/styles";
-import { getImageUrl } from "utils";
+// import { getImageUrl } from "utils";
 import { selectMovie } from "reducers";
 
 const useStyles = makeStyles(theme => ({
@@ -25,7 +25,7 @@ function MovieCard({ movieId, subheader }) {
     <RouterLink className={classes.link} to={`/movie/${movieId}`}>
       <BaseCard hasActionArea>
         <BaseImage
-          src={getImageUrl(movie.poster_path)}
+          // src={getImageUrl(movie.poster_path)}
           alt={movie.title}
           aspectRatio="2:3"
         />

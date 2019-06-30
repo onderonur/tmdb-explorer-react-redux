@@ -27,7 +27,7 @@ function PersonProfile({
       <LoadingIndicator loading={isFetching}>
         <PersonIntroduction personId={personId} />
       </LoadingIndicator>
-      <Box my={1}>
+      <Box>
         <Box display="flex" flexWrap="wrap">
           <Box flex={10} flexBasis={600}>
             <Typography variant="h6" gutterBottom>
@@ -35,7 +35,7 @@ function PersonProfile({
             </Typography>
             <PersonCastingGridList personId={personId} />
           </Box>
-          <Box flex={1} flexBasis={250} marginLeft={2}>
+          <Box flex={1} flexBasis={250}>
             <Card>
               <CardContent>
                 <Typography variant="h6" gutterBottom>

@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef } from "react";
-import debounce from "lodash/debounce";
+import throttle from "lodash/throttle";
 
-function useDebounce(value, wait = 250) {
-  const [debouncedValue, setDebouncedValue] = useState(value);
+function useThrottle(value, wait = 250) {
+  const [throttledValue, setThrottledValue] = useState(value);
   const changeHandler = useRef(
-    debounce(newValue => setDebouncedValue(newValue), wait)
+    throttle(newValue => setThrottledValue(newValue), wait)
   );
 
   useEffect(() => {
@@ -16,7 +16,7 @@ function useDebounce(value, wait = 250) {
     return () => handler.cancel();
   }, []);
 
-  return debouncedValue;
+  return throttledValue;
 }
 
-export default useDebounce;
+export default useThrottle;
