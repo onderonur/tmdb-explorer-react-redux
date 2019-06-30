@@ -21,7 +21,7 @@ function MovieCastGridList({ movieId }) {
     <FlexGridList
       items={castCreditIds}
       loading={isFetchingCredits}
-      itemWrapWidth={230}
+      minItemWidth={230}
       keyExtractor={castCreditId => castCreditId}
       renderItem={castCreditId => (
         <MovieCastGridListItem castCreditId={castCreditId} />
