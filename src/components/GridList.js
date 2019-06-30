@@ -1,7 +1,6 @@
 import React from "react";
 import LoadingIndicator from "components/LoadingIndicator";
 import { makeStyles } from "@material-ui/styles";
-import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   flexList: {
@@ -34,21 +33,11 @@ function GridList({
 
   return (
     <LoadingIndicator loading={isInitialFetch}>
-      <Grid container spacing={2}>
+      <ul className={classes.flexList}>
         {items.map((item, index) => (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            lg={3}
-            xl={2}
-            key={extractItemKey(item, index)}
-          >
-            {renderItem(item, index)}
-          </Grid>
+          <li key={extractItemKey(item, index)}>{renderItem(item, index)}</li>
         ))}
-      </Grid>
+      </ul>
       <LoadingIndicator loading={loading} />
     </LoadingIndicator>
   );
