@@ -42,11 +42,9 @@ function MovieVideoPlayerModal({ movieId, location, history }) {
     <BaseDialog
       title={
         videoToWatch ? (
-          <DialogTitle disableTypography>
-            <Typography variant="h6" noWrap>
-              {videoToWatch.name}
-            </Typography>
-          </DialogTitle>
+          <Typography variant="h6" noWrap>
+            {videoToWatch.name}
+          </Typography>
         ) : (
           ""
         )

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
-import { Dialog, DialogTitle } from "@material-ui/core";
+import { Dialog, withMobileDialog } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
+import BaseDialogTitle from "./BaseDialogTitle";
 
 const useStyles = makeStyles(theme => ({
   closeButton: {
@@ -12,7 +13,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function BaseDialog({ open, title, onExited, children }) {
+export const DialogContext = React.createContext();
+
+function BaseDialog({ open, fullScreen, title, onExited, children }) {
   const classes = useStyles();
   const [show, setShow] = useState(open);
 
@@ -29,15 +32,20 @@ function BaseDialog({ open, title, onExited, children }) {
       open={show}
       scroll="body"
       fullWidth
+      fullScreen={fullScreen}
       maxWidth="lg"
       onExited={onExited}
       onClose={handleClose}
     >
-      <CloseIcon className={classes.closeButton} onClick={handleClose} />
-      {typeof title === "string" ? <DialogTitle>{title}</DialogTitle> : title}
-      {children}
+      <DialogContext.Provider value={{ fullScreen, closeDialog: handleClose }}>
+        {!fullScreen && (
+          <CloseIcon className={classes.closeButton} onClick={handleClose} />
+        )}
+        <BaseDialogTitle>{title}</BaseDialogTitle>
+        {children}
+      </DialogContext.Provider>
     </Dialog>
   );
 }
 
-export default BaseDialog;
+export default withMobileDialog()(BaseDialog);
