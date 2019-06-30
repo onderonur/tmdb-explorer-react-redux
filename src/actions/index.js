@@ -175,6 +175,7 @@ export function fetchMovieSearch(query, pageId) {
       actionTypes.FETCH_MOVIE_SEARCH_ERROR
     ],
     isFetching: state => selectIsFetchingMovieSearchResults(state, query),
+    // We don't select "cachedData" to force a new request on every search.
     callAPI: () =>
       get("/search/movie", {
         query,
@@ -193,6 +194,7 @@ export function fetchPersonSearch(query, pageId) {
       actionTypes.FETCH_PERSON_SEARCH_ERROR
     ],
     isFetching: state => selectIsFetchingPersonSearchResults(state, query),
+    // We don't select "cachedData" to force a new request on every search.
     callAPI: () =>
       get("/search/person", {
         query,

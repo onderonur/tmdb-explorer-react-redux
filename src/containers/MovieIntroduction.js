@@ -41,13 +41,15 @@ function MovieIntroduction({ movieId }) {
               movie
             )})`}</span>
           </Typography>
-          <Typography
-            className={classes.tagline}
-            color="textSecondary"
-            gutterBottom
-          >
-            {`"${movie.tagline}"`}
-          </Typography>
+          {movie.tagline && (
+            <Typography
+              className={classes.tagline}
+              color="textSecondary"
+              gutterBottom
+            >
+              {`"${movie.tagline}"`}
+            </Typography>
+          )}
         </>
       }
       content={
