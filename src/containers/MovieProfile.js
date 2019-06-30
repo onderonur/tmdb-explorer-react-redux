@@ -9,6 +9,8 @@ import { selectIsFetchingMovie } from "reducers";
 import MovieCastGridList from "./MovieCastGridList";
 import Profile from "components/Profile";
 
+const REQUIRED_FIELDS = ["tagline"];
+
 function MovieProfile({
   match: {
     params: { movieId }
@@ -20,15 +22,14 @@ function MovieProfile({
   );
 
   useEffect(() => {
-    const requiredFields = ["tagline"];
-    dispatch(fetchMovie(movieId, requiredFields));
+    dispatch(fetchMovie(movieId, REQUIRED_FIELDS));
   }, [movieId, dispatch]);
 
   return (
     <Profile
       loading={isFetching}
       introduction={<MovieIntroduction movieId={movieId} />}
-      mainSection={
+      main={
         <>
           <Typography variant="h6" gutterBottom>
             Cast
@@ -40,7 +41,7 @@ function MovieProfile({
           <MovieVideoList movieId={movieId} />
         </>
       }
-      sideSection={
+      side={
         <>
           <Typography variant="h6" gutterBottom>
             Recommendations

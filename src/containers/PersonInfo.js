@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { selectPerson } from "reducers";
 import InfoWithLabel from "components/InfoWithLabel";
 
-function PersonInfoSection({ personId }) {
+function PersonInfo({ personId }) {
   const person = useSelector(state => selectPerson(state, personId));
 
   function getGender() {
@@ -32,4 +32,4 @@ function PersonInfoSection({ personId }) {
   ) : null;
 }
 
-export default PersonInfoSection;
+export default PersonInfo;

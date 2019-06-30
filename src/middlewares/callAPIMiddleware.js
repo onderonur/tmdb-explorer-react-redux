@@ -9,13 +9,14 @@ function verifyCachedData(cachedData, requiredFields = []) {
   return requiredFields.every(key => cachedData.hasOwnProperty(key));
 }
 
-// https://redux.js.org/recipes/reducing-boilerplate
+// Inspiration from: https://redux.js.org/recipes/reducing-boilerplate
 const callAPIMiddleware = store => next => action => {
   const { dispatch, getState } = store;
 
   const {
     types,
     callAPI,
+    isFetching = () => false,
     selectCachedData = () => undefined,
     requiredFields = [],
     shouldCallAPI = () => true,
@@ -57,11 +58,16 @@ const callAPIMiddleware = store => next => action => {
 
   const currentState = getState();
 
+  if (isFetching(currentState)) {
+    return;
+  }
+
   if (!shouldCallAPI(currentState)) {
     return;
   }
 
-  if (verifyCachedData(selectCachedData(currentState), requiredFields)) {
+  const cachedData = selectCachedData(currentState);
+  if (verifyCachedData(cachedData, requiredFields)) {
     return;
   }
 
