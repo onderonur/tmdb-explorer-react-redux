@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
-import { Dialog, withMobileDialog } from "@material-ui/core";
+import { Dialog, withMobileDialog, DialogContent } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import BaseDialogTitle from "./BaseDialogTitle";
 
@@ -42,7 +42,7 @@ function BaseDialog({ open, fullScreen, title, onExited, children }) {
           <CloseIcon className={classes.closeButton} onClick={handleClose} />
         )}
         <BaseDialogTitle>{title}</BaseDialogTitle>
-        {children}
+        <DialogContent>{children}</DialogContent>
       </DialogContext.Provider>
     </Dialog>
   );
