@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 
 // For more info: https://developers.google.com/web/updates/2016/04/intersectionobserver
 function useVisibilityTracker({
@@ -16,42 +16,35 @@ function useVisibilityTracker({
   // ratio of the observed element crosses a threshold in the list.
   threshold = [0]
 } = {}) {
+  const ref = useRef();
   const observerRef = useRef();
   const [isVisible, setIsVisible] = useState();
 
-  function clearPreviousObserver() {
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-      observerRef.current = null;
-    }
-  }
-
   useEffect(() => {
-    return () => {
-      clearPreviousObserver();
-      setIsVisible(false);
-    };
-  }, []);
-
-  const refCallback = useCallback(
-    node => {
-      clearPreviousObserver();
-
-      if (node) {
+    function getObserver() {
+      if (!observerRef.current) {
         observerRef.current = new IntersectionObserver(
           ([entry]) => {
             setIsVisible(entry.isIntersecting);
           },
           { root, rootMargin, threshold }
         );
-
-        observerRef.current.observe(node);
       }
-    },
-    [root, rootMargin, threshold]
-  );
+      return observerRef.current;
+    }
 
-  return [refCallback, { isVisible }];
+    const observer = getObserver();
+
+    const node = ref.current;
+
+    if (node) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [root, rootMargin, threshold]);
+
+  return [ref, { isVisible }];
 }
 
 export default useVisibilityTracker;

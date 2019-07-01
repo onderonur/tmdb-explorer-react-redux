@@ -9,7 +9,7 @@ const createIsFetching = types => {
   }
 
   // TODO: state false'tan başlayıp hemen true olup tekrar false'a dönünce flicker oluyor.
-  // Nasıl çözülür bak
+  // Nasıl çözülür bak. Belki loading'e delay vs?
   return (state = false, action) => {
     const [requestType, successType, failureType] = types;
 

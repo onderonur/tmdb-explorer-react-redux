@@ -1,6 +1,5 @@
 import axios from "axios";
 import placeholderPng from "assets/placeholder.png";
-import produce from "immer";
 import merge from "lodash/merge";
 
 export const BASE_API_URL = "//api.themoviedb.org/3";
@@ -41,16 +40,25 @@ export function addStateToLocation(to, state) {
   let toObject;
 
   if (typeof to === "string") {
-    const [pathname, search] = to.split("?");
+    const { pathname, search } = splitPathnameAndQueryString(to);
     toObject = {
       pathname,
-      search: search ? `?${search}` : ""
+      search
     };
   } else {
     toObject = to;
   }
 
-  return produce(toObject, draft => {
-    draft.state = merge(draft.state, state);
-  });
+  return {
+    ...toObject,
+    state: merge(toObject.state, state)
+  };
+}
+
+export function splitPathnameAndQueryString(path) {
+  const [pathname, search] = path.split("?");
+  return {
+    pathname,
+    search: search ? `?${search}` : ""
+  };
 }
