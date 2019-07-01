@@ -3,7 +3,9 @@ import { DialogContext } from "./BaseDialog";
 import { DialogTitle, Typography, Box, IconButton } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/styles";
-
+// TODO: Function'ların render scope'ta olup olmaması olaylarına bak
+// TODO: useeffect'te prevProp kullanımlarına bak
+// TODO: Bu ikisine genel olarak her projede bak
 const useStyles = makeStyles(theme => ({
   dialogTitle: {
     padding: theme.spacing(1, 2)
