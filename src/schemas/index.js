@@ -1,9 +1,9 @@
-import { schema } from "normalizr";
-import produce from "immer";
+import { schema } from 'normalizr';
 
-export const genreSchema = new schema.Entity("genres");
+export const genreSchema = new schema.Entity('genres');
+
 export const movieSchema = new schema.Entity(
-  "movies",
+  'movies',
   {
     genres: [genreSchema]
   },
@@ -28,28 +28,24 @@ export const movieSchema = new schema.Entity(
 );
 
 export const personSchema = new schema.Entity(
-  "people",
+  'people',
   {
-    // known_for: [movieSchema]
+    known_for: [movieSchema]
   },
   {
     processStrategy: value => {
       // Omitting tv series info of people.
-      // We are only getting "movie" type media.
-      const omitted = produce(value, draft => {
-        if (draft.known_for) {
-          draft.known_for = draft.known_for.filter(
-            media => media.media_type === "movie"
-          );
-        }
-      });
-
-      return omitted;
+      // We are only selecting "movie" type media.
+      return {
+        ...value,
+        known_for: value.known_for.filter(media => media.media_type === 'movie')
+      };
     }
   }
 );
+
 export const castCreditSchema = new schema.Entity(
-  "castCredits",
+  'castCredits',
   {
     person: personSchema,
     movie: movieSchema
@@ -58,7 +54,7 @@ export const castCreditSchema = new schema.Entity(
     idAttribute: value => value.credit_id,
     processStrategy: (value, parent, key) => {
       switch (key) {
-        case "castings":
+        case 'castings':
           const {
             adult,
             backdrop_path,
@@ -99,7 +95,7 @@ export const castCreditSchema = new schema.Entity(
             movie,
             person: parent.id
           };
-        case "cast": {
+        case 'cast': {
           return value;
         }
         default:
@@ -110,7 +106,7 @@ export const castCreditSchema = new schema.Entity(
 );
 
 export const personCreditSchema = new schema.Entity(
-  "personCredits",
+  'personCredits',
   {
     castings: [castCreditSchema]
   },
@@ -128,7 +124,7 @@ export const personCreditSchema = new schema.Entity(
 );
 
 export const movieCreditSchema = new schema.Entity(
-  "movieCredits",
+  'movieCredits',
   {
     cast: [castCreditSchema]
   },
@@ -157,9 +153,10 @@ export const movieCreditSchema = new schema.Entity(
   }
 );
 
-export const videoSchema = new schema.Entity("videos");
+export const videoSchema = new schema.Entity('videos');
+
 export const movieVideosSchema = new schema.Entity(
-  "movieVideos",
+  'movieVideos',
   {
     videos: [videoSchema]
   },
@@ -170,14 +167,14 @@ export const movieVideosSchema = new schema.Entity(
       return {
         movieId: id,
         // We are only using Youtube videos.
-        videos: results.filter(video => video.site === "YouTube")
+        videos: results.filter(video => video.site === 'YouTube')
       };
     }
   }
 );
 
 export const movieRecommendationSchema = new schema.Entity(
-  "movieRecommendations",
+  'movieRecommendations',
   {
     movies: [movieSchema]
   },

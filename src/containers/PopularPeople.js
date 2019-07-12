@@ -1,13 +1,13 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchPopularPeople } from "actions";
-import PersonCard from "./PersonCard";
-import InfiniteGridFeed from "components/InfiniteGridFeed";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPopularPeople } from 'actions';
+import PersonCard from './PersonCard';
+import InfiniteGridFeed from 'components/InfiniteGridFeed';
 import {
   selectIsFetchingPopularPeople,
   selectPopularPeopleNextPage,
   selectPopularPeopleIds
-} from "reducers";
+} from 'reducers';
 
 function PopularPeople() {
   const dispatch = useDispatch();
