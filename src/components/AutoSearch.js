@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Downshift from "downshift";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -73,7 +73,6 @@ function AutoSearch({
   const [inputValue, setInputValue] = useState("");
 
   const debouncedInputValue = useDebounce(inputValue, debounceMs);
-  const prevDebouncedInputValue = useRef();
 
   function handleInputChange(event) {
     const value = event.target.value;
@@ -81,17 +80,8 @@ function AutoSearch({
   }
 
   useEffect(() => {
-    if (debouncedInputValue !== prevDebouncedInputValue.current) {
-      onInputValueChange(debouncedInputValue);
-    }
+    onInputValueChange(debouncedInputValue);
   }, [debouncedInputValue, onInputValueChange]);
-
-  // Hooks rely on call order. Thus, if we place this "useEffect" before the above one,
-  // it sets the "prevDebouncedInputValue" ref before calling that hook.
-  // And it never calls "onInputValueChange", because current and prev inputValues would be same values.
-  useEffect(() => {
-    prevDebouncedInputValue.current = debouncedInputValue;
-  }, [debouncedInputValue]);
 
   return (
     <Downshift

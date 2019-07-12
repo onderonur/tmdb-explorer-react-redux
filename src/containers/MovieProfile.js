@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
-import { Typography } from "@material-ui/core";
-import Recommendations from "containers/Recommendations";
-import MovieIntroduction from "containers/MovieIntroduction";
-import { useDispatch } from "react-redux";
-import { fetchMovie } from "actions";
-import MovieVideoList from "containers/MovieVideoList";
-import MovieCastGridList from "./MovieCastGridList";
-import Profile from "components/Profile";
+import React, { useEffect } from 'react';
+import { Typography } from '@material-ui/core';
+import Recommendations from 'containers/Recommendations';
+import MovieIntroduction from 'containers/MovieIntroduction';
+import { useDispatch } from 'react-redux';
+import { fetchMovie } from 'actions';
+import MovieVideoList from 'containers/MovieVideoList';
+import MovieCastGridList from './MovieCastGridList';
+import Profile from 'components/Profile';
 
-const REQUIRED_FIELDS = ["tagline"];
+const REQUIRED_FIELDS = ['tagline'];
 
 function MovieProfile({
   match: {
@@ -27,13 +27,13 @@ function MovieProfile({
       main={
         <>
           <Typography variant="h6" gutterBottom>
-            Cast
-          </Typography>
-          <MovieCastGridList movieId={movieId} />
-          <Typography variant="h6" gutterBottom>
             Videos
           </Typography>
           <MovieVideoList movieId={movieId} />
+          <Typography variant="h6" gutterBottom>
+            Cast
+          </Typography>
+          <MovieCastGridList movieId={movieId} />
         </>
       }
       rightSide={

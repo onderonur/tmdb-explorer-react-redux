@@ -1,12 +1,12 @@
-import React, { useEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Drawer, makeStyles, MenuList } from "@material-ui/core";
-import { withRouter } from "react-router-dom";
-import { toggleDrawer } from "actions";
-import MovieIcon from "@material-ui/icons/LocalMovies";
-import PersonIcon from "@material-ui/icons/RecentActors";
-import { selectIsDrawerOpen } from "reducers";
-import AppDrawerItem from "./AppDrawerItem";
+import React, { useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Drawer, makeStyles, MenuList } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
+import { toggleDrawer } from 'actions';
+import MovieIcon from '@material-ui/icons/LocalMovies';
+import PersonIcon from '@material-ui/icons/RecentActors';
+import { selectIsDrawerOpen } from 'reducers';
+import AppDrawerItem from './AppDrawerItem';
 
 const useStyles = makeStyles(theme => ({
   drawerPaper: {
@@ -21,7 +21,7 @@ function AppDrawer({ location }) {
   const prevLocation = useRef();
 
   useEffect(() => {
-    if (isOpen && location !== prevLocation.current) {
+    if (location !== prevLocation.current && isOpen) {
       dispatch(toggleDrawer());
     }
   }, [location, isOpen, dispatch]);

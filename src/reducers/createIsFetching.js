@@ -1,15 +1,13 @@
-import produce from "immer";
+import produce from 'immer';
 
 const createIsFetching = types => {
   if (!Array.isArray(types) || types.length !== 3) {
-    throw new Error("Expected types to be an array of three elements.");
+    throw new Error('Expected types to be an array of three elements.');
   }
-  if (!types.every(type => typeof type === "string")) {
-    throw new Error("Expected types to be strings.");
+  if (!types.every(type => typeof type === 'string')) {
+    throw new Error('Expected types to be strings.');
   }
 
-  // TODO: state false'tan başlayıp hemen true olup tekrar false'a dönünce flicker oluyor.
-  // Nasıl çözülür bak. Belki loading'e delay vs?
   return (state = false, action) => {
     const [requestType, successType, failureType] = types;
 
