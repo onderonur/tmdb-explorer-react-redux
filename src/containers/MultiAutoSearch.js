@@ -116,7 +116,7 @@ function MultiAutoSearch({ className, history, autoFocus }) {
         )
       }
       loading={isFetchingMovies || isFetchingPeople}
-      onPressEnter={handleRedirect}
+      onPressEnterOrClickSearch={handleRedirect}
       onItemSelect={handleSelectSuggestion}
       onInputValueChange={handleInputValueChange}
       autoFocus={autoFocus}

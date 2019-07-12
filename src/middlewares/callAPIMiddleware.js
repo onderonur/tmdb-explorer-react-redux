@@ -1,4 +1,4 @@
-import { normalize } from "normalizr";
+import { normalize } from 'normalizr';
 
 // Checking cached data to see if it exists and has all the required fields
 function verifyCachedData(cachedData, requiredFields = []) {
@@ -34,21 +34,21 @@ const callAPIMiddleware = store => next => action => {
   if (
     !Array.isArray(types) ||
     types.length !== 3 ||
-    !types.every(type => typeof type === "string")
+    !types.every(type => typeof type === 'string')
   ) {
-    throw new Error("Expected an array of three string types.");
+    throw new Error('Expected an array of three string types.');
   }
 
-  if (typeof callAPI !== "function") {
-    throw new Error("Expected callAPI to be a function.");
+  if (typeof callAPI !== 'function') {
+    throw new Error('Expected callAPI to be a function.');
   }
 
   if (!Array.isArray(requiredFields)) {
-    throw new Error("Expected requiredFields to be an array.");
+    throw new Error('Expected requiredFields to be an array.');
   }
 
-  if (processResponse && typeof processResponse !== "function") {
-    throw new Error("Expected processResponse to be a function.");
+  if (processResponse && typeof processResponse !== 'function') {
+    throw new Error('Expected processResponse to be a function.');
   }
 
   const currentState = getState();
@@ -81,7 +81,9 @@ const callAPIMiddleware = store => next => action => {
         dispatch({ ...payload, response: response.data, type: successType });
       }
     })
-    .catch(error => dispatch({ ...payload, error, type: failureType }));
+    .catch(error => {
+      dispatch({ ...payload, error, type: failureType });
+    });
 };
 
 export default callAPIMiddleware;
