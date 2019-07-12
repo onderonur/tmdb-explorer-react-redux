@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Typography, Card, CardContent } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import PersonIntroduction from "containers/PersonIntroduction";
 import { useDispatch } from "react-redux";
 import { fetchPerson } from "actions";
@@ -24,14 +24,12 @@ function PersonProfile({
     <Profile
       introduction={<PersonIntroduction personId={personId} />}
       leftSide={
-        <Card>
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              Personal Info
-            </Typography>
-            <PersonInfo personId={personId} />
-          </CardContent>
-        </Card>
+        <>
+          <Typography variant="h6" gutterBottom>
+            Personal Info
+          </Typography>
+          <PersonInfo personId={personId} />
+        </>
       }
       main={
         <>

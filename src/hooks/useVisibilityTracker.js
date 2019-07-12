@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 
 // For more info: https://developers.google.com/web/updates/2016/04/intersectionobserver
 function useVisibilityTracker({
@@ -18,6 +18,12 @@ function useVisibilityTracker({
 } = {}) {
   const observerRef = useRef();
   const [isVisible, setIsVisible] = useState();
+
+  useEffect(() => {
+    return () => {
+      observerRef.current.disconnect();
+    };
+  }, []);
 
   const refCallback = useCallback(
     node => {
