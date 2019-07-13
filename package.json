@@ -1,5 +1,6 @@
 {
   "name": "tmdb-explorer",
+  "description": "A TMDb API react-redux client that uses redux recipes like normalization, selectors, higher-order reducers etc.",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "TMDb Explorer",
+  "name": "The Movie Database (TMDb) react-redux client application",
   "icons": [
     {
       "src": "favicon.ico",
