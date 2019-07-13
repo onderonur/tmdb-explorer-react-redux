@@ -1,11 +1,7 @@
 
 ## TMDB Explorer: A React-Redux Application
 
-  
-
 **Live demo is [here](https://tmdb-explorer.netlify.com/)**.
-
-  
 
 This is a tmdb (the Movie Db) explorer react-redux application that implements some of the [redux recipes](https://redux.js.org/recipes/recipe-index) like;
 
@@ -19,29 +15,17 @@ This is a tmdb (the Movie Db) explorer react-redux application that implements s
 
 * Custom middleware to handle data fetching and caching.
 
-  
-
 Also there are no class components and only *react hooks* are used in this project. I think hooks make it easy to see the repeating logic in the components and extract them to custom hooks creates some really strong pattern. They are much more maintainable than class component lifecycle functions and they create less bugs most of the time.
-
-  
 
 New `useSelector` and `useDispatch` hooks of redux are very useful too. You can see which props are derived from the redux store directly in the render scope. Jumping between component implementation and `mapStateToProps` or `mapDispatchToProps` can be mind bending sometimes. In the end, you are just selecting some data from store. Real simple and clean implementation.
 
-  
-
 You may use libraries like [reselect](https://github.com/reduxjs/reselect) to optimize/memoize selectors. But this project didn't have that kind of a optimization problem. It has simple selectors. But the pattern to create and use them is useful for scalable projects. It requires minimum effort to add new things or change the structure of the store.
 
-  
-
 Also, [material-ui](https://material-ui.com/) has released the version 4 and it has some cool hooks like `useTheme` to style your components and `useMediaQuery`. I've always liked CSS-in-JS and this approach with hooks is one of my favorites.
-
-  
 
 ### Hot Reloading
 
 Hot reloading is enabled for both react components and redux reducers. With this configuration, you can change your components and don't lose the state in the store.
-
-  
 
 ### Development
 
