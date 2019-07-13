@@ -52,7 +52,7 @@ function Header() {
             color="inherit"
             component={RouterLink}
           >
-            <Typography variant="h6">TMDB</Typography>
+            <Typography variant="h6">TMDb</Typography>
           </Link>
         )}
 
