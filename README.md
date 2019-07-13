@@ -14,17 +14,21 @@ This is a tmdb (the Movie Db) explorer react-redux application that implements s
 
 - Custom middleware to handle data fetching and caching.
 
+### Redux State Shape
+
 I've chosen some kind of a "conceptual separation" for redux state structure. For example;
 
 - entities: Contains all of the main domain objects and their relationships. Thanks to normalizr, this was accomplished by very little effort. It creates a SQL like referential structure between objects.
 - isFetching: Shows which requests are in progress at the moment. Besides showing some loading indicators, it is used to not execute the same request at the same time. e.g., it prevents you to fetch a movie with the same id if you are already fetching it.
-- pagination: Contains all of the paginated lists. It doesn't have any raw information about the entities. All of the fields other than "paging info" is referential. e.g., If you have a paginated list of movies, it shows what is the next page and how many items this list have etc. But it doesn't have any movie info. It just has id fields to reference movies in `entities`.
+- pagination: Contains all of the paginated lists. It doesn't have any raw information about the entities. All of the fields other than "paging info" is referential. e.g., if you have a paginated list of movies, it shows what is the next page and how many items this list have etc. But it doesn't have any movie info. It just has id fields to reference movies in `entities`.
 
 For larger projects some kind of a "domain based separation" may be used. But this approach was anough for a project at this scale.
 
+### Hooks
+
 Also there are no class components and only _react hooks_ are used in this project. I think hooks make it easy to see the repeating logic in the components and extract them to custom hooks creates some really strong pattern. They are much more maintainable than class component lifecycle functions and they create less bugs most of the time.
 
-New `useSelector` and `useDispatch` hooks of redux are very useful too. You can see which props are derived from the redux store directly in the render scope. Jumping between component implementation and `mapStateToProps` or `mapDispatchToProps` can be mind bending sometimes. In the end, you are just selecting some data from store. Real simple and clean implementation.
+New `useSelector` and `useDispatch` hooks of react-redux are very useful too. You can see which props are derived from the redux store directly in the render scope. Jumping between component implementation and `mapStateToProps` or `mapDispatchToProps` can be mind bending sometimes. In the end, you are just selecting some data from store. Real simple and clean implementation.
 
 You may use libraries like [reselect](https://github.com/reduxjs/reselect) to optimize/memoize selectors. But this project didn't have that kind of a optimization problem. It has simple selectors. But the pattern to create and use them is useful for scalable projects. It requires minimum effort to add new things or change the structure of the store.
 
