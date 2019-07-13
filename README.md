@@ -1,21 +1,28 @@
-
 ## TMDB Explorer: A React-Redux Application
 
 **Live demo on Netlify is [here](https://tmdb-explorer.netlify.com/)**.
 
 This is a tmdb (the Movie Db) explorer react-redux application that implements some of the [redux recipes](https://redux.js.org/recipes/recipe-index) like;
 
-* Normalizing state shape (with [normalizr](https://github.com/paularmstrong/normalizr))
+- Normalizing state shape (with [normalizr](https://github.com/paularmstrong/normalizr))
 
 * Reusing reducer logic with higher-order reducers
 
-* Computing derived data with selectors and colocating selectors with reducers to make state shape changes easy and isolated from component implementations. (So, we can change the redux state shape without touching one line of code of components).
+- Computing derived data with selectors and colocating selectors with reducers to make state shape changes easy and isolated from component implementations. (So, we can change the redux state shape without touching one line of code of components).
 
 * Immutable state updates (with [immer](https://github.com/immerjs/immer))
 
-* Custom middleware to handle data fetching and caching.
+- Custom middleware to handle data fetching and caching.
 
-Also there are no class components and only *react hooks* are used in this project. I think hooks make it easy to see the repeating logic in the components and extract them to custom hooks creates some really strong pattern. They are much more maintainable than class component lifecycle functions and they create less bugs most of the time.
+I've chosen some kind of a "conceptual separation" for redux state structure. For example;
+
+- entities: Contains all of the main domain objects and their relationships. Thanks to normalizr, this was accomplished by very little effort. It creates a SQL like referential structure between objects.
+- isFetching: Shows which requests are in progress at the moment. Beside to show some loading indicators, it is used to not execute the same request at the same time. e.g., it prevents you to fetch a movie with the same id if you are already fetching it.
+- pagination: Contains all of the paginated lists. It doesn't have any raw information about the entities. All of the fields other than "paging info" is referential. e.g., If you have a paginated list of movies, it shows what is the next page and how many items this list have etc. But it doesn't have any movie info. It just has id fields to reference movies in `entities`.
+
+For larger projects some kind of a "domain based separation" may be used. But this approach was anough for a project at this scale.
+
+Also there are no class components and only _react hooks_ are used in this project. I think hooks make it easy to see the repeating logic in the components and extract them to custom hooks creates some really strong pattern. They are much more maintainable than class component lifecycle functions and they create less bugs most of the time.
 
 New `useSelector` and `useDispatch` hooks of redux are very useful too. You can see which props are derived from the redux store directly in the render scope. Jumping between component implementation and `mapStateToProps` or `mapDispatchToProps` can be mind bending sometimes. In the end, you are just selecting some data from store. Real simple and clean implementation.
 
