@@ -33,7 +33,7 @@ You may use libraries like [reselect](https://github.com/reduxjs/reselect) to op
 
   
 
-Also, [material-ui](https://material-ui.com/)) has released the version 4 and it has some cool hooks like `useTheme` to style your components and `useMediaQuery`. I've always liked CSS-in-JS and this approach with hooks is one of my favorites.
+Also, [material-ui](https://material-ui.com/) has released the version 4 and it has some cool hooks like `useTheme` to style your components and `useMediaQuery`. I've always liked CSS-in-JS and this approach with hooks is one of my favorites.
 
   
 
