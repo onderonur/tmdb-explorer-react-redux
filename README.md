@@ -21,11 +21,11 @@ This is a tmdb (the Movie Db) explorer react-redux application that implements s
 
   
 
-Also there are no class components and only *react hooks* are used in this project. I think hooks make it easy to see the repeating logic in the components and extract them to custom hooks creates some really strong pattern. They are much more maintainable than class component lifecycle functions and create less bugs most of the time.
+Also there are no class components and only *react hooks* are used in this project. I think hooks make it easy to see the repeating logic in the components and extract them to custom hooks creates some really strong pattern. They are much more maintainable than class component lifecycle functions and they create less bugs most of the time.
 
   
 
-New `useSelector` and `useDispatch` hooks of redux are very useful too. You can see which props are derived from the redux store directly in the render scope. Jumping between component implementation and `mapStateToProps` or `mapDispatchToProps` can be mind bending sometimes. In the end, you are just selecting props from store. Real simple and clean implementation.
+New `useSelector` and `useDispatch` hooks of redux are very useful too. You can see which props are derived from the redux store directly in the render scope. Jumping between component implementation and `mapStateToProps` or `mapDispatchToProps` can be mind bending sometimes. In the end, you are just selecting some data from store. Real simple and clean implementation.
 
   
 
@@ -45,7 +45,7 @@ Hot reloading is enabled for both react components and redux reducers. With this
 
 ### Development
 
-To run the project go to [TMDB](https://developers.themoviedb.org/3) and get an api_key. Copy and paste that api_key as `REACT_APP_API_KEY=<your_api_key>` in `.env` file.
+To run the project go to [TMDB](https://developers.themoviedb.org/3) and get an `api_key`. Copy and paste that `api_key` as `REACT_APP_API_KEY=<your_api_key>` in `.env` file without `<` and `>`.
 
 Then just run;
 
@@ -53,12 +53,8 @@ Then just run;
 
 ### `npm start`
 
-  
-
 ### Netlify Deployment
 
 You can see the configurations for [Netlify](https://www.netlify.com/) in the `netlify.toml` file. These configurations are required for Single Page Applications to run correctly when deployed to Netlify. Otherwise, application won't be loaded if you refresh the page when you are not at the root of the app (like if you have a search query, url param or routing path etc.) or directly enter a Url like these.
 
-  
-
-This configuration specifies the build command, output folder for build process and it tells Netlify to return the `index.html` file for every possible path (`/*`).
+This configuration specifies the build command, output folder for the build process and it tells Netlify to return the `index.html` file for every possible path (`/*`).
