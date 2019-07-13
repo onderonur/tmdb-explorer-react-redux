@@ -82,6 +82,9 @@ const callAPIMiddleware = store => next => action => {
       }
     })
     .catch(error => {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('callAPIMiddleware: ', error);
+      }
       dispatch({ ...payload, error, type: failureType });
     });
 };
