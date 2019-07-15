@@ -11,7 +11,7 @@ import {
   selectMovieSearchResultsTotalCount,
   selectPersonSearchResultsTotalCount
 } from "reducers";
-import SearchResultsHeader from "./SearchResultsHeader";
+import SearchResultsHeader from "components/SearchResultsHeader";
 
 function SearchResults({
   location,

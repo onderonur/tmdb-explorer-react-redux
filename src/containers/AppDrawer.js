@@ -6,7 +6,7 @@ import { toggleDrawer } from 'actions';
 import MovieIcon from '@material-ui/icons/LocalMovies';
 import PersonIcon from '@material-ui/icons/RecentActors';
 import { selectIsDrawerOpen } from 'reducers';
-import AppDrawerItem from './AppDrawerItem';
+import AppDrawerItem from 'components/AppDrawerItem';
 
 const useStyles = makeStyles(theme => ({
   drawerPaper: {
