@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPersonSearch } from "actions";
-import InfiniteGridFeed from "components/InfiniteGridFeed";
+import InfiniteGridList from "components/InfiniteGridList";
 import PersonCard from "./PersonCard";
 import {
   selectIsFetchingPersonSearchResults,
@@ -26,7 +26,7 @@ function PersonSearchResults({ query }) {
   }
 
   return (
-    <InfiniteGridFeed
+    <InfiniteGridList
       items={personIds}
       loading={isFetching}
       hasNextPage={!!nextPage}

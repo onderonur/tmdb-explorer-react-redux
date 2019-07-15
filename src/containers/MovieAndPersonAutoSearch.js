@@ -20,7 +20,7 @@ import {
 import { getImageUrl } from 'utils';
 import { selectMovies } from 'reducers';
 
-function MultiAutoSearch({ className, history, autoFocus }) {
+function MovieAndPersonAutoSearch({ className, history, autoFocus }) {
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState('');
 
@@ -124,4 +124,4 @@ function MultiAutoSearch({ className, history, autoFocus }) {
   );
 }
 
-export default withRouter(MultiAutoSearch);
+export default withRouter(MovieAndPersonAutoSearch);

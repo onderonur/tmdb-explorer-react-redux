@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovieSearch } from "actions";
-import InfiniteGridFeed from "components/InfiniteGridFeed";
+import InfiniteGridList from "components/InfiniteGridList";
 import MovieCard from "./MovieCard";
 import {
   selectMovieSearchResultIds,
@@ -26,7 +26,7 @@ function MovieSearchResults({ query }) {
   }
 
   return (
-    <InfiniteGridFeed
+    <InfiniteGridList
       items={movieIds}
       loading={isFetching}
       hasNextPage={!!nextPage}

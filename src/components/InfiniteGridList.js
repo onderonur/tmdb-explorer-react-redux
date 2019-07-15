@@ -2,7 +2,7 @@ import React from "react";
 import InfiniteScrollWrapper from "components/InfiniteScrollWrapper";
 import GridList from "./GridList";
 
-function InfiniteGridFeed({
+function InfiniteGridList({
   items,
   loading,
   hasNextPage,
@@ -30,4 +30,4 @@ function InfiniteGridFeed({
   );
 }
 
-export default InfiniteGridFeed;
+export default InfiniteGridList;
