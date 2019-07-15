@@ -9,7 +9,7 @@ import {
   IconButton
 } from "@material-ui/core";
 import RouterLink from "./RouterLink";
-import MultiAutoSearch from "containers/MultiAutoSearch";
+import MovieAndPersonAutoSearch from "containers/MovieAndPersonAutoSearch";
 import DrawerToggleButton from "containers/DrawerToggleButton";
 import useDetectMobile from "hooks/useDetectMobile";
 import SearchIcon from "@material-ui/icons/Search";
@@ -65,7 +65,7 @@ function Header() {
               >
                 <CloseIcon />
               </IconButton>
-              <MultiAutoSearch autoFocus />
+              <MovieAndPersonAutoSearch autoFocus />
             </>
           ) : (
             <>
@@ -77,7 +77,7 @@ function Header() {
           )
         ) : (
           <Box flex={1} mx={2} display="flex" justifyContent="center">
-            <MultiAutoSearch className={classes.searcher} />
+            <MovieAndPersonAutoSearch className={classes.searcher} />
           </Box>
         )}
 

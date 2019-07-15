@@ -1,9 +1,7 @@
-import axios from "axios";
-import placeholderPng from "assets/placeholder.png";
-import merge from "lodash/merge";
-
-export const BASE_API_URL = "//api.themoviedb.org/3";
-export const BASE_IMG_API = "//image.tmdb.org/t/p";
+import axios from 'axios';
+import placeholderPng from 'assets/placeholder.png';
+import merge from 'lodash/merge';
+import { BASE_API_URL, BASE_IMG_API_URL } from 'constants/urls';
 
 const api_key = process.env.REACT_APP_API_KEY;
 
@@ -29,7 +27,7 @@ export function getImageUrl(path) {
     return placeholderPng;
   }
 
-  return `${BASE_IMG_API}/w500${path}`;
+  return `${BASE_IMG_API_URL}/w500${path}`;
 }
 
 export function getImdbProfileUrl(imdbId) {
@@ -39,7 +37,7 @@ export function getImdbProfileUrl(imdbId) {
 export function addStateToLocation(to, state) {
   let toObject;
 
-  if (typeof to === "string") {
+  if (typeof to === 'string') {
     const { pathname, search } = splitPathnameAndQueryString(to);
     toObject = {
       pathname,
@@ -56,9 +54,9 @@ export function addStateToLocation(to, state) {
 }
 
 export function splitPathnameAndQueryString(path) {
-  const [pathname, search] = path.split("?");
+  const [pathname, search] = path.split('?');
   return {
     pathname,
-    search: search ? `?${search}` : ""
+    search: search ? `?${search}` : ''
   };
 }

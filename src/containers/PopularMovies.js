@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPopularMovies } from "actions";
 import MovieCard from "./MovieCard";
-import InfiniteGridFeed from "components/InfiniteGridFeed";
+import InfiniteGridList from "components/InfiniteGridList";
 import {
   selectIsFetchingPopularMovies,
   selectPopularMoviesNextPage,
@@ -20,7 +20,7 @@ function PopularMovies() {
   }
 
   return (
-    <InfiniteGridFeed
+    <InfiniteGridList
       items={movieIds}
       loading={isFetching}
       hasNextPage={!!nextPage}

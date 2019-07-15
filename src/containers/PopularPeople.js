@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPopularPeople } from 'actions';
 import PersonCard from './PersonCard';
-import InfiniteGridFeed from 'components/InfiniteGridFeed';
+import InfiniteGridList from 'components/InfiniteGridList';
 import {
   selectIsFetchingPopularPeople,
   selectPopularPeopleNextPage,
@@ -20,7 +20,7 @@ function PopularPeople() {
   }
 
   return (
-    <InfiniteGridFeed
+    <InfiniteGridList
       items={personIds}
       loading={isFetching}
       hasNextPage={!!nextPage}
