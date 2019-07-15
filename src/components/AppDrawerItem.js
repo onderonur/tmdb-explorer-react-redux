@@ -1,11 +1,11 @@
-import React from "react";
-import { ListItemIcon, ListItemText, MenuItem } from "@material-ui/core";
-import RouterLink from "components/RouterLink";
-import { withRouter } from "react-router-dom";
+import React from 'react';
+import { ListItemIcon, ListItemText, ListItem } from '@material-ui/core';
+import RouterLink from 'components/RouterLink';
+import { withRouter } from 'react-router-dom';
 
 function AppDrawerItem({ to, icon, title, location }) {
   return (
-    <MenuItem
+    <ListItem
       to={to}
       button
       component={RouterLink}
@@ -13,7 +13,7 @@ function AppDrawerItem({ to, icon, title, location }) {
     >
       <ListItemIcon>{icon}</ListItemIcon>
       <ListItemText primary={title} />
-    </MenuItem>
+    </ListItem>
   );
 }
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Drawer, makeStyles, MenuList } from '@material-ui/core';
+import { Drawer, makeStyles, List } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import { toggleDrawer } from 'actions';
 import MovieIcon from '@material-ui/icons/LocalMovies';
@@ -41,7 +41,7 @@ function AppDrawer({ location }) {
       classes={{ paper: classes.drawerPaper }}
       onClose={handleClose}
     >
-      <MenuList>
+      <List>
         <AppDrawerItem
           to="/movie/popular"
           icon={<MovieIcon />}
@@ -52,7 +52,7 @@ function AppDrawer({ location }) {
           icon={<PersonIcon />}
           title="Popular People"
         />
-      </MenuList>
+      </List>
     </Drawer>
   );
 }
