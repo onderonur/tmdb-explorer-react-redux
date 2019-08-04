@@ -10,6 +10,7 @@ function useDebounce(value, wait = 250) {
       newValue => setDebouncedValue(newValue),
       wait
     );
+
     return () => changeHandler.current.cancel();
   }, [wait]);
 
