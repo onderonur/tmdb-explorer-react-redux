@@ -38,6 +38,7 @@ function useVisibilityTracker({
             { root, rootMargin, threshold }
           );
         }
+
         return observerRef.current;
       }
 
