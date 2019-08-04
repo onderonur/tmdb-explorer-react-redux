@@ -1,7 +1,6 @@
-import axios from 'axios';
-import placeholderPng from 'assets/placeholder.png';
-import merge from 'lodash/merge';
-import { BASE_API_URL, BASE_IMG_API_URL } from 'constants/urls';
+import axios from "axios";
+import placeholderPng from "assets/placeholder.png";
+import { BASE_API_URL, BASE_IMG_API_URL } from "constants/urls";
 
 const api_key = process.env.REACT_APP_API_KEY;
 
@@ -37,7 +36,7 @@ export function getImdbProfileUrl(imdbId) {
 export function addStateToLocation(to, state) {
   let toObject;
 
-  if (typeof to === 'string') {
+  if (typeof to === "string") {
     const { pathname, search } = splitPathnameAndQueryString(to);
     toObject = {
       pathname,
@@ -49,14 +48,14 @@ export function addStateToLocation(to, state) {
 
   return {
     ...toObject,
-    state: merge(toObject.state, state)
+    state: { ...toObject.state, state }
   };
 }
 
 export function splitPathnameAndQueryString(path) {
-  const [pathname, search] = path.split('?');
+  const [pathname, search] = path.split("?");
   return {
     pathname,
-    search: search ? `?${search}` : ''
+    search: search ? `?${search}` : ""
   };
 }
