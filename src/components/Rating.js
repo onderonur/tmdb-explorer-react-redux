@@ -2,9 +2,7 @@ import React from "react";
 import { CircularProgress, Avatar, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
-  value: {
-    ...theme.typography.button
-  }
+  value: theme.typography.button
 }));
 
 function Rating({ value }) {
