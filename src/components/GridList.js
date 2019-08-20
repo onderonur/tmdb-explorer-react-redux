@@ -29,17 +29,15 @@ function GridList({
       : keyExtractor(item, index);
   }
 
-  const isInitialFetch = loading && !items;
-
   return (
-    <LoadingIndicator loading={isInitialFetch}>
+    <React.Fragment>
       <ul className={classes.flexList}>
         {items.map((item, index) => (
           <li key={extractItemKey(item, index)}>{renderItem(item, index)}</li>
         ))}
       </ul>
       <LoadingIndicator loading={loading} />
-    </LoadingIndicator>
+    </React.Fragment>
   );
 }
 
