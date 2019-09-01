@@ -1,25 +1,7 @@
 import * as actionTypes from "constants/actionTypes";
 import * as schemas from "schemas";
 import { get } from "utils";
-import {
-  selectMovie,
-  selectMovieRecommendations,
-  selectMovieCredits,
-  selectPerson,
-  selectPersonCredits,
-  selectMovieVideos,
-  selectIsFetchingPopularMovies,
-  selectIsFetchingMovie,
-  selectIsFetchingMovieRecommendations,
-  selectIsFetchingGenres,
-  selectIsFetchingMovieCredits,
-  selectIsFetchingPerson,
-  selectIsFetchingPersonCredits,
-  selectIsFetchingPopularPeople,
-  selectIsFetchingMovieVideos,
-  selectIsFetchingMovieSearchResults,
-  selectIsFetchingPersonSearchResults
-} from "reducers";
+import * as selectors from "reducers";
 
 export function toggleDrawer() {
   return { type: actionTypes.TOGGLE_DRAWER };
@@ -34,7 +16,7 @@ export function fetchPopularMovies(pageId) {
       actionTypes.FETCH_POPULAR_MOVIES_SUCCESS,
       actionTypes.FETCH_POPULAR_MOVIES_ERROR
     ],
-    isFetching: state => selectIsFetchingPopularMovies(state),
+    isFetching: state => selectors.selectIsFetchingPopularMovies(state),
     callAPI: () =>
       get("/movie/popular", {
         page: pageId
@@ -51,8 +33,8 @@ export function fetchMovie(movieId, requiredFields) {
       actionTypes.FETCH_MOVIE_SUCCESS,
       actionTypes.FETCH_MOVIE_ERROR
     ],
-    isFetching: state => selectIsFetchingMovie(state, movieId),
-    selectCachedData: state => selectMovie(state, movieId),
+    isFetching: state => selectors.selectIsFetchingMovie(state, movieId),
+    selectCachedData: state => selectors.selectMovie(state, movieId),
     requiredFields,
     callAPI: () => get(`/movie/${movieId}`),
     schema: schemas.movieSchema,
@@ -67,8 +49,10 @@ export function fetchRecommendations(movieId) {
       actionTypes.FETCH_MOVIE_RECOMMENDATIONS_SUCCESS,
       actionTypes.FETCH_MOVIE_RECOMMENDATIONS_ERROR
     ],
-    isFetching: state => selectIsFetchingMovieRecommendations(state, movieId),
-    selectCachedData: state => selectMovieRecommendations(state, movieId),
+    isFetching: state =>
+      selectors.selectIsFetchingMovieRecommendations(state, movieId),
+    selectCachedData: state =>
+      selectors.selectMovieRecommendations(state, movieId),
     callAPI: () => get(`/movie/${movieId}/recommendations`),
     processResponse: data => ({ ...data, movieId }),
     schema: schemas.movieRecommendationSchema,
@@ -83,7 +67,7 @@ export function fetchGenres() {
       actionTypes.FETCH_GENRES_SUCCESS,
       actionTypes.FETCH_GENRES_ERROR
     ],
-    isFetching: state => selectIsFetchingGenres(state),
+    isFetching: state => selectors.selectIsFetchingGenres(state),
     callAPI: () => get("/genre/movie/list"),
     schema: { genres: [schemas.genreSchema] }
   };
@@ -96,8 +80,8 @@ export function fetchMovieCredits(movieId) {
       actionTypes.FETCH_MOVIE_CREDITS_SUCCESS,
       actionTypes.FETCH_MOVIE_CREDITS_ERROR
     ],
-    isFetching: state => selectIsFetchingMovieCredits(state, movieId),
-    selectCachedData: state => selectMovieCredits(state, movieId),
+    isFetching: state => selectors.selectIsFetchingMovieCredits(state, movieId),
+    selectCachedData: state => selectors.selectMovieCredits(state, movieId),
     callAPI: () => get(`/movie/${movieId}/credits`),
     schema: schemas.movieCreditSchema,
     payload: { movieId }
@@ -111,8 +95,8 @@ export function fetchPerson(personId, requiredFields) {
       actionTypes.FETCH_PERSON_SUCCESS,
       actionTypes.FETCH_PERSON_ERROR
     ],
-    isFetching: state => selectIsFetchingPerson(state, personId),
-    selectCachedData: state => selectPerson(state, personId),
+    isFetching: state => selectors.selectIsFetchingPerson(state, personId),
+    selectCachedData: state => selectors.selectPerson(state, personId),
     requiredFields,
     callAPI: () => get(`/person/${personId}`),
     schema: schemas.personSchema,
@@ -127,8 +111,9 @@ export function fetchPersonCredits(personId) {
       actionTypes.FETCH_PERSON_MOVIE_CREDITS_SUCCESS,
       actionTypes.FETCH_PERSON_MOVIE_CREDITS_ERROR
     ],
-    isFetching: state => selectIsFetchingPersonCredits(state, personId),
-    selectCachedData: state => selectPersonCredits(state, personId),
+    isFetching: state =>
+      selectors.selectIsFetchingPersonCredits(state, personId),
+    selectCachedData: state => selectors.selectPersonCredits(state, personId),
     callAPI: () => get(`/person/${personId}/movie_credits`),
     schema: schemas.personCreditSchema,
     payload: { personId }
@@ -142,7 +127,7 @@ export function fetchPopularPeople(pageId) {
       actionTypes.FETCH_POPULAR_PEOPLE_SUCCESS,
       actionTypes.FETCH_POPULAR_PEOPLE_ERROR
     ],
-    isFetching: state => selectIsFetchingPopularPeople(state),
+    isFetching: state => selectors.selectIsFetchingPopularPeople(state),
     callAPI: () =>
       get("/person/popular", {
         page: pageId
@@ -159,8 +144,8 @@ export function fetchMovieVideos(movieId) {
       actionTypes.FETCH_MOVIE_VIDEOS_SUCCESS,
       actionTypes.FETCH_MOVIE_VIDEOS_ERROR
     ],
-    isFetching: state => selectIsFetchingMovieVideos(state, movieId),
-    selectCachedData: state => selectMovieVideos(state, movieId),
+    isFetching: state => selectors.selectIsFetchingMovieVideos(state, movieId),
+    selectCachedData: state => selectors.selectMovieVideos(state, movieId),
     callAPI: () => get(`/movie/${movieId}/videos`),
     schema: schemas.movieVideosSchema,
     payload: { movieId }
@@ -174,7 +159,8 @@ export function fetchMovieSearch(query, pageId) {
       actionTypes.FETCH_MOVIE_SEARCH_SUCCESS,
       actionTypes.FETCH_MOVIE_SEARCH_ERROR
     ],
-    isFetching: state => selectIsFetchingMovieSearchResults(state, query),
+    isFetching: state =>
+      selectors.selectIsFetchingMovieSearchResults(state, query),
     // We don't select "cachedData" to force a new request on every search.
     callAPI: () =>
       get("/search/movie", {
@@ -193,7 +179,8 @@ export function fetchPersonSearch(query, pageId) {
       actionTypes.FETCH_PERSON_SEARCH_SUCCESS,
       actionTypes.FETCH_PERSON_SEARCH_ERROR
     ],
-    isFetching: state => selectIsFetchingPersonSearchResults(state, query),
+    isFetching: state =>
+      selectors.selectIsFetchingPersonSearchResults(state, query),
     // We don't select "cachedData" to force a new request on every search.
     callAPI: () =>
       get("/search/person", {
