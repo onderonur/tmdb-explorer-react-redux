@@ -7,7 +7,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function InfoWithLabel({ label, text }) {
+function TextWithLabel({ label, text }) {
   const classes = useStyles();
 
   return (
@@ -18,4 +18,4 @@ function InfoWithLabel({ label, text }) {
   );
 }
 
-export default InfoWithLabel;
+export default TextWithLabel;

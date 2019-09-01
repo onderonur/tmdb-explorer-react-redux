@@ -1,13 +1,13 @@
-import React from 'react';
-import { ListItemIcon, ListItemText, ListItem } from '@material-ui/core';
-import RouterLink from 'components/RouterLink';
-import { withRouter } from 'react-router-dom';
+import React from "react";
+import { ListItemIcon, ListItemText, ListItem } from "@material-ui/core";
+import RouterLink from "components/RouterLink";
+import { withRouter } from "react-router-dom";
 
 function AppDrawerItem({ to, icon, title, location }) {
   return (
     <ListItem
-      to={to}
       button
+      to={to}
       component={RouterLink}
       selected={location.pathname === to}
     >

@@ -45,6 +45,29 @@ function MovieAndPersonAutoSearch({ className, history, autoFocus }) {
     setSearchValue(inputValue);
   }
 
+  function handleRedirect(inputValue) {
+    if (inputValue) {
+      history.push(`/search/movie?query=${inputValue}`);
+    } else {
+      history.push("/movie/popular");
+    }
+  }
+
+  function handleSelectSuggestion(selectedSuggestion) {
+    if (selectedSuggestion) {
+      switch (selectedSuggestion.suggestionType) {
+        case "movie":
+          history.push(`/movie/${selectedSuggestion.id}`);
+          break;
+        case "person":
+          history.push(`/person/${selectedSuggestion.id}`);
+          break;
+        default:
+          return;
+      }
+    }
+  }
+
   let suggestions = [
     ...movies.map(movie => ({ ...movie, suggestionType: "movie" })),
     ...people.map(person => ({ ...person, suggestionType: "person" }))
@@ -73,6 +96,8 @@ function MovieAndPersonAutoSearch({ className, history, autoFocus }) {
       }
       loading={isFetchingMovies || isFetchingPeople}
       onInputValueChange={handleInputValueChange}
+      onPressEnterOrClickSearch={handleRedirect}
+      onItemSelect={handleSelectSuggestion}
       autoFocus={autoFocus}
     />
   );
