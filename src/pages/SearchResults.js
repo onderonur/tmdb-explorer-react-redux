@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import MovieSearchResults from "./MovieSearchResults";
+import MovieSearchResults from "containers/MovieSearchResults";
 import useQueryString from "hooks/useQueryString";
-import PersonSearchResults from "./PersonSearchResults";
+import PersonSearchResults from "containers/PersonSearchResults";
 import { Tabs, Tab, Box } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";

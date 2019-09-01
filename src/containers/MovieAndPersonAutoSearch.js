@@ -1,28 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import { withRouter } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import {
   selectIsFetchingMovieSearchResults,
   selectMovieSearchResultIds,
   selectIsFetchingPersonSearchResults,
   selectPersonSearchResultIds,
   selectPeople
-} from 'reducers';
-import AutoSearch from 'components/AutoSearch';
-import { fetchMovieSearch, fetchPersonSearch } from 'actions';
-import { DEFAULT_FIRST_PAGE } from 'reducers/createPagination';
-import {
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
-  Avatar
-} from '@material-ui/core';
-import { getImageUrl } from 'utils';
-import { selectMovies } from 'reducers';
+} from "reducers";
+import AutoSearch from "components/AutoSearch";
+import { fetchMovieSearch, fetchPersonSearch } from "actions";
+import { DEFAULT_FIRST_PAGE } from "reducers/createPagination";
+import { selectMovies } from "reducers";
+import PersonListItem from "./PersonListItem";
+import MovieListItem from "./MovieListItem";
 
 function MovieAndPersonAutoSearch({ className, history, autoFocus }) {
   const dispatch = useDispatch();
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
 
   const movieIds =
     useSelector(state => selectMovieSearchResultIds(state, searchValue)) || [];
@@ -39,29 +34,6 @@ function MovieAndPersonAutoSearch({ className, history, autoFocus }) {
     selectIsFetchingPersonSearchResults(state, searchValue)
   );
 
-  function handleRedirect(inputValue) {
-    if (inputValue) {
-      history.push(`/search/movie?query=${inputValue}`);
-    } else {
-      history.push('/movie/popular');
-    }
-  }
-
-  function handleSelectSuggestion(selectedSuggestion) {
-    if (selectedSuggestion) {
-      switch (selectedSuggestion.suggestionType) {
-        case 'movie':
-          history.push(`/movie/${selectedSuggestion.id}`);
-          break;
-        case 'person':
-          history.push(`/person/${selectedSuggestion.id}`);
-          break;
-        default:
-          return;
-      }
-    }
-  }
-
   useEffect(() => {
     if (searchValue) {
       dispatch(fetchMovieSearch(searchValue, DEFAULT_FIRST_PAGE));
@@ -74,13 +46,13 @@ function MovieAndPersonAutoSearch({ className, history, autoFocus }) {
   }
 
   let suggestions = [
-    ...movies.map(movie => ({ ...movie, suggestionType: 'movie' })),
-    ...people.map(person => ({ ...person, suggestionType: 'person' }))
+    ...movies.map(movie => ({ ...movie, suggestionType: "movie" })),
+    ...people.map(person => ({ ...person, suggestionType: "person" }))
   ];
 
   suggestions = suggestions.sort((a, b) =>
-    a[a.suggestionType === 'movie' ? 'title' : 'name'].localeCompare(
-      b[b.suggestionType === 'movie' ? 'title' : 'name']
+    a[a.suggestionType === "movie" ? "title" : "name"].localeCompare(
+      b[b.suggestionType === "movie" ? "title" : "name"]
     )
   );
 
@@ -93,31 +65,13 @@ function MovieAndPersonAutoSearch({ className, history, autoFocus }) {
       placeholder="Search Movies & People"
       suggestions={suggestions}
       renderSuggestion={suggestion =>
-        suggestion.suggestionType === 'movie' ? (
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar
-                src={getImageUrl(suggestion.poster_path)}
-                alt={suggestion.title}
-              />
-            </ListItemAvatar>
-            <ListItemText primary={suggestion.title} />
-          </ListItem>
+        suggestion.suggestionType === "movie" ? (
+          <MovieListItem movieId={suggestion.id} />
         ) : (
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar
-                src={getImageUrl(suggestion.profile_path)}
-                alt={suggestion.title}
-              />
-            </ListItemAvatar>
-            <ListItemText primary={suggestion.name} />
-          </ListItem>
+          <PersonListItem personId={suggestion.id} />
         )
       }
       loading={isFetchingMovies || isFetchingPeople}
-      onPressEnterOrClickSearch={handleRedirect}
-      onItemSelect={handleSelectSuggestion}
       onInputValueChange={handleInputValueChange}
       autoFocus={autoFocus}
     />

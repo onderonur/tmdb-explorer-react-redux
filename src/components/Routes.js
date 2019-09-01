@@ -1,10 +1,10 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import PopularMovies from "containers/PopularMovies";
-import MovieProfile from "containers/MovieProfile";
-import PersonProfile from "containers/PersonProfile";
-import PopularPeople from "containers/PopularPeople";
-import SearchResults from "containers/SearchResults";
+import PopularMovies from "pages/PopularMovies";
+import MovieProfile from "pages/MovieProfile";
+import PersonProfile from "pages/PersonProfile";
+import PopularPeople from "pages/PopularPeople";
+import SearchResults from "pages/SearchResults";
 import SwitchWithScrollRestoration from "components/SwitchWithScrollRestoration";
 
 function Routes() {
