@@ -4,7 +4,7 @@ import PersonIntroduction from "containers/PersonIntroduction";
 import { useDispatch } from "react-redux";
 import { fetchPerson } from "actions";
 import PersonInfo from "containers/PersonInfo";
-import PersonCastingGridList from "./PersonCastingGridList";
+import PersonCastingGridList from "containers/PersonCastingGridList";
 import Profile from "components/Profile";
 
 const REQUIRED_FIELDS = ["biography", "imdb_id"];

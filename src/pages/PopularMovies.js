@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPopularMovies } from "actions";
-import MovieCard from "./MovieCard";
+import MovieCard from "containers/MovieCard";
 import InfiniteGridList from "components/InfiniteGridList";
 import {
   selectIsFetchingPopularMovies,

@@ -24,7 +24,7 @@ function MovieCastGridList({ movieId }) {
       minItemWidth={230}
       keyExtractor={castCreditId => castCreditId}
       renderItem={castCreditId => (
-        <MovieCastGridListItem castCreditId={castCreditId} />
+        <MovieCastGridListItem castCreditId={castCreditId} button />
       )}
     />
   );
