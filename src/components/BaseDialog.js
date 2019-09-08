@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
   Dialog,
@@ -27,34 +27,29 @@ function BaseDialog({
   open,
   fullScreen,
   title,
+  onClose,
   onExited,
   zeroPaddingContent,
   children
 }) {
   const classes = useStyles();
-  const [show, setShow] = useState(open);
-
-  function handleClose() {
-    setShow(false);
-  }
-
-  useEffect(() => {
-    setShow(open);
-  }, [open]);
 
   return (
     <Dialog
-      open={show}
+      open={open}
       scroll="body"
       fullWidth
       fullScreen={fullScreen}
       maxWidth="lg"
+      onClose={onClose}
       onExited={onExited}
-      onClose={handleClose}
     >
-      <DialogContext.Provider value={{ fullScreen, closeDialog: handleClose }}>
+      {/* TODO: Instead of providing context value as an object, there should be a more
+      performant solution. Or all of the consumers will re-render every time
+      "BaseDialog" re-renders. */}
+      <DialogContext.Provider value={{ fullScreen, closeDialog: onClose }}>
         {!fullScreen && (
-          <CloseIcon className={classes.closeButton} onClick={handleClose} />
+          <CloseIcon className={classes.closeButton} onClick={onClose} />
         )}
         <BaseDialogTitle>{title}</BaseDialogTitle>
         <DialogContent>
