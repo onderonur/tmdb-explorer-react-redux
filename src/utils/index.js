@@ -33,7 +33,7 @@ export function getImdbProfileUrl(imdbId) {
   return `https://www.imdb.com/title/${imdbId}`;
 }
 
-export function addStateToLocation(to, state) {
+export function addStateToLocation(to, addedState) {
   let toObject;
 
   if (typeof to === "string") {
@@ -48,7 +48,10 @@ export function addStateToLocation(to, state) {
 
   return {
     ...toObject,
-    state: { ...toObject.state, state }
+    state: {
+      ...toObject.state,
+      ...addedState
+    }
   };
 }
 

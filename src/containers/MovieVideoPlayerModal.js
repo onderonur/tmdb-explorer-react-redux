@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectMovieVideos, selectVideo } from "reducers";
 import { MobileStepper, Button, Typography } from "@material-ui/core";
@@ -17,6 +17,7 @@ function MovieVideoPlayerModal({ movieId, location, history }) {
     useSelector(state => selectMovieVideos(state, movieId)) || [];
   const { watch } = useQueryString(location);
   const videoToWatch = useSelector(state => selectVideo(state, watch));
+  const [isVisible, setIsVisible] = useState(!!videoToWatch);
 
   const videoCount = movieVideoIds.length;
   const orderOfVideoToWatch = movieVideoIds.indexOf(watch);
@@ -30,8 +31,16 @@ function MovieVideoPlayerModal({ movieId, location, history }) {
     : null;
 
   function handleClose() {
+    setIsVisible(false);
+  }
+
+  function handleExited() {
     history.push(addKeepScrollState(location.pathname));
   }
+
+  useEffect(() => {
+    setIsVisible(!!videoToWatch);
+  }, [videoToWatch]);
 
   return (
     <BaseDialog
@@ -44,8 +53,9 @@ function MovieVideoPlayerModal({ movieId, location, history }) {
           ""
         )
       }
-      open={!!videoToWatch}
-      onExited={handleClose}
+      open={isVisible}
+      onClose={handleClose}
+      onExited={handleExited}
       zeroPaddingContent
     >
       <YouTubePlayer youtubeId={videoToWatch ? videoToWatch.key : ""} />
