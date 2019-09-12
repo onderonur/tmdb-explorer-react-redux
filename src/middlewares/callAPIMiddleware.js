@@ -79,12 +79,14 @@ const callAPIMiddleware = store => next => action => {
       }
 
       dispatch({ ...payload, response: responseData, type: successType });
+      return response;
     })
     .catch(error => {
       if (process.env.NODE_ENV === "development") {
         console.error("callAPIMiddleware: ", error);
       }
       dispatch({ ...payload, error, type: failureType });
+      return error;
     });
 };
 
