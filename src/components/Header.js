@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Header() {
+const Header = React.forwardRef((props, ref) => {
   const classes = useStyles();
   const isMobile = useDetectMobile();
   const [isMobileSearch, setIsMobileSearch] = useState(false);
@@ -43,7 +43,7 @@ function Header() {
   }
 
   return (
-    <AppBar color="default">
+    <AppBar ref={ref} color="default">
       <Toolbar>
         {!isMobileSearch && (
           <Link
@@ -85,6 +85,6 @@ function Header() {
       </Toolbar>
     </AppBar>
   );
-}
+});
 
 export default Header;

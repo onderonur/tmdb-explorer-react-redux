@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
-import { CssBaseline, Container } from '@material-ui/core';
-import Routes from 'components/Routes';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchGenres } from 'actions';
-import LoadingIndicator from 'components/LoadingIndicator';
-import Header from 'components/Header';
-import { makeStyles } from '@material-ui/styles';
-import { selectIsFetchingGenres } from 'reducers';
-import AppDrawer from 'containers/AppDrawer';
-import BackToTopButton from 'components/BackToTopButton';
+import React, { useEffect } from "react";
+import { CssBaseline, Container } from "@material-ui/core";
+import Routes from "components/Routes";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchGenres } from "actions";
+import LoadingIndicator from "components/LoadingIndicator";
+import Header from "components/Header";
+import { makeStyles } from "@material-ui/styles";
+import { selectIsFetchingGenres } from "reducers";
+import AppDrawer from "containers/AppDrawer";
+import BackToTopButton from "components/BackToTopButton";
+import HideOnScroll from "components/HideOnScroll";
 
 const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
@@ -29,7 +30,9 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <Header />
+      <HideOnScroll>
+        <Header />
+      </HideOnScroll>
       <AppDrawer />
       <div className={classes.toolbar} />
       <Container className={classes.main} component="main">
