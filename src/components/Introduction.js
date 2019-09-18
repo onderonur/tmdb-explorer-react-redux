@@ -5,7 +5,7 @@ import { getImageUrl } from "utils";
 
 const useStyles = makeStyles(theme => ({
   backdrop: {
-    backgroundImage: ({ backgroundImage }) => `url(${backgroundImage})`,
+    backgroundImage: ({ backgroundImageSrc }) => `url(${backgroundImageSrc})`,
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
@@ -22,9 +22,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Introduction({ backgroundImage, imageSrc, title, content }) {
+function Introduction({ backgroundImageSrc, imageSrc, title, content }) {
   const classes = useStyles({
-    backgroundImage: getImageUrl(backgroundImage)
+    backgroundImageSrc: getImageUrl(backgroundImageSrc)
   });
 
   return (
