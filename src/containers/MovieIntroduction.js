@@ -5,7 +5,7 @@ import { Typography, makeStyles, Box, Grid, Link } from "@material-ui/core";
 import Rating from "components/Rating";
 import MovieGenreChip from "./MovieGenreChip";
 import ImdbLogo from "components/ImdbLogo";
-import { getMovieReleaseYear, getImageUrl, getImdbProfileUrl } from "utils";
+import { getMovieReleaseYear, getImdbProfileUrl } from "utils";
 import Introduction from "components/Introduction";
 
 const useStyles = makeStyles(theme => ({
@@ -25,13 +25,11 @@ const useStyles = makeStyles(theme => ({
 
 function MovieIntroduction({ movieId }) {
   const movie = useSelector(state => selectMovie(state, movieId));
-  const classes = useStyles({
-    backgroundImage: !movie ? null : getImageUrl(movie.backdrop_path)
-  });
+  const classes = useStyles();
 
   return movie ? (
     <Introduction
-      backgroundImage={movie.backdrop_path}
+      backgroundImageSrc={movie.backdrop_path}
       imageSrc={movie.poster_path}
       title={
         <>
