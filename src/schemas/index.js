@@ -1,9 +1,9 @@
-import { schema } from 'normalizr';
+import { schema } from "normalizr";
 
-export const genreSchema = new schema.Entity('genres');
+export const genreSchema = new schema.Entity("genres");
 
 export const movieSchema = new schema.Entity(
-  'movies',
+  "movies",
   {
     genres: [genreSchema]
   },
@@ -28,7 +28,7 @@ export const movieSchema = new schema.Entity(
 );
 
 export const personSchema = new schema.Entity(
-  'people',
+  "people",
   {
     known_for: [movieSchema]
   },
@@ -40,7 +40,7 @@ export const personSchema = new schema.Entity(
             // Omitting tv series info of people.
             // We are only selecting "movie" type media.
             known_for: value.known_for.filter(
-              media => media.media_type === 'movie'
+              media => media.media_type === "movie"
             )
           }
         : value;
@@ -49,7 +49,7 @@ export const personSchema = new schema.Entity(
 );
 
 export const castCreditSchema = new schema.Entity(
-  'castCredits',
+  "castCredits",
   {
     person: personSchema,
     movie: movieSchema
@@ -58,7 +58,7 @@ export const castCreditSchema = new schema.Entity(
     idAttribute: value => value.credit_id,
     processStrategy: (value, parent, key) => {
       switch (key) {
-        case 'castings':
+        case "castings":
           const {
             adult,
             backdrop_path,
@@ -99,7 +99,7 @@ export const castCreditSchema = new schema.Entity(
             movie,
             person: parent.id
           };
-        case 'cast': {
+        case "cast": {
           return value;
         }
         default:
@@ -110,7 +110,7 @@ export const castCreditSchema = new schema.Entity(
 );
 
 export const personCreditSchema = new schema.Entity(
-  'personCredits',
+  "personCredits",
   {
     castings: [castCreditSchema]
   },
@@ -128,14 +128,14 @@ export const personCreditSchema = new schema.Entity(
 );
 
 export const movieCreditSchema = new schema.Entity(
-  'movieCredits',
+  "movieCredits",
   {
     cast: [castCreditSchema]
   },
   {
     processStrategy: (value, parent, key) => {
       // Omittig crew values and formatting cast fields
-      const { id, cast } = value;
+      const { id: movieId, cast } = value;
 
       const formattedCast = cast.map(
         ({ id, name, gender, profile_path, ...rest }) => ({
@@ -150,17 +150,17 @@ export const movieCreditSchema = new schema.Entity(
       );
 
       return {
-        movieId: id,
+        movieId,
         cast: formattedCast
       };
     }
   }
 );
 
-export const videoSchema = new schema.Entity('videos');
+export const videoSchema = new schema.Entity("videos");
 
 export const movieVideosSchema = new schema.Entity(
-  'movieVideos',
+  "movieVideos",
   {
     videos: [videoSchema]
   },
@@ -171,14 +171,14 @@ export const movieVideosSchema = new schema.Entity(
       return {
         movieId: id,
         // We are only using Youtube videos.
-        videos: results.filter(video => video.site === 'YouTube')
+        videos: results.filter(video => video.site === "YouTube")
       };
     }
   }
 );
 
 export const movieRecommendationSchema = new schema.Entity(
-  'movieRecommendations',
+  "movieRecommendations",
   {
     movies: [movieSchema]
   },
