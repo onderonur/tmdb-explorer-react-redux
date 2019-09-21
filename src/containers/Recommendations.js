@@ -25,8 +25,8 @@ function Recommendations({ movieId }) {
     <GridList
       items={recommendationIds}
       loading={isFetching}
-      keyExtractor={movieId => movieId}
-      renderItem={movieId => <MovieCard movieId={movieId} />}
+      keyExtractor={recommendationId => recommendationId}
+      renderItem={recommendationId => <MovieCard movieId={recommendationId} />}
     />
   );
 }
