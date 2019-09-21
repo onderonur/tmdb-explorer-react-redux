@@ -12,18 +12,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function YouTubePlayer({ youtubeId }) {
+function YouTubePlayer({ youTubeId }) {
   const classes = useStyles();
 
   return (
     <AspectRatio aspectRatio="16:9">
       <iframe
         className={classes.player}
-        // Key is added to unmount the iframe everytime youtubeId changes.
+        // Key is added to unmount the iframe everytime youTubeId changes.
         // Otherwise, iframe messes up with the browser history.
-        key={youtubeId}
-        title="youtubePlayer"
-        src={`https://www.youtube.com/embed/${youtubeId}`}
+        key={youTubeId}
+        title="YouTubePlayer"
+        src={`https://www.youtube.com/embed/${youTubeId}`}
         frameBorder="0"
         allowFullScreen
       />

@@ -58,7 +58,7 @@ function MovieVideoPlayerModal({ movieId, location, history }) {
       onExited={handleExited}
       zeroPaddingContent
     >
-      <YouTubePlayer youtubeId={videoToWatch ? videoToWatch.key : ""} />
+      <YouTubePlayer youTubeId={videoToWatch ? videoToWatch.key : ""} />
       <MobileStepper
         steps={videoCount}
         position="static"

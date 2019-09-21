@@ -170,7 +170,7 @@ export const movieVideosSchema = new schema.Entity(
       const { id, results } = value;
       return {
         movieId: id,
-        // We are only using Youtube videos.
+        // We are only using YouTube videos.
         videos: results.filter(video => video.site === "YouTube")
       };
     }
