@@ -5,6 +5,10 @@ import { selectMovieCredits, selectIsFetchingMovieCredits } from "reducers";
 import MovieCastGridListItem from "./MovieCastGridListItem";
 import GridList from "components/GridList";
 
+function renderItem(castCreditId) {
+  return <MovieCastGridListItem castCreditId={castCreditId} button />;
+}
+
 function MovieCastGridList({ movieId }) {
   const dispatch = useDispatch();
   const movieCredits = useSelector(state => selectMovieCredits(state, movieId));
@@ -22,10 +26,7 @@ function MovieCastGridList({ movieId }) {
       items={castCreditIds}
       loading={isFetchingCredits}
       minItemWidth={230}
-      keyExtractor={castCreditId => castCreditId}
-      renderItem={castCreditId => (
-        <MovieCastGridListItem castCreditId={castCreditId} button />
-      )}
+      renderItem={renderItem}
     />
   );
 }

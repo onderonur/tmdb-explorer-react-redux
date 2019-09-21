@@ -2,6 +2,9 @@ import React from "react";
 import LoadingIndicator from "components/LoadingIndicator";
 import { makeStyles } from "@material-ui/styles";
 
+const DEFAULT_ITEMS = [];
+const DEFAULT_KEY_EXTRACTOR = id => id;
+
 const useStyles = makeStyles(theme => ({
   flexList: {
     listStyle: "none",
@@ -14,12 +17,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function GridList({
-  items = [],
+  items = DEFAULT_ITEMS,
   loading,
   renderItem,
   spacing = 1,
   minItemWidth = 220,
-  keyExtractor
+  keyExtractor = DEFAULT_KEY_EXTRACTOR
 }) {
   const classes = useStyles({ minItemWidth, spacing });
 

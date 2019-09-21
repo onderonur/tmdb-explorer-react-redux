@@ -9,6 +9,10 @@ import {
   selectPopularPeopleIds
 } from "reducers";
 
+function renderItem(personId) {
+  return <PersonCard personId={personId} />;
+}
+
 function PopularPeople() {
   const dispatch = useDispatch();
   const isFetching = useSelector(state => selectIsFetchingPopularPeople(state));
@@ -25,8 +29,7 @@ function PopularPeople() {
       loading={isFetching}
       hasNextPage={!!nextPage}
       onLoadMore={handleLoadMore}
-      keyExtractor={personId => personId}
-      renderItem={personId => <PersonCard key={personId} personId={personId} />}
+      renderItem={renderItem}
     />
   );
 }

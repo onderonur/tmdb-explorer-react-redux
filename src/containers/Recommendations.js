@@ -8,6 +8,10 @@ import {
   selectIsFetchingMovieRecommendations
 } from "reducers";
 
+function renderItem(recommendationId) {
+  return <MovieCard movieId={recommendationId} />;
+}
+
 function Recommendations({ movieId }) {
   const recommendationIds = useSelector(
     state => selectMovieRecommendations(state, movieId) || []
@@ -25,8 +29,7 @@ function Recommendations({ movieId }) {
     <GridList
       items={recommendationIds}
       loading={isFetching}
-      keyExtractor={recommendationId => recommendationId}
-      renderItem={recommendationId => <MovieCard movieId={recommendationId} />}
+      renderItem={renderItem}
     />
   );
 }

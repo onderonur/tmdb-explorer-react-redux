@@ -9,6 +9,10 @@ import {
   selectMovieSearchResultsNextPage
 } from "reducers";
 
+function renderItem(movieId) {
+  return <MovieCard movieId={movieId} />;
+}
+
 function MovieSearchResults({ query }) {
   const dispatch = useDispatch();
   const movieIds = useSelector(state =>
@@ -31,8 +35,7 @@ function MovieSearchResults({ query }) {
       loading={isFetching}
       hasNextPage={!!nextPage}
       onLoadMore={handleLoadMore}
-      keyExtractor={movieId => movieId}
-      renderItem={movieId => <MovieCard key={movieId} movieId={movieId} />}
+      renderItem={renderItem}
     />
   );
 }

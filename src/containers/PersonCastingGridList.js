@@ -5,6 +5,10 @@ import { fetchPersonCredits } from "actions";
 import PersonCastingGridListItem from "./PersonCastingGridListItem";
 import GridList from "components/GridList";
 
+function renderItem(castingId) {
+  return <PersonCastingGridListItem castCreditId={castingId} />;
+}
+
 function PersonCastingGridList({ personId }) {
   const dispatch = useDispatch();
   const personCredits = useSelector(state =>
@@ -24,11 +28,8 @@ function PersonCastingGridList({ personId }) {
       items={castingIds}
       loading={isFetching}
       spacing={2}
-      keyExtractor={castingId => castingId}
       minItemWidth={200}
-      renderItem={castingId => (
-        <PersonCastingGridListItem key={castingId} castCreditId={castingId} />
-      )}
+      renderItem={renderItem}
     />
   );
 }
