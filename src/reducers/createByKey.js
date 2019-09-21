@@ -1,7 +1,12 @@
 import produce from "immer";
 
+const initialState = {};
+
 // A higher order reducer that maps the state slices to keys
-const createByKey = (mapActionToKey, reducer) => (state = {}, action) => {
+const createByKey = (mapActionToKey, reducer) => (
+  state = initialState,
+  action
+) => {
   if (typeof reducer !== "function") {
     throw new Error("Expected reducer to be a function");
   }

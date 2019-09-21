@@ -3,19 +3,19 @@ import produce from "immer";
 
 export const DEFAULT_FIRST_PAGE = 1;
 
+const initialState = {
+  nextPage: DEFAULT_FIRST_PAGE,
+  pageCount: 0,
+  totalCount: 0,
+  ids: []
+};
+
 // Higher-order reducer: a function that returns a reducer.
 // It creates (returns) a reducer managing pagination, given the action types to handle.
 const createPagination = successType => {
   if (typeof successType !== "string") {
     throw new Error("Expected successType to be strings.");
   }
-
-  const initialState = {
-    nextPage: DEFAULT_FIRST_PAGE,
-    pageCount: 0,
-    totalCount: 0,
-    ids: []
-  };
 
   return (state = initialState, action) => {
     return produce(state, draft => {
