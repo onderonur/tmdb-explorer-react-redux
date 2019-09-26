@@ -3,9 +3,10 @@ import { useSelector } from "react-redux";
 import { selectVideo } from "reducers";
 import { ListItem, ListItemText } from "@material-ui/core";
 import RouterLink from "components/RouterLink";
-import { withRouter } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-function MovieVideoListItem({ videoId, location: { pathname } }) {
+function MovieVideoListItem({ videoId }) {
+  const { pathname } = useLocation();
   const video = useSelector(state => selectVideo(state, videoId));
 
   return (
@@ -20,4 +21,4 @@ function MovieVideoListItem({ videoId, location: { pathname } }) {
   );
 }
 
-export default withRouter(MovieVideoListItem);
+export default MovieVideoListItem;

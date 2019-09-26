@@ -2,20 +2,22 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectMovieVideos, selectVideo } from "reducers";
 import { MobileStepper, Button, Typography } from "@material-ui/core";
-import { withRouter } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import YouTubePlayer from "components/YouTubePlayer";
 import useQueryString from "hooks/useQueryString";
 import BaseDialog from "components/BaseDialog";
 import { useTheme } from "@material-ui/styles";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
-import { addKeepScrollState } from "hooks/useScrollRestoration";
+import useHistoryPush from "hooks/useHistoryPush";
 
-function MovieVideoPlayerModal({ movieId, location, history }) {
+function MovieVideoPlayerModal({ movieId }) {
   const theme = useTheme();
+  const location = useLocation();
+  const historyPush = useHistoryPush();
   const movieVideoIds =
     useSelector(state => selectMovieVideos(state, movieId)) || [];
-  const { watch } = useQueryString(location);
+  const { watch } = useQueryString();
   const videoToWatch = useSelector(state => selectVideo(state, watch));
   const [isVisible, setIsVisible] = useState(!!videoToWatch);
 
@@ -35,7 +37,7 @@ function MovieVideoPlayerModal({ movieId, location, history }) {
   }
 
   function handleExited() {
-    history.push(addKeepScrollState(location.pathname));
+    historyPush(location.pathname, { keepScrollState: true });
   }
 
   useEffect(() => {
@@ -69,11 +71,9 @@ function MovieVideoPlayerModal({ movieId, location, history }) {
             size="small"
             disabled={isLastVideo}
             onClick={() =>
-              history.push(
-                addKeepScrollState(
-                  `${location.pathname}?watch=${nextVideoIdToWatch}`
-                )
-              )
+              historyPush(`${location.pathname}?watch=${nextVideoIdToWatch}`, {
+                keepScrollState: true
+              })
             }
           >
             Next
@@ -89,10 +89,11 @@ function MovieVideoPlayerModal({ movieId, location, history }) {
             size="small"
             disabled={isFirstVideo}
             onClick={() =>
-              history.push(
-                addKeepScrollState(
-                  `${location.pathname}?watch=${previousVideoIdToWatch}`
-                )
+              historyPush(
+                `${location.pathname}?watch=${previousVideoIdToWatch}`,
+                {
+                  keepScrollState: true
+                }
               )
             }
           >
@@ -109,4 +110,4 @@ function MovieVideoPlayerModal({ movieId, location, history }) {
   );
 }
 
-export default withRouter(MovieVideoPlayerModal);
+export default MovieVideoPlayerModal;

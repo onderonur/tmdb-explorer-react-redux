@@ -1,11 +1,10 @@
 import { useEffect } from "react";
-import { addStateToLocation } from "utils";
+import { useLocation, useHistory } from "react-router-dom";
 
-export function addKeepScrollState(to) {
-  return addStateToLocation(to, { keepScroll: true });
-}
+function useScrollRestoration() {
+  const location = useLocation();
+  const history = useHistory();
 
-function useScrollRestoration(location, history) {
   useEffect(() => {
     if (
       history.action !== "POP" &&
