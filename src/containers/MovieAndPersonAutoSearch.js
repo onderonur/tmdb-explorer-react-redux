@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectIsFetchingMovieSearchResults,
@@ -14,10 +13,12 @@ import { DEFAULT_FIRST_PAGE } from "reducers/createPagination";
 import { selectMovies } from "reducers";
 import PersonListItem from "./PersonListItem";
 import MovieListItem from "./MovieListItem";
+import useHistoryPush from "hooks/useHistoryPush";
 
-function MovieAndPersonAutoSearch({ className, history, autoFocus }) {
+function MovieAndPersonAutoSearch({ className, autoFocus }) {
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
+  const historyPush = useHistoryPush();
 
   const movieIds =
     useSelector(state => selectMovieSearchResultIds(state, searchValue)) || [];
@@ -47,9 +48,9 @@ function MovieAndPersonAutoSearch({ className, history, autoFocus }) {
 
   function handleRedirect(inputValue) {
     if (inputValue) {
-      history.push(`/search/movie?query=${inputValue}`);
+      historyPush(`/search/movie?query=${inputValue}`);
     } else {
-      history.push("/movie/popular");
+      historyPush("/movie/popular");
     }
   }
 
@@ -57,10 +58,10 @@ function MovieAndPersonAutoSearch({ className, history, autoFocus }) {
     if (selectedSuggestion) {
       switch (selectedSuggestion.suggestionType) {
         case "movie":
-          history.push(`/movie/${selectedSuggestion.id}`);
+          historyPush(`/movie/${selectedSuggestion.id}`);
           break;
         case "person":
-          history.push(`/person/${selectedSuggestion.id}`);
+          historyPush(`/person/${selectedSuggestion.id}`);
           break;
         default:
           return;
@@ -103,4 +104,4 @@ function MovieAndPersonAutoSearch({ className, history, autoFocus }) {
   );
 }
 
-export default withRouter(MovieAndPersonAutoSearch);
+export default MovieAndPersonAutoSearch;

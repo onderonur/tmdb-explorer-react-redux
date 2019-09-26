@@ -1,9 +1,11 @@
 import React from "react";
 import { ListItemIcon, ListItemText, ListItem } from "@material-ui/core";
 import RouterLink from "components/RouterLink";
-import { withRouter } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-function AppDrawerItem({ to, icon, title, location }) {
+function AppDrawerItem({ to, icon, title }) {
+  const location = useLocation();
+
   return (
     <ListItem
       button
@@ -17,4 +19,4 @@ function AppDrawerItem({ to, icon, title, location }) {
   );
 }
 
-export default withRouter(AppDrawerItem);
+export default AppDrawerItem;

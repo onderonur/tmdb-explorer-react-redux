@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { addKeepScrollState } from "hooks/useScrollRestoration";
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
+import { addKeepScrollState } from "hooks/useHistoryPush";
 
 const useStyles = makeStyles(theme => ({
   link: {

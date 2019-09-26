@@ -12,6 +12,7 @@ import {
   selectPersonSearchResultsTotalCount
 } from "reducers";
 import SearchResultsHeader from "components/SearchResultsHeader";
+import useHistoryPush from "hooks/useHistoryPush";
 
 function SearchResults({
   location,
@@ -20,7 +21,8 @@ function SearchResults({
     params: { searchType }
   }
 }) {
-  const { query } = useQueryString(location);
+  const { query } = useQueryString();
+  const historyPush = useHistoryPush();
   const dispatch = useDispatch();
   const totalMovieCount = useSelector(state =>
     selectMovieSearchResultsTotalCount(state, query)
@@ -30,7 +32,7 @@ function SearchResults({
   );
 
   function handleChange(event, newValue) {
-    history.push(`/search/${newValue}${location.search}`);
+    historyPush(`/search/${newValue}${location.search}`);
   }
 
   useEffect(() => {
