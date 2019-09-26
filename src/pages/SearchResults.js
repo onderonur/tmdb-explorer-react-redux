@@ -13,15 +13,12 @@ import {
 } from "reducers";
 import SearchResultsHeader from "components/SearchResultsHeader";
 import useHistoryPush from "hooks/useHistoryPush";
+import { useParams, useLocation } from "react-router-dom";
 
-function SearchResults({
-  location,
-  history,
-  match: {
-    params: { searchType }
-  }
-}) {
+function SearchResults() {
   const { query } = useQueryString();
+  const { search } = useLocation();
+  const { searchType } = useParams();
   const historyPush = useHistoryPush();
   const dispatch = useDispatch();
   const totalMovieCount = useSelector(state =>
@@ -32,7 +29,7 @@ function SearchResults({
   );
 
   function handleChange(event, newValue) {
-    historyPush(`/search/${newValue}${location.search}`);
+    historyPush(`/search/${newValue}${search}`);
   }
 
   useEffect(() => {

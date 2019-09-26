@@ -6,14 +6,12 @@ import { fetchPerson } from "actions";
 import PersonInfo from "containers/PersonInfo";
 import PersonCastingGridList from "containers/PersonCastingGridList";
 import Profile from "components/Profile";
+import { useParams } from "react-router-dom";
 
 const REQUIRED_FIELDS = ["biography", "imdb_id"];
 
-function PersonProfile({
-  match: {
-    params: { personId }
-  }
-}) {
+function PersonProfile() {
+  const { personId } = useParams();
   const dispatch = useDispatch();
 
   useEffect(() => {
