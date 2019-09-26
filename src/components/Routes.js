@@ -10,13 +10,25 @@ import SwitchWithScrollRestoration from "components/SwitchWithScrollRestoration"
 function Routes() {
   return (
     <SwitchWithScrollRestoration>
-      <Route exact path="/search/:searchType" component={SearchResults} />
-      <Route exact path="/movie/popular" component={PopularMovies} />
-      <Route path="/movie/:movieId" component={MovieProfile} />
-      <Route exact path="/person/popular" component={PopularPeople} />
-      <Route path="/person/:personId" component={PersonProfile} />
+      <Route exact path="/search/:searchType">
+        <SearchResults />
+      </Route>
+      <Route exact path="/movie/popular">
+        <PopularMovies />
+      </Route>
+      <Route path="/movie/:movieId">
+        <MovieProfile />
+      </Route>
+      <Route exact path="/person/popular">
+        <PopularPeople />
+      </Route>
+      <Route path="/person/:personId">
+        <PersonProfile />
+      </Route>
 
-      <Route path="*" render={() => <Redirect to="/movie/popular" />} />
+      <Route path="*">
+        <Redirect to="/movie/popular" />
+      </Route>
     </SwitchWithScrollRestoration>
   );
 }

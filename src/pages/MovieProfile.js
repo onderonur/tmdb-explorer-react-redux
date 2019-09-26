@@ -7,15 +7,13 @@ import { fetchMovie } from "actions";
 import MovieVideoList from "containers/MovieVideoList";
 import MovieCastGridList from "containers/MovieCastGridList";
 import Profile from "components/Profile";
+import { useParams } from "react-router-dom";
 
 const REQUIRED_FIELDS = ["tagline"];
 
-function MovieProfile({
-  match: {
-    params: { movieId }
-  }
-}) {
+function MovieProfile() {
   const dispatch = useDispatch();
+  const { movieId } = useParams();
 
   useEffect(() => {
     dispatch(fetchMovie(movieId, REQUIRED_FIELDS));
