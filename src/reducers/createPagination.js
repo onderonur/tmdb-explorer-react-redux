@@ -1,5 +1,5 @@
 import union from "lodash/union";
-import produce from "immer";
+import createReducer from "./createReducer";
 
 export const DEFAULT_FIRST_PAGE = 1;
 
@@ -17,32 +17,26 @@ const createPagination = successType => {
     throw new Error("Expected successType to be strings.");
   }
 
-  return (state = initialState, action) => {
-    return produce(state, draft => {
-      switch (action.type) {
-        case successType:
-          draft.isFetching = false;
+  return createReducer(initialState, {
+    [successType]: (state, action) => {
+      state.isFetching = false;
 
-          const {
-            response: {
-              result: { results, total_pages, total_results }
-            }
-          } = action;
+      const {
+        response: {
+          result: { results, total_pages, total_results }
+        }
+      } = action;
 
-          draft.ids = union(draft.ids, results);
-          draft.pageCount = draft.pageCount + 1;
-          draft.totalCount = total_results;
-          draft.nextPage =
-            draft.nextPage < total_pages
-              ? draft.nextPage + 1
-              : // No next page if the previous "nextPage" is not less than "total_pages"
-                null;
-          break;
-        default:
-          return;
-      }
-    });
-  };
+      state.ids = union(state.ids, results);
+      state.pageCount = state.pageCount + 1;
+      state.totalCount = total_results;
+      state.nextPage =
+        state.nextPage < total_pages
+          ? state.nextPage + 1
+          : // No next page if the previous "nextPage" is not less than "total_pages"
+            null;
+    }
+  });
 };
 
 export default createPagination;

@@ -8,7 +8,7 @@ export function addKeepScrollState(to) {
 function useHistoryPush() {
   const history = useHistory();
 
-  function historyPush(to, { keepScrollState }) {
+  function historyPush(to, { keepScrollState } = {}) {
     history.push(keepScrollState ? addKeepScrollState(to) : to);
   }
 

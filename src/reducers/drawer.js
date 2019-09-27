@@ -1,21 +1,15 @@
-import produce from "immer";
 import * as actionTypes from "constants/actionTypes";
+import createReducer from "./createReducer";
 
 const initialState = {
   isOpen: false
 };
 
-function drawer(state = initialState, action) {
-  return produce(state, draft => {
-    switch (action.type) {
-      case actionTypes.TOGGLE_DRAWER:
-        draft.isOpen = !draft.isOpen;
-        break;
-      default:
-        return;
-    }
-  });
-}
+const drawer = createReducer(initialState, {
+  [actionTypes.TOGGLE_DRAWER]: (state, action) => {
+    state.isOpen = !state.isOpen;
+  }
+});
 
 export default drawer;
 
