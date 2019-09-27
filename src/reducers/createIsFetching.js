@@ -1,4 +1,4 @@
-import produce from "immer";
+import createReducer from "./createReducer";
 
 const initialState = false;
 
@@ -10,22 +10,13 @@ const createIsFetching = types => {
     throw new Error("Expected types to be strings.");
   }
 
-  return (state = initialState, action) => {
-    const [requestType, successType, failureType] = types;
+  const [requestType, successType, failureType] = types;
 
-    return produce(state, draft => {
-      switch (action.type) {
-        case requestType:
-          return true;
-        case successType:
-          return false;
-        case failureType:
-          return false;
-        default:
-          return;
-      }
-    });
-  };
+  return createReducer(initialState, {
+    [requestType]: () => true,
+    [successType]: () => false,
+    [failureType]: () => false
+  });
 };
 
 export default createIsFetching;
