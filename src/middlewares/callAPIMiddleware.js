@@ -64,7 +64,7 @@ const callAPIMiddleware = store => next => action => {
 
   const [requestType, successType, failureType] = types;
 
-  dispatch({ ...payload, type: requestType });
+  dispatch({ type: requestType, ...payload });
 
   return callAPI()
     .then(response => {
@@ -78,14 +78,14 @@ const callAPIMiddleware = store => next => action => {
         responseData = normalize(responseData, schema);
       }
 
-      dispatch({ ...payload, response: responseData, type: successType });
+      dispatch({ type: successType, response: responseData, ...payload });
       return response;
     })
     .catch(error => {
       if (process.env.NODE_ENV === "development") {
         console.error("callAPIMiddleware: ", error);
       }
-      dispatch({ ...payload, error, type: failureType });
+      dispatch({ type: failureType, error, ...payload });
       return error;
     });
 };
