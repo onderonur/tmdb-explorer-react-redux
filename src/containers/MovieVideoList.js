@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovieVideos } from "actions";
 import { selectMovieVideos, selectIsFetchingMovieVideos } from "reducers";
-import { List } from "@material-ui/core";
 import MovieVideoListItem from "./MovieVideoListItem";
 import MovieVideoPlayerModal from "./MovieVideoPlayerModal";
 import LoadingIndicator from "components/LoadingIndicator";
+import BaseList from "components/BaseList";
 
 function MovieVideoList({ movieId }) {
   const dispatch = useDispatch();
@@ -21,11 +21,13 @@ function MovieVideoList({ movieId }) {
 
   return (
     <LoadingIndicator loading={isFetching}>
-      <List>
-        {movieVideoIds.map(videoId => (
+      <BaseList
+        data={movieVideoIds}
+        renderItem={videoId => (
           <MovieVideoListItem key={videoId} videoId={videoId} />
-        ))}
-      </List>
+        )}
+        listEmptyMesage="No video has been found"
+      />
       <MovieVideoPlayerModal movieId={movieId} />
     </LoadingIndicator>
   );
