@@ -30,6 +30,7 @@ function PersonCastingGridList({ personId }) {
       spacing={2}
       minItemWidth={200}
       renderItem={renderItem}
+      listEmptyMessage="No casting has been found"
     />
   );
 }

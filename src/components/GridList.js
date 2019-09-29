@@ -1,9 +1,13 @@
 import React from "react";
 import LoadingIndicator from "components/LoadingIndicator";
 import { makeStyles } from "@material-ui/styles";
+import { Typography } from "@material-ui/core";
 
 const DEFAULT_ITEMS = [];
-const DEFAULT_KEY_EXTRACTOR = id => id;
+
+function defaultKeyExtractor(id) {
+  return id;
+}
 
 const useStyles = makeStyles(theme => ({
   flexList: {
@@ -22,7 +26,8 @@ function GridList({
   renderItem,
   spacing = 1,
   minItemWidth = 220,
-  keyExtractor = DEFAULT_KEY_EXTRACTOR
+  keyExtractor = defaultKeyExtractor,
+  listEmptyMessage = "Nothing has been found"
 }) {
   const classes = useStyles({ minItemWidth, spacing });
 
@@ -32,7 +37,13 @@ function GridList({
       : keyExtractor(item, index);
   }
 
-  return (
+  return !items.length && !loading ? (
+    typeof listEmptyMessage === "string" ? (
+      <Typography>{listEmptyMessage}</Typography>
+    ) : (
+      listEmptyMessage
+    )
+  ) : (
     <React.Fragment>
       <ul className={classes.flexList}>
         {items.map((item, index) => (

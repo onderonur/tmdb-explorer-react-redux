@@ -30,6 +30,7 @@ function Recommendations({ movieId }) {
       items={recommendationIds}
       loading={isFetching}
       renderItem={renderItem}
+      listEmptyMessage="No recommendation has been found"
     />
   );
 }

@@ -27,6 +27,7 @@ function MovieCastGridList({ movieId }) {
       loading={isFetchingCredits}
       minItemWidth={230}
       renderItem={renderItem}
+      listEmptyMessage="No cast has been found"
     />
   );
 }
