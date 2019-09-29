@@ -3,19 +3,19 @@ import debounce from "lodash/debounce";
 
 function useDebounce(value, wait = 250) {
   const [debouncedValue, setDebouncedValue] = useState(value);
-  const changeHandler = useRef();
+  const changeHandlerRef = useRef();
 
   useEffect(() => {
-    changeHandler.current = debounce(
+    changeHandlerRef.current = debounce(
       newValue => setDebouncedValue(newValue),
       wait
     );
 
-    return () => changeHandler.current.cancel();
+    return () => changeHandlerRef.current.cancel();
   }, [wait]);
 
   useEffect(() => {
-    changeHandler.current(value);
+    changeHandlerRef.current(value);
   }, [value]);
 
   return debouncedValue;
