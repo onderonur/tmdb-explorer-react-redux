@@ -59,7 +59,7 @@ const callAPIMiddleware = store => next => action => {
 
   const cachedData = selectCachedData(currentState);
   if (verifyCachedData(cachedData, requiredFields)) {
-    return;
+    return cachedData;
   }
 
   const [requestType, successType, failureType] = types;
