@@ -1,12 +1,11 @@
 import { createStore, applyMiddleware } from "redux";
 import rootReducer from "reducers";
-import thunkMiddleware from "redux-thunk";
 import callAPIMiddleware from "middlewares/callAPIMiddleware";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 // https://redux.js.org/recipes/configuring-your-store
 function configureStore(preloadedState) {
-  const middlewares = [thunkMiddleware, callAPIMiddleware];
+  const middlewares = [callAPIMiddleware];
   const middlewareEnhancer = applyMiddleware(...middlewares);
 
   const enhancers = [middlewareEnhancer];
