@@ -7,6 +7,7 @@ import {
   selectMovieRecommendations,
   selectIsFetchingMovieRecommendations
 } from "reducers";
+import { useTheme } from "@material-ui/styles";
 
 function renderItem(recommendationId) {
   return <MovieCard movieId={recommendationId} />;
@@ -19,6 +20,7 @@ function Recommendations({ movieId }) {
   const isFetching = useSelector(state =>
     selectIsFetchingMovieRecommendations(state, movieId)
   );
+  const theme = useTheme();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,6 +32,7 @@ function Recommendations({ movieId }) {
       items={recommendationIds}
       loading={isFetching}
       renderItem={renderItem}
+      minItemWidth={260 / 2 - theme.spacing(2)}
       listEmptyMessage="No recommendation has been found"
     />
   );

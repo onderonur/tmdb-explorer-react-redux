@@ -59,7 +59,7 @@ const callAPIMiddleware = store => next => action => {
 
   const cachedData = selectCachedData(currentState);
   if (verifyCachedData(cachedData, requiredFields)) {
-    return cachedData;
+    return;
   }
 
   const [requestType, successType, failureType] = types;
@@ -79,14 +79,12 @@ const callAPIMiddleware = store => next => action => {
       }
 
       dispatch({ type: successType, response: responseData, ...payload });
-      return response;
     })
     .catch(error => {
       if (process.env.NODE_ENV === "development") {
         console.error("callAPIMiddleware: ", error);
       }
       dispatch({ type: failureType, error, ...payload });
-      return error;
     });
 };
 
