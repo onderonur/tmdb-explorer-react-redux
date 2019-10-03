@@ -25,7 +25,7 @@ function GridList({
   loading,
   renderItem,
   spacing = 1,
-  minItemWidth = 220,
+  minItemWidth = 160,
   keyExtractor = defaultKeyExtractor,
   listEmptyMessage = "Nothing has been found"
 }) {

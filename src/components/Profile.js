@@ -15,7 +15,7 @@ function Profile({ introduction, main, leftSide, rightSide }) {
           {main}
         </Box>
         {rightSide && (
-          <Box flex={1} flexBasis={220} padding={1}>
+          <Box flex={1} flexBasis={260} padding={1}>
             {rightSide}
           </Box>
         )}
