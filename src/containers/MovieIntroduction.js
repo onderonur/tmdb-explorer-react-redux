@@ -27,6 +27,8 @@ function MovieIntroduction({ movieId }) {
   const movie = useSelector(state => selectMovie(state, movieId));
   const classes = useStyles();
 
+  const releaseYear = getMovieReleaseYear(movie);
+
   return movie ? (
     <Introduction
       backgroundImageSrc={movie.backdrop_path}
@@ -35,9 +37,11 @@ function MovieIntroduction({ movieId }) {
         <>
           <Typography variant="h5" gutterBottom={!movie.tagline}>
             {movie.title}{" "}
-            <span className={classes.year}>{`(${getMovieReleaseYear(
-              movie
-            )})`}</span>
+            {releaseYear && (
+              <span className={classes.year}>{`(${getMovieReleaseYear(
+                movie
+              )})`}</span>
+            )}
           </Typography>
           {movie.tagline && (
             <Typography
