@@ -18,7 +18,7 @@ export function get(endpoint, params) {
 }
 
 export function getMovieReleaseYear(movie) {
-  const { release_date } = movie;
+  const { release_date } = movie || {};
   return release_date ? new Date(movie.release_date).getFullYear() : null;
 }
 

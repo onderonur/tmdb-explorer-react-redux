@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -34,6 +34,12 @@ const Header = React.forwardRef((props, ref) => {
   const isMobile = useDetectMobile();
   const [isMobileSearch, setIsMobileSearch] = useState(false);
 
+  useEffect(() => {
+    if (!isMobile) {
+      setIsMobileSearch(false);
+    }
+  }, [isMobile]);
+
   function showMobileSearch() {
     setIsMobileSearch(true);
   }
@@ -45,7 +51,7 @@ const Header = React.forwardRef((props, ref) => {
   return (
     <AppBar ref={ref} color="default">
       <Toolbar>
-        {!isMobileSearch && (
+        {(!isMobile || !isMobileSearch) && (
           <Link
             className={classes.titleLink}
             to="/movie/popular"

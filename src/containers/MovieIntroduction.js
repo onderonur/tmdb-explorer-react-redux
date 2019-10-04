@@ -88,7 +88,7 @@ function MovieIntroduction({ movieId }) {
               <Typography variant="h6" gutterBottom>
                 Overview
               </Typography>
-              <Typography className={classes.overview}>
+              <Typography className={classes.overview} variant="body2">
                 {movie.overview}
               </Typography>
             </Grid>

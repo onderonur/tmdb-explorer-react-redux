@@ -10,7 +10,11 @@ import {
 import { useTheme } from "@material-ui/styles";
 
 function renderItem(recommendationId) {
-  return <MovieCard movieId={recommendationId} />;
+  return (
+    <li>
+      <MovieCard movieId={recommendationId} />
+    </li>
+  );
 }
 
 function Recommendations({ movieId }) {

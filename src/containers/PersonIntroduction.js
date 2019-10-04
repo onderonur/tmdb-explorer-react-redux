@@ -39,7 +39,7 @@ function PersonIntroduction({ personId }) {
               <Typography variant="h6" gutterBottom>
                 Biography
               </Typography>
-              <Typography className={classes.biography}>
+              <Typography className={classes.biography} variant="body2">
                 {person.biography}
               </Typography>
             </Grid>

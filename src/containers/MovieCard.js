@@ -1,5 +1,4 @@
 import React from "react";
-import { CardHeader } from "@material-ui/core";
 import BaseImage from "components/BaseImage";
 import BaseCard from "components/BaseCard";
 import { useSelector } from "react-redux";
@@ -7,13 +6,11 @@ import RouterLink from "components/RouterLink";
 import { makeStyles } from "@material-ui/styles";
 import { getImageUrl } from "utils";
 import { selectMovie } from "reducers";
+import BaseCardHeader from "components/BaseCardHeader";
 
 const useStyles = makeStyles(theme => ({
   link: {
     textDecoration: "none"
-  },
-  cardTitle: {
-    fontWeight: theme.typography.fontWeightBold
   }
 }));
 
@@ -29,15 +26,7 @@ function MovieCard({ movieId, subheader }) {
           alt={movie.title}
           aspectRatio="2:3"
         />
-        <CardHeader
-          title={movie.title}
-          subheader={subheader}
-          titleTypographyProps={{
-            variant: "subtitle1",
-            className: classes.cardTitle
-          }}
-          subheaderTypographyProps={{ variant: "subtitle2" }}
-        />
+        <BaseCardHeader title={movie.title} subheader={subheader} />
       </BaseCard>
     </RouterLink>
   );

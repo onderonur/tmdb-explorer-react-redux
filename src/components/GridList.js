@@ -47,7 +47,9 @@ function GridList({
     <React.Fragment>
       <ul className={classes.flexList}>
         {items.map((item, index) => (
-          <li key={extractItemKey(item, index)}>{renderItem(item, index)}</li>
+          <React.Fragment key={extractItemKey(item, index)}>
+            {renderItem(item, index)}
+          </React.Fragment>
         ))}
       </ul>
       <LoadingIndicator loading={loading} />
