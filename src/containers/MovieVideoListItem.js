@@ -15,6 +15,7 @@ function MovieVideoListItem({ videoId }) {
       keepScroll
       button
       component={RouterLink}
+      dense
     >
       <ListItemText primary={video.name} secondary={video.type} />
     </ListItem>

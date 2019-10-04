@@ -10,7 +10,11 @@ import {
 } from "reducers";
 
 function renderItem(movieId) {
-  return <MovieCard movieId={movieId} />;
+  return (
+    <li>
+      <MovieCard movieId={movieId} />
+    </li>
+  );
 }
 
 function PopularMovies() {

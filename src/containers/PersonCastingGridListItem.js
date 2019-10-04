@@ -6,7 +6,11 @@ import { selectCastCredits } from "reducers";
 function PersonCastingGridListItem({ castCreditId }) {
   const cast = useSelector(state => selectCastCredits(state, castCreditId));
 
-  return <MovieCard movieId={cast.movie} subheader={cast.character} />;
+  return (
+    <li>
+      <MovieCard movieId={cast.movie} subheader={cast.character} />
+    </li>
+  );
 }
 
 export default PersonCastingGridListItem;

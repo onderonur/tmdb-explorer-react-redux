@@ -10,7 +10,11 @@ import {
 } from "reducers";
 
 function renderItem(personId) {
-  return <PersonCard personId={personId} />;
+  return (
+    <li>
+      <PersonCard personId={personId} />
+    </li>
+  );
 }
 
 function PersonSearchResults({ query }) {

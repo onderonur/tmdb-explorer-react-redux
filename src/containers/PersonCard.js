@@ -1,5 +1,4 @@
 import React from "react";
-import { CardHeader } from "@material-ui/core";
 import BaseImage from "components/BaseImage";
 import BaseCard from "components/BaseCard";
 import { useSelector } from "react-redux";
@@ -7,13 +6,11 @@ import RouterLink from "components/RouterLink";
 import { makeStyles } from "@material-ui/styles";
 import { selectPerson } from "reducers";
 import { getImageUrl } from "utils";
+import BaseCardHeader from "components/BaseCardHeader";
 
 const useStyles = makeStyles(theme => ({
   link: {
     textDecoration: "none"
-  },
-  cardTitle: {
-    fontWeight: theme.typography.fontWeightBold
   }
 }));
 
@@ -29,14 +26,7 @@ function PersonCard({ personId }) {
           alt={person.name}
           aspectRatio="2:3"
         />
-        <CardHeader
-          title={person.name}
-          titleTypographyProps={{
-            variant: "subtitle1",
-            className: classes.cardTitle
-          }}
-          subheaderTypographyProps={{ variant: "subtitle2" }}
-        />
+        <BaseCardHeader title={person.name} />
       </BaseCard>
     </RouterLink>
   );

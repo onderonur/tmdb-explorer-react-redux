@@ -18,12 +18,12 @@ function ListItemWithAvatar({
   avatarUrl,
   primaryText,
   secondaryText,
-  ...props
+  ...rest
 }) {
   const classes = useStyles();
 
   return (
-    <ListItem alignItems="flex-start" {...props}>
+    <ListItem alignItems="flex-start" dense {...rest}>
       <ListItemAvatar>
         <Avatar src={getImageUrl(avatarUrl)} alt={"Avatar"} />
       </ListItemAvatar>

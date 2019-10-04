@@ -13,7 +13,11 @@ function TextWithLabel({ label, text }) {
   return (
     <Box my={1}>
       <Typography className={classes.bold}>{label}</Typography>
-      {typeof text === "string" ? <Typography>{text}</Typography> : text}
+      {typeof text === "string" ? (
+        <Typography variant="body2">{text}</Typography>
+      ) : (
+        text
+      )}
     </Box>
   );
 }
