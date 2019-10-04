@@ -1,25 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { selectMovieVideos, selectVideo } from "reducers";
-import { MobileStepper, Button, Typography } from "@material-ui/core";
 import { useLocation } from "react-router-dom";
 import YouTubePlayer from "components/YouTubePlayer";
 import useQueryString from "hooks/useQueryString";
-import BaseDialog from "components/BaseDialog";
-import { useTheme } from "@material-ui/styles";
-import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
-import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
-import useHistoryPush from "hooks/useHistoryPush";
+import PaginatedModal from "components/PaginatedModal";
 
 function MovieVideoPlayerModal({ movieId }) {
-  const theme = useTheme();
   const location = useLocation();
-  const historyPush = useHistoryPush();
-  const movieVideoIds =
-    useSelector(state => selectMovieVideos(state, movieId)) || [];
   const { watch } = useQueryString();
   const videoToWatch = useSelector(state => selectVideo(state, watch));
-  const [isVisible, setIsVisible] = useState(!!videoToWatch);
+
+  const movieVideoIds =
+    useSelector(state => selectMovieVideos(state, movieId)) || [];
 
   const videoCount = movieVideoIds.length;
   const orderOfVideoToWatch = movieVideoIds.indexOf(watch);
@@ -32,81 +25,26 @@ function MovieVideoPlayerModal({ movieId }) {
     ? movieVideoIds[orderOfVideoToWatch + 1]
     : null;
 
-  function handleClose() {
-    setIsVisible(false);
-  }
-
-  function handleExited() {
-    historyPush(location.pathname, { keepScrollState: true });
-  }
-
-  useEffect(() => {
-    setIsVisible(!!videoToWatch);
-  }, [videoToWatch]);
-
   return (
-    <BaseDialog
-      title={
-        videoToWatch ? (
-          <Typography variant="h6" noWrap>
-            {videoToWatch.name}
-          </Typography>
-        ) : (
-          ""
-        )
+    <PaginatedModal
+      title={videoToWatch ? videoToWatch.name : ""}
+      isOpen={!!videoToWatch}
+      steps={videoCount}
+      activeStep={orderOfVideoToWatch}
+      nextPath={
+        nextVideoIdToWatch
+          ? `${location.pathname}?watch=${nextVideoIdToWatch}`
+          : null
       }
-      open={isVisible}
-      onClose={handleClose}
-      onExited={handleExited}
-      zeroPaddingContent
+      previousPath={
+        previousVideoIdToWatch
+          ? `${location.pathname}?watch=${previousVideoIdToWatch}`
+          : null
+      }
+      returnPath={location.pathname}
     >
       <YouTubePlayer youTubeId={videoToWatch ? videoToWatch.key : ""} />
-      <MobileStepper
-        steps={videoCount}
-        position="static"
-        variant="text"
-        activeStep={orderOfVideoToWatch}
-        nextButton={
-          <Button
-            size="small"
-            disabled={isLastVideo}
-            onClick={() =>
-              historyPush(`${location.pathname}?watch=${nextVideoIdToWatch}`, {
-                keepScrollState: true
-              })
-            }
-          >
-            Next
-            {theme.direction === "rtl" ? (
-              <KeyboardArrowLeft />
-            ) : (
-              <KeyboardArrowRight />
-            )}
-          </Button>
-        }
-        backButton={
-          <Button
-            size="small"
-            disabled={isFirstVideo}
-            onClick={() =>
-              historyPush(
-                `${location.pathname}?watch=${previousVideoIdToWatch}`,
-                {
-                  keepScrollState: true
-                }
-              )
-            }
-          >
-            {theme.direction === "rtl" ? (
-              <KeyboardArrowRight />
-            ) : (
-              <KeyboardArrowLeft />
-            )}
-            Back
-          </Button>
-        }
-      />
-    </BaseDialog>
+    </PaginatedModal>
   );
 }
 

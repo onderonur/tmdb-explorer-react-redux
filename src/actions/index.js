@@ -191,3 +191,18 @@ export function fetchPersonSearch(query, pageId) {
     payload: { query }
   };
 }
+
+export function fetchMovieImages(movieId) {
+  return {
+    types: [
+      actionTypes.FETCH_MOVIE_IMAGES_REQUEST,
+      actionTypes.FETCH_MOVIE_IMAGES_SUCCESS,
+      actionTypes.FETCH_MOVIE_IMAGES_ERROR
+    ],
+    isFetching: state => selectors.selectIsFetchingMovieImages(state, movieId),
+    selectCachedData: state => selectors.selectMovieBackdrops(state, movieId),
+    callAPI: () => get(`/movie/${movieId}/images`),
+    schema: schemas.movieBackdropSchema,
+    payload: { movieId }
+  };
+}
