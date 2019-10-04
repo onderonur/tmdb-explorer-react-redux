@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MobileStepper, Button, Typography } from "@material-ui/core";
+import { MobileStepper, Button } from "@material-ui/core";
 import BaseDialog from "components/BaseDialog";
 import { useTheme } from "@material-ui/styles";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
@@ -34,15 +34,7 @@ function PaginatedModal({
 
   return (
     <BaseDialog
-      title={
-        title ? (
-          <Typography variant="h6" noWrap>
-            {title}
-          </Typography>
-        ) : (
-          ""
-        )
-      }
+      title={title}
       open={isVisible}
       onClose={handleClose}
       onExited={handleExited}
