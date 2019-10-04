@@ -8,6 +8,7 @@ import MovieVideoList from "containers/MovieVideoList";
 import MovieCastGridList from "containers/MovieCastGridList";
 import Profile from "components/Profile";
 import { useParams } from "react-router-dom";
+import MovieImagesGridList from "containers/MovieImagesGridList";
 
 const REQUIRED_FIELDS = ["tagline"];
 
@@ -28,6 +29,12 @@ function MovieProfile() {
             Videos
           </Typography>
           <MovieVideoList movieId={movieId} />
+
+          <Typography variant="h6" gutterBottom>
+            Images
+          </Typography>
+          <MovieImagesGridList movieId={movieId} />
+
           <Typography variant="h6" gutterBottom>
             Cast
           </Typography>

@@ -19,6 +19,8 @@ const callAPIMiddleware = store => next => action => {
     isFetching = () => false,
     selectCachedData = () => undefined,
     requiredFields = [],
+    // "payload" is added to send extra data to reducers.
+    // It is useful with reducers like "isFetching".
     payload = {},
     // Added this callback to change API response data that will be normalized.
     // But it may be used for other use cases too.

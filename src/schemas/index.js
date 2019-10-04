@@ -9,8 +9,8 @@ export const movieSchema = new schema.Entity(
   },
   {
     processStrategy: entity => {
-      // In movie list, API return genre_ids
-      // In movie details, it return id and name of genres
+      // In movie list, API returns genre_ids.
+      // In movie details, it returns id and name of genres.
       // Thus, we will merge them as "genres" to not have the same keys on
       // 2 different fields.
       const result = {
@@ -188,6 +188,29 @@ export const movieRecommendationSchema = new schema.Entity(
       // Omitting unnecessary fields
       const { movieId, results } = value;
       return { movieId, movies: results };
+    }
+  }
+);
+
+const backdropSchema = new schema.Entity(
+  "backdrops",
+  {},
+  { idAttribute: value => value.file_path }
+);
+
+export const movieBackdropSchema = new schema.Entity(
+  "movieBackdrops",
+  {
+    backdrops: [backdropSchema]
+  },
+  {
+    processStrategy: value => {
+      // We are omitting "posters".
+      const { id, backdrops } = value;
+      return {
+        movieId: id,
+        backdrops
+      };
     }
   }
 );

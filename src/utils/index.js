@@ -22,12 +22,12 @@ export function getMovieReleaseYear(movie) {
   return release_date ? new Date(movie.release_date).getFullYear() : null;
 }
 
-export function getImageUrl(path) {
+export function getImageUrl(path, { original } = {}) {
   if (!path) {
     return placeholderPng;
   }
 
-  return `${BASE_IMG_API_URL}/w500${path}`;
+  return `${BASE_IMG_API_URL}/${original ? "original" : "w500"}${path}`;
 }
 
 export function getImdbProfileUrl(imdbId) {
