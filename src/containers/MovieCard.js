@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/styles";
 import { getImageUrl } from "utils";
 import { selectMovie } from "reducers";
 import BaseCardHeader from "components/BaseCardHeader";
+import MovieRatingTag from "./MovieRatingTag";
 
 const useStyles = makeStyles(theme => ({
   link: {
@@ -26,6 +27,9 @@ function MovieCard({ movieId, subheader }) {
           alt={movie.title}
           aspectRatio="2:3"
         />
+        <div style={{ position: "absolute", top: 0, left: 0 }}>
+          <MovieRatingTag movieId={movieId} />
+        </div>
         <BaseCardHeader title={movie.title} subheader={subheader} />
       </BaseCard>
     </RouterLink>
