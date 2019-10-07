@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchMovieImages } from "actions";
 import { selectMovieBackdrops, selectIsFetchingMovieImages } from "reducers";
 import GridList from "components/GridList";
-import MovieImageGridListItem from "./MovieImagesGridListItem";
+import MovieImageGridListItem from "./MovieImageGridListItem";
 import MovieImageModal from "./MovieImageModal";
 
 function renderItem(backdropId) {
