@@ -70,20 +70,18 @@ function MovieImageModal({ movieId }) {
         enabled={isFullScreen}
         onChange={enabled => setIsFullScreen(enabled)}
       >
-        <div onClick={() => setIsFullScreen(true)}>
-          <BaseImage
-            // Added this key to recreate the component when the "file_path" changes.
-            // Without this, when user clicks the "next" or "previous" button, it wait image to load to rerender.
-            key={imageToView ? imageToView.file_path : "0"}
-            src={
-              imageToView
-                ? getImageUrl(imageToView.file_path, { original: true })
-                : null
-            }
-            lazyLoad={false}
-            aspectRatio="16:9"
-          />
-        </div>
+        <BaseImage
+          // Added this key to recreate the component when the "file_path" changes.
+          // Without this, when user clicks the "next" or "previous" button, it wait image to load to rerender.
+          key={imageToView ? imageToView.file_path : "0"}
+          src={
+            imageToView
+              ? getImageUrl(imageToView.file_path, { original: true })
+              : null
+          }
+          lazyLoad={false}
+          aspectRatio="16:9"
+        />
       </FullScreen>
     </PaginatedModal>
   );
