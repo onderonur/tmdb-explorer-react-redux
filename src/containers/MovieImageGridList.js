@@ -14,7 +14,7 @@ function renderItem(backdropId) {
   );
 }
 
-function MovieImagesGridList({ movieId }) {
+function MovieImageGridList({ movieId }) {
   const dispatch = useDispatch();
   const backdropIds = useSelector(state =>
     selectMovieBackdrops(state, movieId)
@@ -41,4 +41,4 @@ function MovieImagesGridList({ movieId }) {
   );
 }
 
-export default MovieImagesGridList;
+export default MovieImageGridList;
