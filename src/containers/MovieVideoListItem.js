@@ -11,7 +11,7 @@ function MovieVideoListItem({ videoId }) {
 
   return (
     <ListItem
-      to={`${pathname}?watch=${videoId}`}
+      to={`${pathname}?watch=${video.key}`}
       keepScroll
       button
       component={RouterLink}
