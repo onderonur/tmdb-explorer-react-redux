@@ -2,45 +2,193 @@ import * as actionTypes from "constants/actionTypes";
 import * as schemas from "schemas";
 import { get } from "utils";
 import * as selectors from "reducers";
+import { ofType } from "redux-observable";
+import {
+  map,
+  catchError,
+  switchMap,
+  takeUntil,
+  filter,
+  withLatestFrom,
+  skipUntil
+} from "rxjs/operators";
+import { ajax } from "rxjs/ajax";
+import { BASE_API_URL } from "constants/urls";
+import { normalize } from "normalizr";
+import { of } from "rxjs";
+import { verifyCachedData } from "middlewares/callAPIMiddleware";
 
 export function toggleDrawer() {
   return { type: actionTypes.TOGGLE_DRAWER };
 }
 
+export const fetchPopularMoviesRequest = pageId => ({
+  type: actionTypes.FETCH_POPULAR_MOVIES_REQUEST,
+  pageId
+});
+const fetchPopularMoviesSuccess = (pageId, response) => ({
+  type: actionTypes.FETCH_POPULAR_MOVIES_SUCCESS,
+  pageId,
+  response
+});
+const fetchPopularMoviesError = () => ({
+  type: actionTypes.FETCH_POPULAR_MOVIES_ERROR
+});
+
+export const fetchMovieRequest = (movieId, requiredFields) => ({
+  type: actionTypes.FETCH_MOVIE_REQUEST,
+  movieId,
+  requiredFields
+});
+const fetchMovieSuccess = (movieId, response) => ({
+  type: actionTypes.FETCH_MOVIE_SUCCESS,
+  movieId,
+  response
+});
+const fetchMovieError = movieId => ({
+  type: actionTypes.FETCH_MOVIE_ERROR,
+  movieId
+});
+export const fetchMovieCancelled = movieId => ({
+  type: "FETCH_MOVIE_CANCELLED",
+  movieId
+});
+
+const api_key = process.env.REACT_APP_API_KEY;
+
+export const fetchPopularMoviesEpic = action$ =>
+  action$.pipe(
+    ofType(actionTypes.FETCH_POPULAR_MOVIES_REQUEST),
+    map(action => action.pageId),
+    switchMap(pageId =>
+      ajax
+        .getJSON(
+          `${BASE_API_URL}/movie/popular?page=${pageId}&api_key=${api_key}`
+        )
+        .pipe(
+          map(response => {
+            const normalizedData = normalize(response, {
+              results: [schemas.movieSchema]
+            });
+            return fetchPopularMoviesSuccess(pageId, normalizedData);
+          }),
+          catchError(error => of(fetchPopularMoviesError()))
+        )
+    )
+  );
+
+const dataFetchEpic = ({
+  types: [requestType, successType, errorType, cancelType],
+  isFetching,
+  selectCachedData,
+  requiredFields,
+  callAPI,
+  payload,
+  schema
+}) => (action$, state$) =>
+  action$.pipe(
+    ofType(requestType),
+    withLatestFrom(state$),
+    filter(([action, state]) => {
+      if (!selectCachedData) {
+        return true;
+      }
+
+      const cachedData = selectCachedData(state, action);
+      return !verifyCachedData(cachedData, requiredFields);
+    }),
+    switchMap(([action, state]) =>
+      ajax.getJSON(callAPI(action)).pipe(
+        map(response => (schema ? normalize(response, schema) : response)),
+        map(response => ({
+          type: successType,
+          ...payload(action),
+          response
+        })),
+        catchError(() => of({ type: errorType, ...payload(action) })),
+        takeUntil(action$.pipe(ofType(cancelType)))
+      )
+    )
+  );
+
+export const fetchMovieEpic = dataFetchEpic({
+  types: [
+    actionTypes.FETCH_MOVIE_REQUEST,
+    actionTypes.FETCH_MOVIE_SUCCESS,
+    actionTypes.FETCH_MOVIE_ERROR,
+    "FETCH_MOVIE_CANCELLED"
+  ],
+  isFetching: (state, action) =>
+    selectors.selectIsFetchingMovie(state, action.movieId),
+  selectCachedData: (state, action) =>
+    selectors.selectMovie(state, action.movieId),
+  requiredFields: ["tagline"],
+  callAPI: action =>
+    `${BASE_API_URL}/movie/${action.movieId}?api_key=${api_key}`,
+  payload: action => ({
+    movieId: action.movieId
+  }),
+  schema: schemas.movieSchema
+  // TODO: cancelFilter
+});
+
+export const fetchMovieEpic2 = (action$, state$) =>
+  action$.pipe(
+    ofType(actionTypes.FETCH_MOVIE_REQUEST),
+    filter(action => {
+      const cachedData = selectors.selectMovie(state$.value, action.movieId);
+      return !verifyCachedData(cachedData, action.requiredFields);
+    }),
+    map(action => action.movieId),
+    switchMap(movieId =>
+      ajax.getJSON(`${BASE_API_URL}/movie/${movieId}?api_key=${api_key}`).pipe(
+        map(response => normalize(response, schemas.movieSchema)),
+        map(normalizedData => fetchMovieSuccess(movieId, normalizedData)),
+        catchError(() => of(fetchMovieError())),
+        takeUntil(
+          action$.pipe(
+            ofType("FETCH_MOVIE_CANCELLED"),
+            filter(action => action.movieId === movieId)
+          )
+        )
+      )
+    )
+  );
+
 // With callAPIMiddleware
 // This is an "async action creator"
-export function fetchPopularMovies(pageId) {
-  return {
-    types: [
-      actionTypes.FETCH_POPULAR_MOVIES_REQUEST,
-      actionTypes.FETCH_POPULAR_MOVIES_SUCCESS,
-      actionTypes.FETCH_POPULAR_MOVIES_ERROR
-    ],
-    isFetching: state => selectors.selectIsFetchingPopularMovies(state),
-    callAPI: () =>
-      get("/movie/popular", {
-        page: pageId
-      }),
-    payload: { pageId },
-    schema: { results: [schemas.movieSchema] }
-  };
-}
+// export function fetchPopularMovies(pageId) {
+//   return {
+//     types: [
+//       actionTypes.FETCH_POPULAR_MOVIES_REQUEST,
+//       actionTypes.FETCH_POPULAR_MOVIES_SUCCESS,
+//       actionTypes.FETCH_POPULAR_MOVIES_ERROR
+//     ],
+//     isFetching: state => selectors.selectIsFetchingPopularMovies(state),
+//     callAPI: () =>
+//       get("/movie/popular", {
+//         page: pageId
+//       }),
+//     payload: { pageId },
+//     schema: { results: [schemas.movieSchema] }
+//   };
+// }
 
-export function fetchMovie(movieId, requiredFields) {
-  return {
-    types: [
-      actionTypes.FETCH_MOVIE_REQUEST,
-      actionTypes.FETCH_MOVIE_SUCCESS,
-      actionTypes.FETCH_MOVIE_ERROR
-    ],
-    isFetching: state => selectors.selectIsFetchingMovie(state, movieId),
-    selectCachedData: state => selectors.selectMovie(state, movieId),
-    requiredFields,
-    callAPI: () => get(`/movie/${movieId}`),
-    schema: schemas.movieSchema,
-    payload: { movieId }
-  };
-}
+// export function fetchMovie(movieId, requiredFields) {
+//   return {
+//     types: [
+//       actionTypes.FETCH_MOVIE_REQUEST,
+//       actionTypes.FETCH_MOVIE_SUCCESS,
+//       actionTypes.FETCH_MOVIE_ERROR
+//     ],
+//     isFetching: state => selectors.selectIsFetchingMovie(state, movieId),
+//     selectCachedData: state => selectors.selectMovie(state, movieId),
+//     requiredFields,
+//     callAPI: () => get(`/movie/${movieId}`),
+//     schema: schemas.movieSchema,
+//     payload: { movieId }
+//   };
+// }
 
 export function fetchRecommendations(movieId) {
   return {

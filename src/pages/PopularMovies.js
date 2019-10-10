@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPopularMovies } from "actions";
+import { fetchPopularMoviesRequest } from "actions";
 import MovieCard from "containers/MovieCard";
 import InfiniteGridList from "components/InfiniteGridList";
 import {
@@ -24,7 +24,7 @@ function PopularMovies() {
   const movieIds = useSelector(state => selectPopularMovieIds(state));
 
   function handleLoadMore() {
-    dispatch(fetchPopularMovies(nextPage));
+    dispatch(fetchPopularMoviesRequest(nextPage));
   }
 
   return (

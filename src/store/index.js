@@ -2,10 +2,16 @@ import { createStore, applyMiddleware } from "redux";
 import rootReducer from "reducers";
 import callAPIMiddleware from "middlewares/callAPIMiddleware";
 import { composeWithDevTools } from "redux-devtools-extension";
+import { combineEpics, createEpicMiddleware } from "redux-observable";
+import { fetchPopularMoviesEpic, fetchMovieEpic } from "actions";
+
+const rootEpic = combineEpics(fetchPopularMoviesEpic, fetchMovieEpic);
+
+const epicMiddleware = createEpicMiddleware();
 
 // https://redux.js.org/recipes/configuring-your-store
 function configureStore(preloadedState) {
-  const middlewares = [callAPIMiddleware];
+  const middlewares = [callAPIMiddleware, epicMiddleware];
   const middlewareEnhancer = applyMiddleware(...middlewares);
 
   const enhancers = [middlewareEnhancer];
@@ -17,13 +23,15 @@ function configureStore(preloadedState) {
 
   const store = createStore(rootReducer, preloadedState, composedEnhancers);
 
+  epicMiddleware.run(rootEpic);
+
   // https://redux.js.org/recipes/configuring-your-store#hot-reloading
   // We are enabling "hot reloading", which means replacing pieces of code without restarting the whole app.
-  if (process.env.NODE_ENV !== "production" && module.hot) {
-    // We're watching the ../reducers module, and passing the updated rootReducer
-    // to the store.replaceReducer method when it changes.
-    module.hot.accept("reducers", () => store.replaceReducer(rootReducer));
-  }
+  // if (process.env.NODE_ENV !== "production" && module.hot) {
+  //   // We're watching the ../reducers module, and passing the updated rootReducer
+  //   // to the store.replaceReducer method when it changes.
+  //   module.hot.accept("reducers", () => store.replaceReducer(rootReducer));
+  // }
 
   return store;
 }
