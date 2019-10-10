@@ -192,16 +192,16 @@ export const movieRecommendationSchema = new schema.Entity(
   }
 );
 
-const backdropSchema = new schema.Entity(
-  "backdrops",
+const imageSchema = new schema.Entity(
+  "images",
   {},
   { idAttribute: value => value.file_path }
 );
 
-export const movieBackdropSchema = new schema.Entity(
-  "movieBackdrops",
+export const movieImageSchema = new schema.Entity(
+  "movieImages",
   {
-    backdrops: [backdropSchema]
+    backdrops: [imageSchema]
   },
   {
     processStrategy: value => {
@@ -210,6 +210,22 @@ export const movieBackdropSchema = new schema.Entity(
       return {
         movieId: id,
         backdrops
+      };
+    }
+  }
+);
+
+export const personImageSchema = new schema.Entity(
+  "personImages",
+  {
+    profiles: [imageSchema]
+  },
+  {
+    processStrategy: value => {
+      const { id, profiles } = value;
+      return {
+        personId: id,
+        profiles
       };
     }
   }

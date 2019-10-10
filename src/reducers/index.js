@@ -56,11 +56,11 @@ export const selectMovieVideos = (state, movieId) =>
 export const selectMovieRecommendations = (state, movieId) =>
   fromEntities.selectMovieRecommendations(state.entities, movieId);
 
-export const selectMovieBackdrops = (state, movieId) =>
-  fromEntities.selectMovieBackdrops(state.entities, movieId);
+export const selectMovieImages = (state, movieId) =>
+  fromEntities.selectMovieImages(state.entities, movieId);
 
-export const selectBackdrop = (state, backdropId) =>
-  fromEntities.selectBackdrop(state.entities, backdropId);
+export const selectPersonImages = (state, personId) =>
+  fromEntities.selectPersonImages(state.entities, personId);
 
 // Drawer selectors
 export const selectIsDrawerOpen = state =>
@@ -90,6 +90,9 @@ export const selectIsFetchingMovieVideos = (state, movieId) =>
 
 export const selectIsFetchingMovieImages = (state, movieId) =>
   fromIsFetching.selectIsFetchingMovieImages(state.isFetching, movieId);
+
+export const selectIsFetchingPersonImages = (state, personId) =>
+  fromIsFetching.selectIsFetchingPersonImages(state.isFetching, personId);
 
 export const selectIsFetchingMovieRecommendations = (state, movieId) =>
   fromIsFetching.selectIsFetchingMovieRecommendations(
