@@ -9,7 +9,7 @@ import {
 } from "reducers";
 import AutoSearch from "components/AutoSearch";
 import { fetchMovieSearch, fetchPersonSearch } from "actions";
-import { DEFAULT_FIRST_PAGE } from "reducers/createPagination";
+import { DEFAULT_FIRST_PAGE } from "reducers/higherOrderReducers/createPagination";
 import { selectMovies } from "reducers";
 import PersonListItem from "./PersonListItem";
 import MovieListItem from "./MovieListItem";
