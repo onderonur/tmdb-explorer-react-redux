@@ -7,6 +7,7 @@ import PersonInfo from "containers/PersonInfo";
 import PersonCastingGridList from "containers/PersonCastingGridList";
 import Profile from "components/Profile";
 import { useParams } from "react-router-dom";
+import PersonImageGridList from "containers/PersonImageGridList";
 
 const REQUIRED_FIELDS = ["biography", "imdb_id"];
 
@@ -31,6 +32,11 @@ function PersonProfile() {
       }
       main={
         <>
+          <Typography variant="h6" gutterBottom>
+            Images
+          </Typography>
+          <PersonImageGridList personId={personId} />
+
           <Typography variant="h6" gutterBottom>
             Castings
           </Typography>

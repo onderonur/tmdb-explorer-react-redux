@@ -11,8 +11,9 @@ const initialState = {
   videos: {},
   movieVideos: {},
   movieRecommendations: {},
-  movieBackdrops: {},
-  backdrops: {}
+  images: {},
+  movieImages: {},
+  personImages: {}
 };
 
 function entities(state = initialState, action) {
@@ -60,10 +61,12 @@ export const selectMovieRecommendations = (state, movieId) => {
   return recommendations ? recommendations.movies : undefined;
 };
 
-export const selectMovieBackdrops = (state, movieId) => {
-  const movieBackdrops = state.movieBackdrops[movieId];
-  return movieBackdrops ? movieBackdrops.backdrops : undefined;
+export const selectMovieImages = (state, movieId) => {
+  const movieImages = state.movieImages[movieId];
+  return movieImages ? movieImages.backdrops : undefined;
 };
 
-export const selectBackdrop = (state, backdropId) =>
-  state.backdrops[backdropId];
+export const selectPersonImages = (state, personId) => {
+  const personImages = state.personImages[personId];
+  return personImages ? personImages.profiles : undefined;
+};

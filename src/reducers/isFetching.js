@@ -57,6 +57,14 @@ const isFetching = combineReducers({
       actionTypes.FETCH_MOVIE_IMAGES_ERROR
     ])
   ),
+  personImagesByPersonId: createByKey(
+    action => action.personId,
+    createIsFetching([
+      actionTypes.FETCH_PERSON_IMAGES_REQUEST,
+      actionTypes.FETCH_PERSON_IMAGES_SUCCESS,
+      actionTypes.FETCH_PERSON_IMAGES_ERROR
+    ])
+  ),
   personCreditsByPersonId: createByKey(
     action => action.personId,
     createIsFetching([
@@ -118,6 +126,9 @@ export const selectIsFetchingMovieRecommendations = (state, movieId) =>
 
 export const selectIsFetchingMovieImages = (state, movieId) =>
   state.movieImagesByMovieId[movieId];
+
+export const selectIsFetchingPersonImages = (state, personId) =>
+  state.personImagesByPersonId[personId];
 
 export const selectIsFetchingPersonCredits = (state, personId) =>
   state.personCreditsByPersonId[personId];
