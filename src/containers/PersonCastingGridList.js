@@ -27,7 +27,6 @@ function PersonCastingGridList({ personId }) {
     <GridList
       items={castingIds}
       loading={isFetching}
-      spacing={2}
       renderItem={renderItem}
       listEmptyMessage="No casting has been found"
     />
