@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import * as actionTypes from "constants/actionTypes";
-import createIsFetching from "./createIsFetching";
-import createByKey from "./createByKey";
+import createIsFetching from "./higherOrderReducers/createIsFetching";
+import createByKey from "./higherOrderReducers/createByKey";
 
 const isFetching = combineReducers({
   genres: createIsFetching([
