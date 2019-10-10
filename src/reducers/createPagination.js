@@ -19,8 +19,6 @@ const createPagination = successType => {
 
   return createReducer(initialState, {
     [successType]: (state, action) => {
-      state.isFetching = false;
-
       const {
         response: {
           result: { results, total_pages, total_results }
