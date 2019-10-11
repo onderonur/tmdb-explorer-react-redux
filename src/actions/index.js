@@ -10,7 +10,9 @@ import {
   takeUntil,
   filter,
   withLatestFrom,
-  skipUntil
+  mergeMap,
+  exhaustMap,
+  groupBy
 } from "rxjs/operators";
 import { ajax } from "rxjs/ajax";
 import { BASE_API_URL } from "constants/urls";
@@ -40,18 +42,11 @@ export const fetchMovieRequest = (movieId, requiredFields) => ({
   movieId,
   requiredFields
 });
-const fetchMovieSuccess = (movieId, response) => ({
-  type: actionTypes.FETCH_MOVIE_SUCCESS,
-  movieId,
-  response
-});
-const fetchMovieError = movieId => ({
-  type: actionTypes.FETCH_MOVIE_ERROR,
-  movieId
-});
-export const fetchMovieCancelled = movieId => ({
-  type: "FETCH_MOVIE_CANCELLED",
-  movieId
+
+export const fetchPersonRequest = (personId, requiredFields) => ({
+  type: actionTypes.FETCH_PERSON_REQUEST,
+  personId,
+  requiredFields
 });
 
 const api_key = process.env.REACT_APP_API_KEY;
@@ -77,36 +72,68 @@ export const fetchPopularMoviesEpic = action$ =>
     )
   );
 
+/**
+ * This is a generic epic for data fetching.
+ * Instead of repeat thing like checking the cached data in Redux store, or grouping streams,
+ * we simply use this epic.
+ * TODO: It may be splitted into custom operators to make it more readable and much more reusable for different cases.
+ */
 const dataFetchEpic = ({
   types: [requestType, successType, errorType, cancelType],
-  isFetching,
+  groupActionsBy,
   selectCachedData,
-  requiredFields,
   callAPI,
   payload,
-  schema
+  schema,
+  cancelFilter
 }) => (action$, state$) =>
   action$.pipe(
     ofType(requestType),
     withLatestFrom(state$),
+    // If there is a cachedDate, we filter the stream.
     filter(([action, state]) => {
       if (!selectCachedData) {
         return true;
       }
 
       const cachedData = selectCachedData(state, action);
-      return !verifyCachedData(cachedData, requiredFields);
+      return !verifyCachedData(
+        cachedData,
+        // If the action has a "requiredFields" payload, we check if it is fulfilled.
+        action.requiredFields
+      );
     }),
-    switchMap(([action, state]) =>
-      ajax.getJSON(callAPI(action)).pipe(
-        map(response => (schema ? normalize(response, schema) : response)),
-        map(response => ({
-          type: successType,
-          ...payload(action),
-          response
-        })),
-        catchError(() => of({ type: errorType, ...payload(action) })),
-        takeUntil(action$.pipe(ofType(cancelType)))
+    map(([action, state]) => action),
+    // Grouping the actions by a function.
+    groupBy(action => groupActionsBy(action)),
+    mergeMap(groupedAction$ =>
+      groupedAction$.pipe(
+        // exhaustMap: Only the currently running stream will continue.
+        // Next ones will be ignored until it is finished.
+        exhaustMap(action =>
+          ajax.getJSON(`${BASE_API_URL}${callAPI(action)}`).pipe(
+            // If there is a schema, we normalize the response.
+            map(response => (schema ? normalize(response, schema) : response)),
+            // Fetching is completed. Dispatching the response and the extra payload to reducers.
+            map(response => ({
+              type: successType,
+              ...payload(action),
+              response
+            })),
+            // An error occured. Dispatching the extra payload to reducers.
+            // If we want to show some error messages etc, this is the place to pass them to reducers.
+            catchError(() => of({ type: errorType, ...payload(action) })),
+            // Cancellation
+            takeUntil(
+              action$.pipe(
+                ofType(cancelType),
+                filter(cancelAction =>
+                  cancelFilter ? cancelFilter(action, cancelAction) : true
+                )
+              )
+            )
+          )
+        )
       )
     )
   );
@@ -115,80 +142,33 @@ export const fetchMovieEpic = dataFetchEpic({
   types: [
     actionTypes.FETCH_MOVIE_REQUEST,
     actionTypes.FETCH_MOVIE_SUCCESS,
-    actionTypes.FETCH_MOVIE_ERROR,
-    "FETCH_MOVIE_CANCELLED"
+    actionTypes.FETCH_MOVIE_ERROR
   ],
-  isFetching: (state, action) =>
-    selectors.selectIsFetchingMovie(state, action.movieId),
+  groupActionsBy: action => action.movieId,
   selectCachedData: (state, action) =>
     selectors.selectMovie(state, action.movieId),
-  requiredFields: ["tagline"],
-  callAPI: action =>
-    `${BASE_API_URL}/movie/${action.movieId}?api_key=${api_key}`,
+  callAPI: action => `/movie/${action.movieId}?api_key=${api_key}`,
   payload: action => ({
     movieId: action.movieId
   }),
   schema: schemas.movieSchema
-  // TODO: cancelFilter
 });
 
-export const fetchMovieEpic2 = (action$, state$) =>
-  action$.pipe(
-    ofType(actionTypes.FETCH_MOVIE_REQUEST),
-    filter(action => {
-      const cachedData = selectors.selectMovie(state$.value, action.movieId);
-      return !verifyCachedData(cachedData, action.requiredFields);
-    }),
-    map(action => action.movieId),
-    switchMap(movieId =>
-      ajax.getJSON(`${BASE_API_URL}/movie/${movieId}?api_key=${api_key}`).pipe(
-        map(response => normalize(response, schemas.movieSchema)),
-        map(normalizedData => fetchMovieSuccess(movieId, normalizedData)),
-        catchError(() => of(fetchMovieError())),
-        takeUntil(
-          action$.pipe(
-            ofType("FETCH_MOVIE_CANCELLED"),
-            filter(action => action.movieId === movieId)
-          )
-        )
-      )
-    )
-  );
-
-// With callAPIMiddleware
-// This is an "async action creator"
-// export function fetchPopularMovies(pageId) {
-//   return {
-//     types: [
-//       actionTypes.FETCH_POPULAR_MOVIES_REQUEST,
-//       actionTypes.FETCH_POPULAR_MOVIES_SUCCESS,
-//       actionTypes.FETCH_POPULAR_MOVIES_ERROR
-//     ],
-//     isFetching: state => selectors.selectIsFetchingPopularMovies(state),
-//     callAPI: () =>
-//       get("/movie/popular", {
-//         page: pageId
-//       }),
-//     payload: { pageId },
-//     schema: { results: [schemas.movieSchema] }
-//   };
-// }
-
-// export function fetchMovie(movieId, requiredFields) {
-//   return {
-//     types: [
-//       actionTypes.FETCH_MOVIE_REQUEST,
-//       actionTypes.FETCH_MOVIE_SUCCESS,
-//       actionTypes.FETCH_MOVIE_ERROR
-//     ],
-//     isFetching: state => selectors.selectIsFetchingMovie(state, movieId),
-//     selectCachedData: state => selectors.selectMovie(state, movieId),
-//     requiredFields,
-//     callAPI: () => get(`/movie/${movieId}`),
-//     schema: schemas.movieSchema,
-//     payload: { movieId }
-//   };
-// }
+export const fetchPersonEpic = dataFetchEpic({
+  types: [
+    actionTypes.FETCH_PERSON_REQUEST,
+    actionTypes.FETCH_PERSON_SUCCESS,
+    actionTypes.FETCH_PERSON_ERROR
+  ],
+  groupActionsBy: action => action.personId,
+  selectCachedData: (state, action) =>
+    selectors.selectPerson(state, action.personId),
+  callAPI: action => `/person/${action.personId}?api_key=${api_key}`,
+  payload: action => ({
+    personId: action.personId
+  }),
+  schema: schemas.personSchema
+});
 
 export function fetchRecommendations(movieId) {
   return {
@@ -233,22 +213,6 @@ export function fetchMovieCredits(movieId) {
     callAPI: () => get(`/movie/${movieId}/credits`),
     schema: schemas.movieCreditSchema,
     payload: { movieId }
-  };
-}
-
-export function fetchPerson(personId, requiredFields) {
-  return {
-    types: [
-      actionTypes.FETCH_PERSON_REQUEST,
-      actionTypes.FETCH_PERSON_SUCCESS,
-      actionTypes.FETCH_PERSON_ERROR
-    ],
-    isFetching: state => selectors.selectIsFetchingPerson(state, personId),
-    selectCachedData: state => selectors.selectPerson(state, personId),
-    requiredFields,
-    callAPI: () => get(`/person/${personId}`),
-    schema: schemas.personSchema,
-    payload: { personId }
   };
 }
 
