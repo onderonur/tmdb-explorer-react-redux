@@ -3,9 +3,17 @@ import rootReducer from "reducers";
 import callAPIMiddleware from "middlewares/callAPIMiddleware";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { combineEpics, createEpicMiddleware } from "redux-observable";
-import { fetchPopularMoviesEpic, fetchMovieEpic } from "actions";
+import {
+  fetchPopularMoviesEpic,
+  fetchMovieEpic,
+  fetchPersonEpic
+} from "actions";
 
-const rootEpic = combineEpics(fetchPopularMoviesEpic, fetchMovieEpic);
+const rootEpic = combineEpics(
+  fetchPopularMoviesEpic,
+  fetchMovieEpic,
+  fetchPersonEpic
+);
 
 const epicMiddleware = createEpicMiddleware();
 

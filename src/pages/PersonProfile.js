@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Typography } from "@material-ui/core";
 import PersonIntroduction from "containers/PersonIntroduction";
 import { useDispatch } from "react-redux";
-import { fetchPerson } from "actions";
+import { fetchPersonRequest } from "actions";
 import PersonInfo from "containers/PersonInfo";
 import PersonCastingGridList from "containers/PersonCastingGridList";
 import Profile from "components/Profile";
@@ -15,7 +15,7 @@ function PersonProfile() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchPerson(personId, REQUIRED_FIELDS));
+    dispatch(fetchPersonRequest(personId, REQUIRED_FIELDS));
   }, [personId, dispatch]);
 
   return (
