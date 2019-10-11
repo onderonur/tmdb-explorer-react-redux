@@ -1,5 +1,5 @@
 import * as actionTypes from "constants/actionTypes";
-import createReducer from "./createReducer";
+import createReducer from "./higherOrderReducers/createReducer";
 
 const initialState = {
   isOpen: false

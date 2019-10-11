@@ -6,7 +6,7 @@ import { Tabs, Tab, Box } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { fetchMovieSearch, fetchPersonSearch } from "actions";
-import { DEFAULT_FIRST_PAGE } from "reducers/createPagination";
+import { DEFAULT_FIRST_PAGE } from "reducers/higherOrderReducers/createPagination";
 import {
   selectMovieSearchResultsTotalCount,
   selectPersonSearchResultsTotalCount

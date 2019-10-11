@@ -3,9 +3,9 @@ import createPagination, {
   selectPageItems,
   selectNextPage,
   selectTotalCount
-} from "./createPagination";
+} from "./higherOrderReducers/createPagination";
 import * as actionTypes from "constants/actionTypes";
-import createByKey from "./createByKey";
+import createByKey from "./higherOrderReducers/createByKey";
 
 const pagination = combineReducers({
   popularMovies: createPagination(actionTypes.FETCH_POPULAR_MOVIES_SUCCESS),
