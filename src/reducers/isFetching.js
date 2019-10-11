@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import * as actionTypes from "constants/actionTypes";
-import createIsFetching from "./createIsFetching";
-import createByKey from "./createByKey";
+import createIsFetching from "./higherOrderReducers/createIsFetching";
+import createByKey from "./higherOrderReducers/createByKey";
 
 const isFetching = combineReducers({
   genres: createIsFetching([
@@ -55,6 +55,14 @@ const isFetching = combineReducers({
       actionTypes.FETCH_MOVIE_IMAGES_REQUEST,
       actionTypes.FETCH_MOVIE_IMAGES_SUCCESS,
       actionTypes.FETCH_MOVIE_IMAGES_ERROR
+    ])
+  ),
+  personImagesByPersonId: createByKey(
+    action => action.personId,
+    createIsFetching([
+      actionTypes.FETCH_PERSON_IMAGES_REQUEST,
+      actionTypes.FETCH_PERSON_IMAGES_SUCCESS,
+      actionTypes.FETCH_PERSON_IMAGES_ERROR
     ])
   ),
   personCreditsByPersonId: createByKey(
@@ -118,6 +126,9 @@ export const selectIsFetchingMovieRecommendations = (state, movieId) =>
 
 export const selectIsFetchingMovieImages = (state, movieId) =>
   state.movieImagesByMovieId[movieId];
+
+export const selectIsFetchingPersonImages = (state, personId) =>
+  state.personImagesByPersonId[personId];
 
 export const selectIsFetchingPersonCredits = (state, personId) =>
   state.personCreditsByPersonId[personId];

@@ -312,9 +312,25 @@ export function fetchMovieImages(movieId) {
       actionTypes.FETCH_MOVIE_IMAGES_ERROR
     ],
     isFetching: state => selectors.selectIsFetchingMovieImages(state, movieId),
-    selectCachedData: state => selectors.selectMovieBackdrops(state, movieId),
+    selectCachedData: state => selectors.selectMovieImages(state, movieId),
     callAPI: () => get(`/movie/${movieId}/images`),
-    schema: schemas.movieBackdropSchema,
+    schema: schemas.movieImageSchema,
     payload: { movieId }
+  };
+}
+
+export function fetchPersonImages(personId) {
+  return {
+    types: [
+      actionTypes.FETCH_PERSON_IMAGES_REQUEST,
+      actionTypes.FETCH_PERSON_IMAGES_SUCCESS,
+      actionTypes.FETCH_PERSON_IMAGES_ERROR
+    ],
+    isFetching: state =>
+      selectors.selectIsFetchingPersonImages(state, personId),
+    selectCachedData: state => selectors.selectPersonImages(state, personId),
+    callAPI: () => get(`/person/${personId}/images`),
+    schema: schemas.personImageSchema,
+    payload: { personId }
   };
 }
