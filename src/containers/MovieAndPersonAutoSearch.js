@@ -29,10 +29,10 @@ function MovieAndPersonAutoSearch({ className, autoFocus }) {
   const people = useSelector(state => selectPeople(state, personIds));
 
   const isFetchingMovies = useSelector(state =>
-    selectIsFetchingMovieSearchResults(state, searchValue)
+    selectIsFetchingMovieSearchResults(state)
   );
   const isFetchingPeople = useSelector(state =>
-    selectIsFetchingPersonSearchResults(state, searchValue)
+    selectIsFetchingPersonSearchResults(state)
   );
 
   useEffect(() => {

@@ -83,22 +83,16 @@ const isFetching = combineReducers({
     actionTypes.FETCH_POPULAR_PEOPLE_SUCCESS,
     actionTypes.FETCH_POPULAR_PEOPLE_ERROR
   ]),
-  movieSearchResultsByQuery: createByKey(
-    action => action.query,
-    createIsFetching([
-      actionTypes.FETCH_MOVIE_SEARCH_REQUEST,
-      actionTypes.FETCH_MOVIE_SEARCH_SUCCESS,
-      actionTypes.FETCH_MOVIE_SEARCH_ERROR
-    ])
-  ),
-  personSearchResultsByQuery: createByKey(
-    action => action.query,
-    createIsFetching([
-      actionTypes.FETCH_PERSON_SEARCH_REQUEST,
-      actionTypes.FETCH_PERSON_SEARCH_SUCCESS,
-      actionTypes.FETCH_PERSON_SEARCH_ERROR
-    ])
-  )
+  movieSearchResultsByQuery: createIsFetching([
+    actionTypes.FETCH_MOVIE_SEARCH_REQUEST,
+    actionTypes.FETCH_MOVIE_SEARCH_SUCCESS,
+    actionTypes.FETCH_MOVIE_SEARCH_ERROR
+  ]),
+  personSearchResultsByQuery: createIsFetching([
+    actionTypes.FETCH_PERSON_SEARCH_REQUEST,
+    actionTypes.FETCH_PERSON_SEARCH_SUCCESS,
+    actionTypes.FETCH_PERSON_SEARCH_ERROR
+  ])
 });
 
 export default isFetching;
@@ -133,8 +127,8 @@ export const selectIsFetchingPersonImages = (state, personId) =>
 export const selectIsFetchingPersonCredits = (state, personId) =>
   state.personCreditsByPersonId[personId];
 
-export const selectIsFetchingMovieSearchResults = (state, query) =>
-  state.movieSearchResultsByQuery[query];
+export const selectIsFetchingMovieSearchResults = state =>
+  state.movieSearchResultsByQuery;
 
-export const selectIsFetchingPersonSearchResults = (state, query) =>
-  state.personSearchResultsByQuery[query];
+export const selectIsFetchingPersonSearchResults = state =>
+  state.personSearchResultsByQuery;

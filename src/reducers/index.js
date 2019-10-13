@@ -104,7 +104,7 @@ export const selectIsFetchingPersonCredits = (state, personId) =>
   fromIsFetching.selectIsFetchingPersonCredits(state.isFetching, personId);
 
 export const selectIsFetchingMovieSearchResults = (state, query) =>
-  fromIsFetching.selectIsFetchingMovieSearchResults(state.isFetching, query);
+  fromIsFetching.selectIsFetchingMovieSearchResults(state.isFetching);
 
 export const selectIsFetchingPersonSearchResults = (state, query) =>
   fromIsFetching.selectIsFetchingPersonSearchResults(state.isFetching, query);
