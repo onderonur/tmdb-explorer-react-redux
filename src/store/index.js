@@ -7,14 +7,16 @@ import {
   fetchPopularMoviesEpic,
   fetchMovieEpic,
   fetchPersonEpic,
-  fetchRecommendationsEpic
+  fetchRecommendationsEpic,
+  fetchGenresEpic
 } from "actions";
 
 const rootEpic = combineEpics(
   fetchPopularMoviesEpic,
   fetchMovieEpic,
   fetchPersonEpic,
-  fetchRecommendationsEpic
+  fetchRecommendationsEpic,
+  fetchGenresEpic
 );
 
 const epicMiddleware = createEpicMiddleware();

@@ -11,7 +11,8 @@ import {
   mergeMap,
   exhaustMap,
   groupBy,
-  startWith
+  startWith,
+  switchMap
 } from "rxjs/operators";
 import { ajax } from "rxjs/ajax";
 import { BASE_API_URL } from "constants/urls";
@@ -46,6 +47,10 @@ export const fetchRecommendations = movieId => ({
   movieId
 });
 
+export const fetchGenres = () => ({
+  type: actionTypes.FETCH_GENRES
+});
+
 const filterByCachedData = (state$, selectCachedData) => action$ =>
   action$.pipe(
     withLatestFrom(state$),
@@ -72,13 +77,51 @@ const createUrl = (endpoint, params = {}) =>
     api_key
   })}`;
 
+const getRequest = ({
+  action,
+  type,
+  endpoint,
+  params,
+  processResponse,
+  schema
+}) => {
+  const requestType = `${type}_REQUEST`;
+  const successType = `${type}_SUCCESS`;
+  const errorType = `${type}_ERROR`;
+
+  const url = createUrl(endpoint(action), params);
+
+  return ajax.getJSON(url, params ? params(action) : undefined).pipe(
+    map(response =>
+      processResponse ? processResponse(response, action) : response
+    ),
+    // If there is a schema, we normalize the response.
+    map(response => (schema ? normalize(response, schema) : response)),
+    // Fetching is completed. Dispatching the response and the extra payload to reducers.
+    map(response => ({
+      ...action,
+      type: successType,
+      response
+    })),
+    // An error occured. Dispatching the extra payload to reducers.
+    // If we want to show some error messages etc, this is the place to pass them to reducers.
+    catchError(() =>
+      of({
+        ...action,
+        type: errorType
+      })
+    ),
+    startWith({ ...action, type: requestType })
+  );
+};
+
 /**
- * This is a generic epic for data fetching.
- * Instead of repeat thing like checking the cached data in Redux store, or grouping streams,
- * we simply use this epic.
- * TODO: It may be splitted into custom operators to make it more readable and much more reusable for different cases.
+ * This is a generic epic for grouped data fetching.
+ * Instead of repeat things like checking the cached data in Redux store, or grouping streams, we simply use this generic epic.
+ * If one of the currently running streams (which are grouped by a function) hits again, it is ignored and the currently running stream
+ * continues (thanks to exhaustMap).
  */
-const createFetchEpic = ({
+const groupedFetchRequest = ({
   type,
   groupActionsBy,
   selectCachedData,
@@ -86,14 +129,10 @@ const createFetchEpic = ({
   params,
   processResponse,
   schema
-}) => (action$, state$) => {
-  const requestType = `${type}_REQUEST`;
-  const successType = `${type}_SUCCESS`;
-  const errorType = `${type}_ERROR`;
-
-  return action$.pipe(
+}) => (action$, state$) =>
+  action$.pipe(
     ofType(type),
-    // If there is a cachedData, we filter the stream.
+    // If there is cachedData, we filter the stream.
     filterByCachedData(state$, selectCachedData),
     // Grouping the actions by a function.
     groupBy(action => groupActionsBy(action)),
@@ -101,37 +140,21 @@ const createFetchEpic = ({
       groupedAction$.pipe(
         // exhaustMap: Only the currently running stream will continue.
         // Next ones will be ignored until it is finished.
-        exhaustMap(action => {
-          const url = createUrl(endpoint(action), params);
-          return ajax.getJSON(url, params ? params(action) : undefined).pipe(
-            map(response =>
-              processResponse ? processResponse(response, action) : response
-            ),
-            // If there is a schema, we normalize the response.
-            map(response => (schema ? normalize(response, schema) : response)),
-            // Fetching is completed. Dispatching the response and the extra payload to reducers.
-            map(response => ({
-              ...action,
-              type: successType,
-              response
-            })),
-            // An error occured. Dispatching the extra payload to reducers.
-            // If we want to show some error messages etc, this is the place to pass them to reducers.
-            catchError(() =>
-              of({
-                ...action,
-                type: errorType
-              })
-            ),
-            startWith({ type: requestType, ...action })
-          );
-        })
+        exhaustMap(action =>
+          getRequest({
+            action,
+            type,
+            endpoint,
+            params,
+            processResponse,
+            schema
+          })
+        )
       )
     )
   );
-};
 
-export const fetchPopularMoviesEpic = createFetchEpic({
+export const fetchPopularMoviesEpic = groupedFetchRequest({
   type: actionTypes.FETCH_POPULAR_MOVIES,
   groupActionsBy: ({ pageId }) => pageId,
   endpoint: () => "/movie/popular",
@@ -141,7 +164,7 @@ export const fetchPopularMoviesEpic = createFetchEpic({
   }
 });
 
-export const fetchMovieEpic = createFetchEpic({
+export const fetchMovieEpic = groupedFetchRequest({
   type: actionTypes.FETCH_MOVIE,
   groupActionsBy: action => action.movieId,
   selectCachedData: (state, action) =>
@@ -150,7 +173,7 @@ export const fetchMovieEpic = createFetchEpic({
   schema: schemas.movieSchema
 });
 
-export const fetchPersonEpic = createFetchEpic({
+export const fetchPersonEpic = groupedFetchRequest({
   type: actionTypes.FETCH_PERSON,
   groupActionsBy: ({ personId }) => personId,
   selectCachedData: (state, { personId }) =>
@@ -159,7 +182,7 @@ export const fetchPersonEpic = createFetchEpic({
   schema: schemas.personSchema
 });
 
-export const fetchRecommendationsEpic = createFetchEpic({
+export const fetchRecommendationsEpic = groupedFetchRequest({
   type: actionTypes.FETCH_MOVIE_RECOMMENDATIONS,
   groupActionsBy: ({ movieId }) => movieId,
   selectCachedData: (state, { movieId }) =>
@@ -169,18 +192,18 @@ export const fetchRecommendationsEpic = createFetchEpic({
   schema: schemas.movieRecommendationSchema
 });
 
-export function fetchGenres() {
-  return {
-    types: [
-      actionTypes.FETCH_GENRES_REQUEST,
-      actionTypes.FETCH_GENRES_SUCCESS,
-      actionTypes.FETCH_GENRES_ERROR
-    ],
-    isFetching: state => selectors.selectIsFetchingGenres(state),
-    callAPI: () => get("/genre/movie/list"),
-    schema: { genres: [schemas.genreSchema] }
-  };
-}
+export const fetchGenresEpic = action$ =>
+  action$.pipe(
+    ofType(actionTypes.FETCH_GENRES),
+    switchMap(action =>
+      getRequest({
+        action,
+        type: actionTypes.FETCH_GENRES,
+        endpoint: () => "/genre/movie/list",
+        schema: { genres: [schemas.genreSchema] }
+      })
+    )
+  );
 
 export function fetchMovieCredits(movieId) {
   return {
