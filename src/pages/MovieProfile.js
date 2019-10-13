@@ -3,7 +3,7 @@ import { Typography } from "@material-ui/core";
 import Recommendations from "containers/Recommendations";
 import MovieIntroduction from "containers/MovieIntroduction";
 import { useDispatch } from "react-redux";
-import { fetchMovieRequest } from "actions";
+import { fetchMovie } from "actions";
 import MovieVideoList from "containers/MovieVideoList";
 import MovieCastGridList from "containers/MovieCastGridList";
 import Profile from "components/Profile";
@@ -17,7 +17,7 @@ function MovieProfile() {
   const { movieId } = useParams();
 
   useEffect(() => {
-    dispatch(fetchMovieRequest(movieId, REQUIRED_FIELDS));
+    dispatch(fetchMovie(movieId, REQUIRED_FIELDS));
   }, [movieId, dispatch]);
 
   return (

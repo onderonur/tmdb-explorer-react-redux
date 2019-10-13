@@ -23,7 +23,7 @@ function MovieSearchResults({ query }) {
     selectMovieSearchResultIds(state, query)
   );
   const isFetching = useSelector(state =>
-    selectIsFetchingMovieSearchResults(state, query)
+    selectIsFetchingMovieSearchResults(state)
   );
   const nextPage = useSelector(state =>
     selectMovieSearchResultsNextPage(state, query)

@@ -6,13 +6,15 @@ import { combineEpics, createEpicMiddleware } from "redux-observable";
 import {
   fetchPopularMoviesEpic,
   fetchMovieEpic,
-  fetchPersonEpic
+  fetchPersonEpic,
+  fetchRecommendationsEpic
 } from "actions";
 
 const rootEpic = combineEpics(
   fetchPopularMoviesEpic,
   fetchMovieEpic,
-  fetchPersonEpic
+  fetchPersonEpic,
+  fetchRecommendationsEpic
 );
 
 const epicMiddleware = createEpicMiddleware();
