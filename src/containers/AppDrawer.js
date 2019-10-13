@@ -4,7 +4,7 @@ import { Drawer, makeStyles, List } from "@material-ui/core";
 import { toggleDrawer } from "actions";
 import MovieIcon from "@material-ui/icons/LocalMovies";
 import PersonIcon from "@material-ui/icons/RecentActors";
-import { selectIsDrawerOpen } from "reducers";
+import { selectors } from "reducers";
 import AppDrawerItem from "components/AppDrawerItem";
 import { useLocation } from "react-router-dom";
 
@@ -18,7 +18,7 @@ function AppDrawer() {
   const classes = useStyles();
   const location = useLocation();
   const dispatch = useDispatch();
-  const isOpen = useSelector(state => selectIsDrawerOpen(state));
+  const isOpen = useSelector(state => selectors.selectIsDrawerOpen(state));
   const prevLocation = useRef();
 
   useEffect(() => {

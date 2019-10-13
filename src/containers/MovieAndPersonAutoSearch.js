@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  selectIsFetchingMovieSearchResults,
-  selectMovieSearchResultIds,
-  selectIsFetchingPersonSearchResults,
-  selectPersonSearchResultIds,
-  selectPeople
-} from "reducers";
+import { selectors } from "reducers";
 import AutoSearch from "components/AutoSearch";
 import { fetchMovieSearch, fetchPersonSearch } from "actions";
 import { DEFAULT_FIRST_PAGE } from "reducers/higherOrderReducers/createPagination";
-import { selectMovies } from "reducers";
 import PersonListItem from "./PersonListItem";
 import MovieListItem from "./MovieListItem";
 import useHistoryPush from "hooks/useHistoryPush";
@@ -21,18 +14,22 @@ function MovieAndPersonAutoSearch({ className, autoFocus }) {
   const historyPush = useHistoryPush();
 
   const movieIds =
-    useSelector(state => selectMovieSearchResultIds(state, searchValue)) || [];
-  const movies = useSelector(state => selectMovies(state, movieIds));
+    useSelector(state =>
+      selectors.selectMovieSearchResultIds(state, searchValue)
+    ) || [];
+  const movies = useSelector(state => selectors.selectMovies(state, movieIds));
 
   const personIds =
-    useSelector(state => selectPersonSearchResultIds(state, searchValue)) || [];
-  const people = useSelector(state => selectPeople(state, personIds));
+    useSelector(state =>
+      selectors.selectPersonSearchResultIds(state, searchValue)
+    ) || [];
+  const people = useSelector(state => selectors.selectPeople(state, personIds));
 
   const isFetchingMovies = useSelector(state =>
-    selectIsFetchingMovieSearchResults(state, searchValue)
+    selectors.selectIsFetchingMovieSearchResults(state, searchValue)
   );
   const isFetchingPeople = useSelector(state =>
-    selectIsFetchingPersonSearchResults(state, searchValue)
+    selectors.selectIsFetchingPersonSearchResults(state, searchValue)
   );
 
   useEffect(() => {

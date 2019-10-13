@@ -1,11 +1,11 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import { selectPerson } from "reducers";
+import { selectors } from "reducers";
 import TextWithLabel from "components/TextWithLabel";
 
 function PersonInfo({ personId }) {
-  const person = useSelector(state => selectPerson(state, personId));
+  const person = useSelector(state => selectors.selectPerson(state, personId));
 
   function getGender() {
     return person.gender === 1 ? "Female" : person.gender === 2 ? "Male" : "";

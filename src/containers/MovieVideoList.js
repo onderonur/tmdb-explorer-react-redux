@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovieVideos } from "actions";
-import { selectMovieVideos, selectIsFetchingMovieVideos } from "reducers";
+import { selectors } from "reducers";
 import MovieVideoListItem from "./MovieVideoListItem";
 import MovieVideoPlayerModal from "./MovieVideoPlayerModal";
 import LoadingIndicator from "components/LoadingIndicator";
@@ -10,9 +10,9 @@ import BaseList from "components/BaseList";
 function MovieVideoList({ movieId }) {
   const dispatch = useDispatch();
   const movieVideoIds =
-    useSelector(state => selectMovieVideos(state, movieId)) || [];
+    useSelector(state => selectors.selectMovieVideos(state, movieId)) || [];
   const isFetching = useSelector(state =>
-    selectIsFetchingMovieVideos(state, movieId)
+    selectors.selectIsFetchingMovieVideos(state, movieId)
   );
 
   useEffect(() => {

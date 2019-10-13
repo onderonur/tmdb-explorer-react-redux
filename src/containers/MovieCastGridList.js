@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { fetchMovieCredits } from "actions";
 import { useDispatch, useSelector } from "react-redux";
-import { selectMovieCredits, selectIsFetchingMovieCredits } from "reducers";
+import { selectors } from "reducers";
 import MovieCastGridListItem from "./MovieCastGridListItem";
 import GridList from "components/GridList";
 
@@ -11,10 +11,12 @@ function renderItem(castCreditId) {
 
 function MovieCastGridList({ movieId }) {
   const dispatch = useDispatch();
-  const movieCredits = useSelector(state => selectMovieCredits(state, movieId));
+  const movieCredits = useSelector(state =>
+    selectors.selectMovieCredits(state, movieId)
+  );
   const castCreditIds = movieCredits ? movieCredits.cast : [];
   const isFetchingCredits = useSelector(state =>
-    selectIsFetchingMovieCredits(state, movieId)
+    selectors.selectIsFetchingMovieCredits(state, movieId)
   );
 
   useEffect(() => {

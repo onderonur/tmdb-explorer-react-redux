@@ -103,38 +103,26 @@ const isFetching = combineReducers({
 
 export default isFetching;
 
-export const selectIsFetchingGenres = state => state.genres;
-
-export const selectIsFetchingMovie = (state, movieId) =>
-  state.moviesById[movieId];
-
-export const selectIsFetchingPerson = (state, personId) =>
-  state.peopleById[personId];
-
-export const selectIsFetchingPopularMovies = state => state.popularMovies;
-
-export const selectIsFetchingPopularPeople = state => state.popularPeople;
-
-export const selectIsFetchingMovieCredits = (state, movieId) =>
-  state.movieCreditsByMovieId[movieId];
-
-export const selectIsFetchingMovieVideos = (state, movieId) =>
-  state.movieVideosByMovieId[movieId];
-
-export const selectIsFetchingMovieRecommendations = (state, movieId) =>
-  state.movieRecommendationsByMovieId[movieId];
-
-export const selectIsFetchingMovieImages = (state, movieId) =>
-  state.movieImagesByMovieId[movieId];
-
-export const selectIsFetchingPersonImages = (state, personId) =>
-  state.personImagesByPersonId[personId];
-
-export const selectIsFetchingPersonCredits = (state, personId) =>
-  state.personCreditsByPersonId[personId];
-
-export const selectIsFetchingMovieSearchResults = (state, query) =>
-  state.movieSearchResultsByQuery[query];
-
-export const selectIsFetchingPersonSearchResults = (state, query) =>
-  state.personSearchResultsByQuery[query];
+export const selectors = {
+  selectIsFetchingGenres: state => state.genres,
+  selectIsFetchingMovie: (state, movieId) => state.moviesById[movieId],
+  selectIsFetchingPerson: (state, personId) => state.peopleById[personId],
+  selectIsFetchingPopularMovies: state => state.popularMovies,
+  selectIsFetchingPopularPeople: state => state.popularPeople,
+  selectIsFetchingMovieCredits: (state, movieId) =>
+    state.movieCreditsByMovieId[movieId],
+  selectIsFetchingMovieVideos: (state, movieId) =>
+    state.movieVideosByMovieId[movieId],
+  selectIsFetchingMovieRecommendations: (state, movieId) =>
+    state.movieRecommendationsByMovieId[movieId],
+  selectIsFetchingMovieImages: (state, movieId) =>
+    state.movieImagesByMovieId[movieId],
+  selectIsFetchingPersonImages: (state, personId) =>
+    state.personImagesByPersonId[personId],
+  selectIsFetchingPersonCredits: (state, personId) =>
+    state.personCreditsByPersonId[personId],
+  selectIsFetchingMovieSearchResults: (state, query) =>
+    state.movieSearchResultsByQuery[query],
+  selectIsFetchingPersonSearchResults: (state, query) =>
+    state.personSearchResultsByQuery[query]
+};

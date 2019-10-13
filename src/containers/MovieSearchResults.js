@@ -3,11 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchMovieSearch } from "actions";
 import InfiniteGridList from "components/InfiniteGridList";
 import MovieCard from "./MovieCard";
-import {
-  selectMovieSearchResultIds,
-  selectIsFetchingMovieSearchResults,
-  selectMovieSearchResultsNextPage
-} from "reducers";
+import { selectors } from "reducers";
 
 function renderItem(movieId) {
   return (
@@ -20,13 +16,13 @@ function renderItem(movieId) {
 function MovieSearchResults({ query }) {
   const dispatch = useDispatch();
   const movieIds = useSelector(state =>
-    selectMovieSearchResultIds(state, query)
+    selectors.selectMovieSearchResultIds(state, query)
   );
   const isFetching = useSelector(state =>
-    selectIsFetchingMovieSearchResults(state, query)
+    selectors.selectIsFetchingMovieSearchResults(state, query)
   );
   const nextPage = useSelector(state =>
-    selectMovieSearchResultsNextPage(state, query)
+    selectors.selectMovieSearchResultsNextPage(state, query)
   );
 
   function handleLoadMore() {

@@ -3,11 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPopularPeople } from "actions";
 import PersonCard from "containers/PersonCard";
 import InfiniteGridList from "components/InfiniteGridList";
-import {
-  selectIsFetchingPopularPeople,
-  selectPopularPeopleNextPage,
-  selectPopularPeopleIds
-} from "reducers";
+import { selectors } from "reducers";
 
 function renderItem(personId) {
   return (
@@ -19,9 +15,15 @@ function renderItem(personId) {
 
 function PopularPeople() {
   const dispatch = useDispatch();
-  const isFetching = useSelector(state => selectIsFetchingPopularPeople(state));
-  const nextPage = useSelector(state => selectPopularPeopleNextPage(state));
-  const personIds = useSelector(state => selectPopularPeopleIds(state));
+  const isFetching = useSelector(state =>
+    selectors.selectIsFetchingPopularPeople(state)
+  );
+  const nextPage = useSelector(state =>
+    selectors.selectPopularPeopleNextPage(state)
+  );
+  const personIds = useSelector(state =>
+    selectors.selectPopularPeopleIds(state)
+  );
 
   function handleLoadMore() {
     dispatch(fetchPopularPeople(nextPage));

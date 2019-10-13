@@ -6,7 +6,7 @@ import { fetchGenres } from "actions";
 import LoadingIndicator from "components/LoadingIndicator";
 import Header from "components/Header";
 import { makeStyles } from "@material-ui/styles";
-import { selectIsFetchingGenres } from "reducers";
+import { selectors } from "reducers";
 import AppDrawer from "containers/AppDrawer";
 import BackToTopButton from "components/BackToTopButton";
 import HideOnScroll from "components/HideOnScroll";
@@ -20,7 +20,9 @@ const useStyles = makeStyles(theme => ({
 
 function App() {
   const dispatch = useDispatch();
-  const isFetching = useSelector(state => selectIsFetchingGenres(state));
+  const isFetching = useSelector(state =>
+    selectors.selectIsFetchingGenres(state)
+  );
   const classes = useStyles();
 
   useEffect(() => {

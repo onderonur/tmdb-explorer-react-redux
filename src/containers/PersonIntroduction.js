@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectPerson } from "reducers";
+import { selectors } from "reducers";
 import { Typography, makeStyles, Box, Grid, Link } from "@material-ui/core";
 import ImdbLogo from "components/ImdbLogo";
 import { getImdbProfileUrl } from "utils";
@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function PersonIntroduction({ personId }) {
-  const person = useSelector(state => selectPerson(state, personId));
+  const person = useSelector(state => selectors.selectPerson(state, personId));
   const classes = useStyles();
 
   return person ? (

@@ -41,18 +41,9 @@ const createPagination = successType => {
 
 export default createPagination;
 
-export const selectNextPage = (state = {}) => {
-  return state.nextPage;
-};
-
-export const selectPageCount = (state = {}) => {
-  return state.pageCount;
-};
-
-export const selectTotalCount = (state = {}) => {
-  return state.totalCount;
-};
-
-export const selectPageItems = (state = {}) => {
-  return state.ids;
+export const selectors = {
+  selectNextPage: (state = {}) => state.nextPage,
+  selectPageCount: (state = {}) => state.pageCount,
+  selectTotalCount: (state = {}) => state.totalCount,
+  selectPageItems: (state = {}) => state.ids
 };

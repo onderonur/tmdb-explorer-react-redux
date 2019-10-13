@@ -13,6 +13,6 @@ const drawer = createReducer(initialState, {
 
 export default drawer;
 
-export function selectIsDrawerOpen(state) {
-  return state.isOpen;
-}
+export const selectors = {
+  selectIsDrawerOpen: state => state.isOpen
+};

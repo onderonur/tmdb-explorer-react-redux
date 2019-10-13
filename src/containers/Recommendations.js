@@ -3,10 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchRecommendations } from "actions";
 import MovieCard from "./MovieCard";
 import GridList from "components/GridList";
-import {
-  selectMovieRecommendations,
-  selectIsFetchingMovieRecommendations
-} from "reducers";
+import { selectors } from "reducers";
 import { useTheme } from "@material-ui/styles";
 
 function renderItem(recommendationId) {
@@ -19,10 +16,10 @@ function renderItem(recommendationId) {
 
 function Recommendations({ movieId }) {
   const recommendationIds = useSelector(
-    state => selectMovieRecommendations(state, movieId) || []
+    state => selectors.selectMovieRecommendations(state, movieId) || []
   );
   const isFetching = useSelector(state =>
-    selectIsFetchingMovieRecommendations(state, movieId)
+    selectors.selectIsFetchingMovieRecommendations(state, movieId)
   );
   const theme = useTheme();
   const dispatch = useDispatch();
