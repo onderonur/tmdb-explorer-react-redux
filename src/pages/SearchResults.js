@@ -7,10 +7,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { fetchMovieSearch, fetchPersonSearch } from "actions";
 import { DEFAULT_FIRST_PAGE } from "reducers/higherOrderReducers/createPagination";
-import {
-  selectMovieSearchResultsTotalCount,
-  selectPersonSearchResultsTotalCount
-} from "reducers";
+import { selectors } from "reducers";
 import SearchResultsHeader from "components/SearchResultsHeader";
 import useHistoryPush from "hooks/useHistoryPush";
 import { useParams, useLocation } from "react-router-dom";
@@ -22,10 +19,10 @@ function SearchResults() {
   const historyPush = useHistoryPush();
   const dispatch = useDispatch();
   const totalMovieCount = useSelector(state =>
-    selectMovieSearchResultsTotalCount(state, query)
+    selectors.selectMovieSearchResultsTotalCount(state, query)
   );
   const totalPersonCount = useSelector(state =>
-    selectPersonSearchResultsTotalCount(state, query)
+    selectors.selectPersonSearchResultsTotalCount(state, query)
   );
 
   function handleChange(event, newValue) {

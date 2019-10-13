@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectMovie } from "reducers";
+import { selectors } from "reducers";
 import { makeStyles, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
 
 function MovieRatingTag({ movieId }) {
   const classes = useStyles();
-  const movie = useSelector(state => selectMovie(state, movieId));
+  const movie = useSelector(state => selectors.selectMovie(state, movieId));
 
   return (
     <div className={classes.tag}>

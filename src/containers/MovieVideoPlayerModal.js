@@ -1,14 +1,16 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectMovieVideos, selectVideo } from "reducers";
+import { selectors } from "reducers";
 import useQueryString from "hooks/useQueryString";
 import MediaGalleryModal from "components/MediaGalleryModal";
 
 function MovieVideoPlayerModal({ movieId }) {
   const movieVideoIds =
-    useSelector(state => selectMovieVideos(state, movieId)) || [];
+    useSelector(state => selectors.selectMovieVideos(state, movieId)) || [];
   const movieVideos = useSelector(state =>
-    movieVideoIds.map(movieVideoId => selectVideo(state, movieVideoId))
+    movieVideoIds.map(movieVideoId =>
+      selectors.selectVideo(state, movieVideoId)
+    )
   );
   const videoKeys = movieVideos.map(video => video.key);
 
