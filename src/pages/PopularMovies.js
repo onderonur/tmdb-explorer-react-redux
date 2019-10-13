@@ -3,11 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPopularMovies } from "actions";
 import MovieCard from "containers/MovieCard";
 import InfiniteGridList from "components/InfiniteGridList";
-import {
-  selectIsFetchingPopularMovies,
-  selectPopularMoviesNextPage,
-  selectPopularMovieIds
-} from "reducers";
+import { selectors } from "reducers";
 
 function renderItem(movieId) {
   return (
@@ -19,9 +15,13 @@ function renderItem(movieId) {
 
 function PopularMovies() {
   const dispatch = useDispatch();
-  const isFetching = useSelector(state => selectIsFetchingPopularMovies(state));
-  const nextPage = useSelector(state => selectPopularMoviesNextPage(state));
-  const movieIds = useSelector(state => selectPopularMovieIds(state));
+  const isFetching = useSelector(state =>
+    selectors.selectIsFetchingPopularMovies(state)
+  );
+  const nextPage = useSelector(state =>
+    selectors.selectPopularMoviesNextPage(state)
+  );
+  const movieIds = useSelector(state => selectors.selectPopularMovieIds(state));
 
   function handleLoadMore() {
     dispatch(fetchPopularMovies(nextPage));

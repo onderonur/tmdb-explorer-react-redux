@@ -1,10 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import MovieCard from "./MovieCard";
-import { selectCastCredits } from "reducers";
+import { selectors } from "reducers";
 
 function PersonCastingGridListItem({ castCreditId }) {
-  const cast = useSelector(state => selectCastCredits(state, castCreditId));
+  const cast = useSelector(state =>
+    selectors.selectCastCredits(state, castCreditId)
+  );
 
   return (
     <li>

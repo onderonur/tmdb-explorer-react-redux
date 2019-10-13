@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import RouterLink from "components/RouterLink";
 import { makeStyles } from "@material-ui/styles";
 import { getImageUrl } from "utils";
-import { selectMovie } from "reducers";
+import { selectors } from "reducers";
 import BaseCardHeader from "components/BaseCardHeader";
 import MovieRatingTag from "./MovieRatingTag";
 
@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 
 function MovieCard({ movieId, subheader }) {
   const classes = useStyles();
-  const movie = useSelector(state => selectMovie(state, movieId));
+  const movie = useSelector(state => selectors.selectMovie(state, movieId));
 
   return (
     <RouterLink className={classes.link} to={`/movie/${movieId}`}>

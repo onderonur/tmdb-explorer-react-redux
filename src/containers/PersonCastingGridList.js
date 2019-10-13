@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectPersonCredits, selectIsFetchingPersonCredits } from "reducers";
+import { selectors } from "reducers";
 import { fetchPersonCredits } from "actions";
 import PersonCastingGridListItem from "./PersonCastingGridListItem";
 import GridList from "components/GridList";
@@ -12,11 +12,11 @@ function renderItem(castingId) {
 function PersonCastingGridList({ personId }) {
   const dispatch = useDispatch();
   const personCredits = useSelector(state =>
-    selectPersonCredits(state, personId)
+    selectors.selectPersonCredits(state, personId)
   );
   const castingIds = personCredits ? personCredits.castings : [];
   const isFetching = useSelector(state =>
-    selectIsFetchingPersonCredits(state, personId)
+    selectors.selectIsFetchingPersonCredits(state, personId)
   );
 
   useEffect(() => {

@@ -3,11 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPersonSearch } from "actions";
 import InfiniteGridList from "components/InfiniteGridList";
 import PersonCard from "./PersonCard";
-import {
-  selectIsFetchingPersonSearchResults,
-  selectPersonSearchResultsNextPage,
-  selectPersonSearchResultIds
-} from "reducers";
+import { selectors } from "reducers";
 
 function renderItem(personId) {
   return (
@@ -20,13 +16,13 @@ function renderItem(personId) {
 function PersonSearchResults({ query }) {
   const dispatch = useDispatch();
   const personIds = useSelector(state =>
-    selectPersonSearchResultIds(state, query)
+    selectors.selectPersonSearchResultIds(state, query)
   );
   const isFetching = useSelector(state =>
-    selectIsFetchingPersonSearchResults(state, query)
+    selectors.selectIsFetchingPersonSearchResults(state, query)
   );
   const nextPage = useSelector(state =>
-    selectPersonSearchResultsNextPage(state, query)
+    selectors.selectPersonSearchResultsNextPage(state, query)
   );
 
   function handleLoadMore() {

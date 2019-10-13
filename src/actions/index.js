@@ -1,7 +1,7 @@
 import * as actionTypes from "constants/actionTypes";
 import * as schemas from "schemas";
 import { get } from "utils";
-import * as selectors from "reducers";
+import { selectors } from "reducers";
 import { ofType } from "redux-observable";
 import {
   map,
