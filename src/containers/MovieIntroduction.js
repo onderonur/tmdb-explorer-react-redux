@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectMovie } from "reducers";
+import { selectors } from "reducers";
 import { Typography, makeStyles, Box, Grid, Link } from "@material-ui/core";
 import Rating from "components/Rating";
 import MovieGenreChip from "./MovieGenreChip";
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function MovieIntroduction({ movieId }) {
-  const movie = useSelector(state => selectMovie(state, movieId));
+  const movie = useSelector(state => selectors.selectMovie(state, movieId));
   const classes = useStyles();
 
   const releaseYear = getMovieReleaseYear(movie);

@@ -1,20 +1,18 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovieImages } from "actions";
-import {
-  selectIsFetchingMovieImages,
-  selectMovieImages,
-  selectMovie
-} from "reducers";
+import { selectors } from "reducers";
 import ImageGridList from "components/ImageGridList";
 import ImageGalleryModal from "components/ImageGalleryModal";
 
 function MovieImageGridList({ movieId }) {
   const dispatch = useDispatch();
-  const movie = useSelector(state => selectMovie(state, movieId));
-  const filePaths = useSelector(state => selectMovieImages(state, movieId));
+  const movie = useSelector(state => selectors.selectMovie(state, movieId));
+  const filePaths = useSelector(state =>
+    selectors.selectMovieImages(state, movieId)
+  );
   const isFetching = useSelector(state =>
-    selectIsFetchingMovieImages(state, movieId)
+    selectors.selectIsFetchingMovieImages(state, movieId)
   );
 
   useEffect(() => {
