@@ -1,31 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import Downshift from 'downshift';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import LoadingIndicator from 'components/LoadingIndicator';
-import { InputAdornment, IconButton } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
-import useDebounce from 'hooks/useDebounce';
-import clsx from 'clsx';
-import AutoSearchSuggestion from './AutoSearchSuggestion';
+import React from "react";
+import Downshift from "downshift";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
+import LoadingIndicator from "components/LoadingIndicator";
+import { InputAdornment, IconButton } from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
+import clsx from "clsx";
+import AutoSearchSuggestion from "./AutoSearchSuggestion";
 
 const useStyles = makeStyles(theme => ({
   container: {
     flexGrow: 1,
-    position: 'relative'
+    position: "relative"
   },
   paper: {
-    position: 'absolute',
+    position: "absolute",
     zIndex: 1,
     marginTop: theme.spacing(1),
     left: 0,
     right: 0,
     maxHeight: 380,
-    overflow: 'auto'
+    overflow: "auto"
   },
   inputInput: {
-    width: 'auto',
+    width: "auto",
     flexGrow: 1
   }
 }));
@@ -33,36 +32,29 @@ const useStyles = makeStyles(theme => ({
 function AutoSearch({
   className,
   label,
-  placeholder = 'Search',
+  placeholder = "Search",
   loading,
   suggestions = [],
   renderSuggestion,
+  inputValue,
   onInputValueChange,
   onItemSelect,
   onPressEnterOrClickSearch,
-  debounceMs = 250,
   autoFocus,
   extractSuggestionKey
 }) {
   const classes = useStyles();
-  const [inputValue, setInputValue] = useState('');
-
-  const debouncedInputValue = useDebounce(inputValue, debounceMs);
 
   function handleInputChange(event) {
     const value = event.target.value;
-    setInputValue(value);
+    onInputValueChange(value);
   }
-
-  useEffect(() => {
-    onInputValueChange(debouncedInputValue);
-  }, [debouncedInputValue, onInputValueChange]);
 
   return (
     <Downshift
       inputValue={inputValue}
       onSelect={onItemSelect}
-      itemToString={item => (item ? item.title : '')}
+      itemToString={item => (item ? item.title : "")}
     >
       {({
         getInputProps,
@@ -107,7 +99,7 @@ function AutoSearch({
                   return onFocus;
                 },
                 onKeyPress: e => {
-                  if (e.key === 'Enter') {
+                  if (e.key === "Enter") {
                     handlePressEnterOrSearch();
                   }
                 },

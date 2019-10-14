@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectors } from "reducers";
 import AutoSearch from "components/AutoSearch";
-import { fetchMovieSearch, fetchPersonSearch } from "actions";
-import { DEFAULT_FIRST_PAGE } from "reducers/higherOrderReducers/createPagination";
+import { fetchSearch } from "actions";
 import PersonListItem from "./PersonListItem";
 import MovieListItem from "./MovieListItem";
 import useHistoryPush from "hooks/useHistoryPush";
@@ -25,18 +24,14 @@ function MovieAndPersonAutoSearch({ className, autoFocus }) {
     ) || [];
   const people = useSelector(state => selectors.selectPeople(state, personIds));
 
-  const isFetchingMovies = useSelector(state =>
-    selectors.selectIsFetchingMovieSearchResults(state)
-  );
-  const isFetchingPeople = useSelector(state =>
-    selectors.selectIsFetchingPersonSearchResults(state)
+  const isFetching = useSelector(
+    state =>
+      selectors.selectIsFetchingMovieSearchResults(state) ||
+      selectors.selectIsFetchingPersonSearchResults(state)
   );
 
   useEffect(() => {
-    if (searchValue) {
-      dispatch(fetchMovieSearch(searchValue, DEFAULT_FIRST_PAGE));
-      dispatch(fetchPersonSearch(searchValue, DEFAULT_FIRST_PAGE));
-    }
+    dispatch(fetchSearch(searchValue));
   }, [dispatch, searchValue]);
 
   function handleInputValueChange(inputValue) {
@@ -92,7 +87,8 @@ function MovieAndPersonAutoSearch({ className, autoFocus }) {
           <PersonListItem personId={suggestion.id} />
         )
       }
-      loading={isFetchingMovies || isFetchingPeople}
+      loading={isFetching}
+      inputValue={searchValue}
       onInputValueChange={handleInputValueChange}
       onPressEnterOrClickSearch={handleRedirect}
       onItemSelect={handleSelectSuggestion}
