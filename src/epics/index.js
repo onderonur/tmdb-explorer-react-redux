@@ -230,6 +230,7 @@ const fetchPersonImagesEpic = groupedFetchRequest({
   schema: schemas.personImageSchema
 });
 
+// TODO: Buradan devam
 const fetchMovieSearchRequest = ({ query, pageId }) =>
   getRequest({
     action: { type: actionTypes.FETCH_MOVIE_SEARCH, query, pageId },
@@ -270,15 +271,13 @@ const fetchSearchEpic = (action$, state$) =>
     // TODO: Switchmap'te cancel olunca isFethcing i false yap
     switchMap(action => {
       const { pageId, query } = action;
+      const params = {
+        query,
+        page: pageId
+      };
       return forkJoin(
-        fetchMovieSearchRequest({
-          query,
-          pageId
-        }).pipe(concatMap(actions => of(actions))),
-        fetchPersonSearchRequest({
-          query,
-          pageId
-        }).pipe(concatMap(actions => of(actions)))
+        ajax.getJSON(createUrl("/search/movie", params)),
+        ajax.getJSON(createUrl("/search/person", params))
       ).pipe(
         concatMap(actions => {
           console.log(actions);

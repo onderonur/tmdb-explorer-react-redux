@@ -39,6 +39,7 @@ const isFetching = combineReducers({
   ),
   popularMovies: createIsFetching(actionTypes.FETCH_POPULAR_MOVIES),
   popularPeople: createIsFetching(actionTypes.FETCH_POPULAR_PEOPLE),
+  search: createIsFetching(actionTypes.FETCH_SEARCH),
   movieSearchResultsByQuery: createIsFetching(actionTypes.FETCH_MOVIE_SEARCH),
   personSearchResultsByQuery: createIsFetching(actionTypes.FETCH_PERSON_SEARCH)
 });
@@ -63,6 +64,7 @@ export const selectors = {
     state.personImagesByPersonId[personId],
   selectIsFetchingPersonCredits: (state, personId) =>
     state.personCreditsByPersonId[personId],
+  selectIsFetchingSearch: state => state.search,
   selectIsFetchingMovieSearchResults: state => state.movieSearchResultsByQuery,
   selectIsFetchingPersonSearchResults: state => state.personSearchResultsByQuery
 };
