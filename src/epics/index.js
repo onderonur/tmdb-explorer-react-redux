@@ -230,35 +230,32 @@ const fetchPersonImagesEpic = groupedFetchRequest({
   schema: schemas.personImageSchema
 });
 
-// TODO: Buradan devam
-const fetchMovieSearchRequest = ({ query, pageId }) =>
-  getRequest({
-    action: { type: actionTypes.FETCH_MOVIE_SEARCH, query, pageId },
-    endpoint: () => "/search/movie",
-    params: () => ({ query, page: pageId }),
-    schema: { results: [schemas.movieSchema] }
-  });
-
-const fetchPersonSearchRequest = ({ query, pageId }) =>
-  getRequest({
-    action: { type: actionTypes.FETCH_PERSON_SEARCH, query, pageId },
-    endpoint: () => "/search/person",
-    params: () => ({ query, page: pageId }),
-    schema: { results: [schemas.personSchema] }
-  });
-
 // We don't select "cachedData" to force a new request on every search.
 const fetchMovieSearchEpic = action$ =>
   action$.pipe(
     ofType(actionTypes.FETCH_MOVIE_SEARCH),
-    switchMap(action => fetchMovieSearchRequest(action))
+    switchMap(action =>
+      getRequest({
+        action,
+        endpoint: () => "/search/movie",
+        params: ({ query, pageId }) => ({ query, page: pageId }),
+        schema: { results: [schemas.movieSchema] }
+      })
+    )
   );
 
 // We don't select "cachedData" to force a new request on every search.
 const fetchPersonSearchEpic = action$ =>
   action$.pipe(
     ofType(actionTypes.FETCH_PERSON_SEARCH),
-    switchMap(action => fetchPersonSearchRequest(action))
+    switchMap(action =>
+      getRequest({
+        action,
+        endpoint: () => "/search/person",
+        params: ({ query, pageId }) => ({ query, page: pageId }),
+        schema: { results: [schemas.personSchema] }
+      })
+    )
   );
 
 // We don't select "cachedData" to force a new request on every search.
@@ -268,21 +265,22 @@ const fetchSearchEpic = (action$, state$) =>
     debounceTime(600),
     filter(action => action.query),
     distinctUntilChanged(),
-    // TODO: Switchmap'te cancel olunca isFethcing i false yap
     switchMap(action => {
       const { pageId, query } = action;
       const params = {
         query,
         page: pageId
       };
+      const fetchType = action.type;
+      const requestType = `${fetchType}_REQUEST`;
+      const successType = `${fetchType}_SUCCESS`;
+      const errorType = `${fetchType}_ERROR`;
       return forkJoin(
         ajax.getJSON(createUrl("/search/movie", params)),
         ajax.getJSON(createUrl("/search/person", params))
       ).pipe(
-        concatMap(actions => {
-          console.log(actions);
-          return actions;
-        })
+        map(([movies, people]) => /*TODO: NORMALIZE*/ ""),
+        startWith({ ...action, type: requestType })
       );
     })
   );
