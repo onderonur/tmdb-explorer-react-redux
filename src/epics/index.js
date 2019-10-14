@@ -14,13 +14,15 @@ import {
   switchMap,
   debounceTime,
   distinctUntilChanged,
+  takeUntil,
   concatMap
 } from "rxjs/operators";
 import { ajax } from "rxjs/ajax";
 import { BASE_API_URL } from "constants/urls";
 import { normalize } from "normalizr";
-import { of, forkJoin } from "rxjs";
+import { of, forkJoin, merge } from "rxjs";
 import queryString from "query-string";
+import { getFetchTypes } from "utils";
 
 // Checking cached data to see if it exists and has all the required fields
 export const verifyCachedData = (cachedData, requiredFields = []) => {
@@ -57,15 +59,20 @@ const createUrl = (endpoint, params = {}) =>
     api_key
   })}`;
 
-const getRequest = ({ action, endpoint, params, processResponse, schema }) => {
-  const fetchType = action.type;
-  const requestType = `${fetchType}_REQUEST`;
-  const successType = `${fetchType}_SUCCESS`;
-  const errorType = `${fetchType}_ERROR`;
+const getRequest = (endpoint, params) =>
+  ajax.getJSON(createUrl(endpoint, params), { "Cache-Control": "no-cache" });
 
-  const url = createUrl(endpoint(action), params ? params(action) : undefined);
+const getRequestWithNormalization = ({
+  action,
+  endpoint,
+  params = () => undefined,
+  processResponse,
+  schema
+}) => {
+  const { type: fetchType } = action;
+  const { requestType, successType, errorType } = getFetchTypes(fetchType);
 
-  return ajax.getJSON(url).pipe(
+  return getRequest(endpoint(action), params(action)).pipe(
     map(response =>
       processResponse ? processResponse(response, action) : response
     ),
@@ -95,7 +102,7 @@ const getRequest = ({ action, endpoint, params, processResponse, schema }) => {
  * If one of the currently running streams (which are grouped by a function) hits again, it is ignored and the currently running stream
  * continues (thanks to exhaustMap).
  */
-const groupedFetchRequest = ({
+const groupedGetRequest = ({
   type,
   groupActionsBy,
   selectCachedData,
@@ -115,7 +122,7 @@ const groupedFetchRequest = ({
         // exhaustMap: Only the currently running stream will continue.
         // Next ones will be ignored until it is finished.
         exhaustMap(action =>
-          getRequest({
+          getRequestWithNormalization({
             action,
             endpoint,
             params,
@@ -127,7 +134,7 @@ const groupedFetchRequest = ({
     )
   );
 
-const fetchPopularMoviesEpic = groupedFetchRequest({
+const fetchPopularMoviesEpic = groupedGetRequest({
   type: actionTypes.FETCH_POPULAR_MOVIES,
   groupActionsBy: ({ pageId }) => pageId,
   endpoint: () => "/movie/popular",
@@ -137,7 +144,7 @@ const fetchPopularMoviesEpic = groupedFetchRequest({
   }
 });
 
-const fetchMovieEpic = groupedFetchRequest({
+const fetchMovieEpic = groupedGetRequest({
   type: actionTypes.FETCH_MOVIE,
   groupActionsBy: action => action.movieId,
   selectCachedData: (state, action) =>
@@ -146,7 +153,7 @@ const fetchMovieEpic = groupedFetchRequest({
   schema: schemas.movieSchema
 });
 
-const fetchPersonEpic = groupedFetchRequest({
+const fetchPersonEpic = groupedGetRequest({
   type: actionTypes.FETCH_PERSON,
   groupActionsBy: ({ personId }) => personId,
   selectCachedData: (state, { personId }) =>
@@ -155,7 +162,7 @@ const fetchPersonEpic = groupedFetchRequest({
   schema: schemas.personSchema
 });
 
-const fetchRecommendationsEpic = groupedFetchRequest({
+const fetchRecommendationsEpic = groupedGetRequest({
   type: actionTypes.FETCH_MOVIE_RECOMMENDATIONS,
   groupActionsBy: ({ movieId }) => movieId,
   selectCachedData: (state, { movieId }) =>
@@ -165,19 +172,7 @@ const fetchRecommendationsEpic = groupedFetchRequest({
   schema: schemas.movieRecommendationSchema
 });
 
-const fetchGenresEpic = action$ =>
-  action$.pipe(
-    ofType(actionTypes.FETCH_GENRES),
-    switchMap(action =>
-      getRequest({
-        action,
-        endpoint: () => "/genre/movie/list",
-        schema: { genres: [schemas.genreSchema] }
-      })
-    )
-  );
-
-const fetchMovieCreditsEpic = groupedFetchRequest({
+const fetchMovieCreditsEpic = groupedGetRequest({
   type: actionTypes.FETCH_MOVIE_CREDITS,
   groupActionsBy: ({ movieId }) => movieId,
   selectCachedData: (state, { movieId }) =>
@@ -186,7 +181,7 @@ const fetchMovieCreditsEpic = groupedFetchRequest({
   schema: schemas.movieCreditSchema
 });
 
-const fetchPersonCreditsEpic = groupedFetchRequest({
+const fetchPersonCreditsEpic = groupedGetRequest({
   type: actionTypes.FETCH_PERSON_MOVIE_CREDITS,
   groupActionsBy: ({ personId }) => personId,
   selectCachedData: (state, { personId }) =>
@@ -195,7 +190,7 @@ const fetchPersonCreditsEpic = groupedFetchRequest({
   schema: schemas.personCreditSchema
 });
 
-const fetchPopularPeopleEpic = groupedFetchRequest({
+const fetchPopularPeopleEpic = groupedGetRequest({
   type: actionTypes.FETCH_POPULAR_PEOPLE,
   groupActionsBy: ({ pageId }) => pageId,
   endpoint: () => "/person/popular",
@@ -203,7 +198,7 @@ const fetchPopularPeopleEpic = groupedFetchRequest({
   schema: { results: [schemas.personSchema] }
 });
 
-const fetchMovieVideosEpic = groupedFetchRequest({
+const fetchMovieVideosEpic = groupedGetRequest({
   type: actionTypes.FETCH_MOVIE_VIDEOS,
   groupActionsBy: ({ movieId }) => movieId,
   selectCachedData: (state, { movieId }) =>
@@ -212,7 +207,7 @@ const fetchMovieVideosEpic = groupedFetchRequest({
   schema: schemas.movieVideosSchema
 });
 
-const fetchMovieImagesEpic = groupedFetchRequest({
+const fetchMovieImagesEpic = groupedGetRequest({
   type: actionTypes.FETCH_MOVIE_IMAGES,
   groupActionsBy: ({ movieId }) => movieId,
   selectCachedData: (state, { movieId }) =>
@@ -221,7 +216,7 @@ const fetchMovieImagesEpic = groupedFetchRequest({
   schema: schemas.movieImageSchema
 });
 
-const fetchPersonImagesEpic = groupedFetchRequest({
+const fetchPersonImagesEpic = groupedGetRequest({
   type: actionTypes.FETCH_PERSON_IMAGES,
   groupActionsBy: ({ personId }) => personId,
   selectCachedData: (state, { personId }) =>
@@ -230,12 +225,24 @@ const fetchPersonImagesEpic = groupedFetchRequest({
   schema: schemas.personImageSchema
 });
 
+const fetchGenresEpic = action$ =>
+  action$.pipe(
+    ofType(actionTypes.FETCH_GENRES),
+    switchMap(action =>
+      getRequestWithNormalization({
+        action,
+        endpoint: () => "/genre/movie/list",
+        schema: { genres: [schemas.genreSchema] }
+      })
+    )
+  );
+
 // We don't select "cachedData" to force a new request on every search.
 const fetchMovieSearchEpic = action$ =>
   action$.pipe(
     ofType(actionTypes.FETCH_MOVIE_SEARCH),
     switchMap(action =>
-      getRequest({
+      getRequestWithNormalization({
         action,
         endpoint: () => "/search/movie",
         params: ({ query, pageId }) => ({ query, page: pageId }),
@@ -249,7 +256,7 @@ const fetchPersonSearchEpic = action$ =>
   action$.pipe(
     ofType(actionTypes.FETCH_PERSON_SEARCH),
     switchMap(action =>
-      getRequest({
+      getRequestWithNormalization({
         action,
         endpoint: () => "/search/person",
         params: ({ query, pageId }) => ({ query, page: pageId }),
@@ -260,29 +267,77 @@ const fetchPersonSearchEpic = action$ =>
 
 // We don't select "cachedData" to force a new request on every search.
 const fetchSearchEpic = (action$, state$) =>
-  action$.pipe(
-    ofType(actionTypes.FETCH_SEARCH),
-    debounceTime(600),
-    filter(action => action.query),
-    distinctUntilChanged(),
-    switchMap(action => {
-      const { pageId, query } = action;
-      const params = {
-        query,
-        page: pageId
-      };
-      const fetchType = action.type;
-      const requestType = `${fetchType}_REQUEST`;
-      const successType = `${fetchType}_SUCCESS`;
-      const errorType = `${fetchType}_ERROR`;
-      return forkJoin(
-        ajax.getJSON(createUrl("/search/movie", params)),
-        ajax.getJSON(createUrl("/search/person", params))
-      ).pipe(
-        map(([movies, people]) => /*TODO: NORMALIZE*/ ""),
-        startWith({ ...action, type: requestType })
-      );
-    })
+  merge(
+    action$.pipe(
+      ofType(actionTypes.FETCH_SEARCH),
+      map(action => {
+        const { type: fetchType, query } = action;
+        const { requestType, cancelType } = getFetchTypes(fetchType);
+        return { type: query ? requestType : cancelType };
+      })
+    ),
+    action$.pipe(
+      ofType(actionTypes.FETCH_SEARCH),
+      debounceTime(500),
+      distinctUntilChanged(),
+      filter(action => action.query),
+      switchMap(action => {
+        const { type: fetchType } = action;
+        const { successType, errorType } = getFetchTypes(fetchType);
+
+        const { pageId, query } = action;
+
+        const params = {
+          query,
+          page: pageId
+        };
+
+        return forkJoin(
+          getRequest("/search/movie", params),
+          getRequest("/search/person", params)
+        ).pipe(
+          map(responses => {
+            const [movies, people] = responses;
+            const normalizedMovies = normalize(movies, {
+              results: [schemas.movieSchema]
+            });
+            const normalizedPeople = normalize(people, {
+              results: [schemas.personSchema]
+            });
+
+            const { successType: movieSearchSuccessType } = getFetchTypes(
+              actionTypes.FETCH_MOVIE_SEARCH
+            );
+            const { successType: personSearchSuccessType } = getFetchTypes(
+              actionTypes.FETCH_PERSON_SEARCH
+            );
+
+            const actions = [
+              {
+                ...action,
+                type: movieSearchSuccessType,
+                response: normalizedMovies
+              },
+              {
+                ...action,
+                type: personSearchSuccessType,
+                response: normalizedPeople
+              },
+              {
+                type: successType
+              }
+            ];
+
+            return actions;
+          }),
+          // TODO: mergeMap ile de bi dene. Ne işe yarıyor öğren. console.log'la filan da bak
+          concatMap(actions => actions),
+          // Cancel the requests when a new "FETCH_SEARCH" action comes in.
+          takeUntil(action$.pipe(ofType(actionTypes.FETCH_SEARCH))),
+          catchError(() => of({ type: errorType }))
+        );
+      })
+    )
   );
 
 const rootEpic = combineEpics(

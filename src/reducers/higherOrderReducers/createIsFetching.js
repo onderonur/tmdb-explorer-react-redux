@@ -1,20 +1,22 @@
 import createReducer from "./createReducer";
+import { getFetchTypes } from "utils";
 
 const initialState = false;
 
-const createIsFetching = type => {
+const createIsFetching = fetchType => {
   if (!typeof type === "string") {
     throw new Error("Expected types to be strings.");
   }
 
-  const requestType = `${type}_REQUEST`;
-  const successType = `${type}_SUCCESS`;
-  const failureType = `${type}_ERROR`;
+  const { requestType, successType, errorType, cancelType } = getFetchTypes(
+    fetchType
+  );
 
   return createReducer(initialState, {
     [requestType]: () => true,
     [successType]: () => false,
-    [failureType]: () => false
+    [errorType]: () => false,
+    [cancelType]: () => false
   });
 };
 

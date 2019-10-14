@@ -1,5 +1,6 @@
 import union from "lodash/union";
 import createReducer from "./createReducer";
+import { getFetchTypes } from "utils";
 
 export const DEFAULT_FIRST_PAGE = 1;
 
@@ -17,7 +18,7 @@ const createPagination = fetchType => {
     throw new Error("Expected fetchType to be strings.");
   }
 
-  const successType = `${fetchType}_SUCCESS`;
+  const { successType } = getFetchTypes(fetchType);
 
   return createReducer(initialState, {
     [successType]: (state, action) => {

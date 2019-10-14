@@ -63,3 +63,11 @@ export function splitPathnameAndQueryString(path) {
     search: search ? `?${search}` : ""
   };
 }
+
+export function getFetchTypes(fetchType) {
+  const requestType = `${fetchType}_REQUEST`;
+  const successType = `${fetchType}_SUCCESS`;
+  const errorType = `${fetchType}_ERROR`;
+  const cancelType = `${fetchType}_CANCELLED`;
+  return { requestType, successType, errorType, cancelType };
+}
