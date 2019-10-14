@@ -1,29 +1,14 @@
 import { createStore, applyMiddleware } from "redux";
 import rootReducer from "reducers";
-import callAPIMiddleware from "middlewares/callAPIMiddleware";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { combineEpics, createEpicMiddleware } from "redux-observable";
-import {
-  fetchPopularMoviesEpic,
-  fetchMovieEpic,
-  fetchPersonEpic,
-  fetchRecommendationsEpic,
-  fetchGenresEpic
-} from "actions";
-
-const rootEpic = combineEpics(
-  fetchPopularMoviesEpic,
-  fetchMovieEpic,
-  fetchPersonEpic,
-  fetchRecommendationsEpic,
-  fetchGenresEpic
-);
+import { createEpicMiddleware } from "redux-observable";
+import rootEpic from "epics";
 
 const epicMiddleware = createEpicMiddleware();
 
 // https://redux.js.org/recipes/configuring-your-store
 function configureStore(preloadedState) {
-  const middlewares = [callAPIMiddleware, epicMiddleware];
+  const middlewares = [epicMiddleware];
   const middlewareEnhancer = applyMiddleware(...middlewares);
 
   const enhancers = [middlewareEnhancer];

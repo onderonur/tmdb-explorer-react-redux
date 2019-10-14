@@ -198,6 +198,7 @@ const imageSchema = new schema.Entity(
   { idAttribute: value => value.file_path }
 );
 
+// TODO: Schema'lardaki plural-single kullanımları kontrol edip düzelt.
 export const movieImageSchema = new schema.Entity(
   "movieImages",
   {

@@ -20,14 +20,18 @@ const useStyles = makeStyles(theme => ({
 
 function App() {
   const dispatch = useDispatch();
+  const classes = useStyles();
   const isFetching = useSelector(state =>
     selectors.selectIsFetchingGenres(state)
   );
-  const classes = useStyles();
 
   useEffect(() => {
     dispatch(fetchGenres());
   }, [dispatch]);
+
+  // TODO: isFetching'den dolayı tüm app flicker yapıyor.
+  // O duruma genel bir çözüm bul.
+  // Alttaki tüm useEffect'ler 2 kez çalışıyor vs.
 
   return (
     <>
