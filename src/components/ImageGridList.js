@@ -2,11 +2,13 @@ import React from "react";
 import GridList from "./GridList";
 import ImageGridListItem from "./ImageGridListItem";
 
-function renderItem(filePath) {
-  return <ImageGridListItem filePath={filePath} />;
-}
+function ImageGridList({ filePaths, isFetching, imageAspectRatio }) {
+  function renderItem(filePath) {
+    return (
+      <ImageGridListItem filePath={filePath} aspectRatio={imageAspectRatio} />
+    );
+  }
 
-function ImageGridList({ filePaths, isFetching }) {
   return (
     <GridList
       items={filePaths}

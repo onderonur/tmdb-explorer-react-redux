@@ -4,13 +4,17 @@ import { getImageUrl } from "utils";
 import RouterLink from "./RouterLink";
 import { useLocation } from "react-router-dom";
 
-function ImageGridListItem({ filePath }) {
+function ImageGridListItem({ filePath, aspectRatio }) {
   const location = useLocation();
 
   return (
     <li>
       <RouterLink keepScroll to={`${location.pathname}?view=${filePath}`}>
-        <BaseImage src={getImageUrl(filePath)} aspectRatio="16:9" />
+        <BaseImage
+          src={getImageUrl(filePath)}
+          aspectRatio={aspectRatio}
+          objectFit="contain"
+        />
       </RouterLink>
     </li>
   );
