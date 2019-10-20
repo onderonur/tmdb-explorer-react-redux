@@ -13,7 +13,8 @@ const useStyles = makeStyles(theme => ({
     display: "block",
     width: "100%",
     height: "100%",
-    objectFit: "cover"
+    objectFit: ({ objectFit }) => objectFit,
+    backgroundColor: theme.palette.background.default
   },
   imgWithAspectRatio: {
     position: "absolute",
@@ -27,9 +28,10 @@ function BaseImage({
   src = placeholderPng,
   alt = DEFAULT_ALT,
   aspectRatio = ORIGINAL,
-  lazyLoad = true
+  lazyLoad = true,
+  objectFit = "cover"
 }) {
-  const classes = useStyles();
+  const classes = useStyles({ objectFit });
   const [imgHeight, setImgHeight] = useState(0);
   const [imgWidth, setImgWidth] = useState(0);
   const [ref, { isVisible }] = useVisibilityTracker();

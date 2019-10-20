@@ -21,7 +21,11 @@ function MovieImageGridList({ movieId }) {
 
   return (
     <>
-      <ImageGridList filePaths={filePaths} isFetching={isFetching} />
+      <ImageGridList
+        filePaths={filePaths}
+        isFetching={isFetching}
+        imageAspectRatio="16:9"
+      />
       <ImageGalleryModal
         title={movie ? movie.title : ""}
         filePaths={filePaths}
