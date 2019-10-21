@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { Typography } from "@material-ui/core";
-import PersonIntroduction from "containers/PersonIntroduction";
 import { useDispatch } from "react-redux";
 import { fetchPerson } from "actions";
-import PersonInfo from "containers/PersonInfo";
-import PersonCastingGridList from "containers/PersonCastingGridList";
-import Profile from "components/Profile";
 import { useParams } from "react-router-dom";
-import PersonImageGridList from "containers/PersonImageGridList";
+import Profile from "components/Profile";
+import PersonInfo from "./PersonInfo";
+import PersonIntroduction from "./PersonIntroduction";
+import PersonImageGridList from "./PersonImageGridList";
+import PersonCastingGridList from "./PersonCastingGridList";
 
 const REQUIRED_FIELDS = ["biography", "imdb_id"];
 

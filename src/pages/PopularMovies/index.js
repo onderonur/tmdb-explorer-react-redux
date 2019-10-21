@@ -1,9 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMovieSearch } from "actions";
-import InfiniteGridList from "components/InfiniteGridList";
-import MovieCard from "./MovieCard";
+import { fetchPopularMovies } from "actions";
 import { selectors } from "reducers";
+import MovieCard from "components/MovieCard";
+import InfiniteGridList from "components/InfiniteGridList";
 
 function renderItem(movieId) {
   return (
@@ -13,20 +13,18 @@ function renderItem(movieId) {
   );
 }
 
-function MovieSearchResults({ query }) {
+function PopularMovies() {
   const dispatch = useDispatch();
-  const movieIds = useSelector(state =>
-    selectors.selectMovieSearchResultIds(state, query)
-  );
   const isFetching = useSelector(state =>
-    selectors.selectIsFetchingMovieSearchResults(state)
+    selectors.selectIsFetchingPopularMovies(state)
   );
   const nextPage = useSelector(state =>
-    selectors.selectMovieSearchResultsNextPage(state, query)
+    selectors.selectPopularMoviesNextPage(state)
   );
+  const movieIds = useSelector(state => selectors.selectPopularMovieIds(state));
 
   function handleLoadMore() {
-    dispatch(fetchMovieSearch(query, nextPage));
+    dispatch(fetchPopularMovies(nextPage));
   }
 
   return (
@@ -40,4 +38,4 @@ function MovieSearchResults({ query }) {
   );
 }
 
-export default MovieSearchResults;
+export default PopularMovies;
