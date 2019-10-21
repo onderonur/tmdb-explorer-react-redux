@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { fetchMovieCredits } from "actions";
 import { useDispatch, useSelector } from "react-redux";
 import { selectors } from "reducers";
-import GridList from "components/GridList";
+import BaseGridList from "components/BaseGridList";
 import MovieCastGridListItem from "./MovieCastGridListItem";
 
 function renderItem(castCreditId) {
@@ -24,7 +24,7 @@ function MovieCastGridList({ movieId }) {
   }, [movieId, dispatch]);
 
   return (
-    <GridList
+    <BaseGridList
       items={castCreditIds}
       loading={isFetchingCredits}
       minItemWidth={230}

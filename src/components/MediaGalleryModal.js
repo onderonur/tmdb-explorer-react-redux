@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  MobileStepper,
-  Button,
-  Box,
-  Typography,
-  IconButton
-} from "@material-ui/core";
+import { MobileStepper, Button, IconButton } from "@material-ui/core";
 import BaseDialog from "components/BaseDialog";
 import { useTheme } from "@material-ui/styles";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
@@ -79,25 +73,12 @@ function MediaGalleryModal({
   return (
     <HotKeys keyMap={keyMap} handlers={keyHandlers} allowChanges={true}>
       <BaseDialog
-        title={
-          isVideoPlayer ? (
-            title
-          ) : (
-            <Box
-              display="flex"
-              flexDirection="row"
-              alignItems="center"
-              width="100%"
-            >
-              <Box flex={1}>
-                <Typography variant="h6" noWrap>
-                  {title}
-                </Typography>
-              </Box>
-              <IconButton onClick={() => setIsFullScreen(true)}>
-                <FullscreenIcon />
-              </IconButton>
-            </Box>
+        title={title}
+        titleRight={
+          !false && (
+            <IconButton onClick={() => setIsFullScreen(true)}>
+              <FullscreenIcon />
+            </IconButton>
           )
         }
         open={!!isVisible}

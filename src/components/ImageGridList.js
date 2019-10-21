@@ -1,5 +1,5 @@
 import React from "react";
-import GridList from "./GridList";
+import BaseGridList from "./BaseGridList";
 import ImageGridListItem from "./ImageGridListItem";
 
 function ImageGridList({ filePaths, isFetching, imageAspectRatio }) {
@@ -10,7 +10,7 @@ function ImageGridList({ filePaths, isFetching, imageAspectRatio }) {
   }
 
   return (
-    <GridList
+    <BaseGridList
       items={filePaths}
       loading={isFetching}
       minItemWidth={120}
