@@ -1,9 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPopularPeople } from "actions";
-import PersonCard from "containers/PersonCard";
-import InfiniteGridList from "components/InfiniteGridList";
 import { selectors } from "reducers";
+import PersonCard from "components/PersonCard";
+import InfiniteGridList from "components/InfiniteGridList";
 
 function renderItem(personId) {
   return (

@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectors } from "reducers";
 import { fetchPersonCredits } from "actions";
-import PersonCastingGridListItem from "./PersonCastingGridListItem";
 import GridList from "components/GridList";
+import PersonCastingGridListItem from "./PersonCastingGridListItem";
 
 function renderItem(castingId) {
   return <PersonCastingGridListItem castCreditId={castingId} />;

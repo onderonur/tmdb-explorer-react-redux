@@ -1,5 +1,34 @@
 import { useHistory } from "react-router-dom";
-import { addStateToLocation } from "utils";
+
+function splitPathnameAndQueryString(path) {
+  const [pathname, search] = path.split("?");
+  return {
+    pathname,
+    search: search ? `?${search}` : ""
+  };
+}
+
+function addStateToLocation(to, addedState) {
+  let toObject;
+
+  if (typeof to === "string") {
+    const { pathname, search } = splitPathnameAndQueryString(to);
+    toObject = {
+      pathname,
+      search
+    };
+  } else {
+    toObject = to;
+  }
+
+  return {
+    ...toObject,
+    state: {
+      ...toObject.state,
+      ...addedState
+    }
+  };
+}
 
 export function addKeepScrollState(to) {
   return addStateToLocation(to, { keepScroll: true });
