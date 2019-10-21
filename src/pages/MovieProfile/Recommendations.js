@@ -4,7 +4,7 @@ import { fetchRecommendations } from "actions";
 import { selectors } from "reducers";
 import { useTheme } from "@material-ui/styles";
 import MovieCard from "components/MovieCard";
-import GridList from "components/GridList";
+import BaseGridList from "components/BaseGridList";
 
 function renderItem(recommendationId) {
   return (
@@ -29,7 +29,7 @@ function Recommendations({ movieId }) {
   }, [movieId, dispatch]);
 
   return (
-    <GridList
+    <BaseGridList
       items={recommendationIds}
       loading={isFetching}
       renderItem={renderItem}

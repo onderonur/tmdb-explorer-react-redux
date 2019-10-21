@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectors } from "reducers";
 import { fetchPersonCredits } from "actions";
-import GridList from "components/GridList";
+import BaseGridList from "components/BaseGridList";
 import PersonCastingGridListItem from "./PersonCastingGridListItem";
 
 function renderItem(castingId) {
@@ -24,7 +24,7 @@ function PersonCastingGridList({ personId }) {
   }, [personId, dispatch]);
 
   return (
-    <GridList
+    <BaseGridList
       items={castingIds}
       loading={isFetching}
       renderItem={renderItem}
