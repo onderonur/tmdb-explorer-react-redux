@@ -2,7 +2,12 @@ import React from "react";
 import BaseGridList from "./BaseGridList";
 import ImageGridListItem from "./ImageGridListItem";
 
-function ImageGridList({ filePaths, isFetching, imageAspectRatio }) {
+function ImageGridList({
+  filePaths,
+  isFetching,
+  imageAspectRatio,
+  minItemWidth = 120
+}) {
   function renderItem(filePath) {
     return (
       <ImageGridListItem filePath={filePath} aspectRatio={imageAspectRatio} />
@@ -13,7 +18,7 @@ function ImageGridList({ filePaths, isFetching, imageAspectRatio }) {
     <BaseGridList
       items={filePaths}
       loading={isFetching}
-      minItemWidth={120}
+      minItemWidth={minItemWidth}
       renderItem={renderItem}
       listEmptyMessage="No image has been found."
     />

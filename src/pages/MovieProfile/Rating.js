@@ -1,21 +1,28 @@
 import React from "react";
-import { CircularProgress, Avatar, makeStyles } from "@material-ui/core";
+import {
+  CircularProgress,
+  Avatar,
+  makeStyles,
+  colors
+} from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
-  value: theme.typography.button
+  avatar: {
+    width: 46,
+    height: 46,
+    backgroundColor: colors.common.white
+  },
+  value: theme.typography.button,
+  percent: {
+    fontSize: "50%"
+  }
 }));
 
 function Rating({ value }) {
   const classes = useStyles();
 
   return (
-    <Avatar
-      style={{
-        width: 46,
-        height: 46,
-        backgroundColor: "rgba(255, 255, 255, 0.8)"
-      }}
-    >
+    <Avatar className={classes.avatar}>
       <CircularProgress
         style={{ position: "absolute" }}
         variant="static"
@@ -25,7 +32,7 @@ function Rating({ value }) {
       />
       <span className={classes.value}>
         {value}
-        <sup style={{ fontSize: "50%" }}>%</sup>
+        <sup className={classes.percent}>%</sup>
       </span>
     </Avatar>
   );

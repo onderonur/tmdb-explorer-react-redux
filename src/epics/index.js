@@ -14,8 +14,7 @@ import {
   switchMap,
   debounceTime,
   distinctUntilChanged,
-  takeUntil,
-  concatMap
+  takeUntil
 } from "rxjs/operators";
 import { ajax } from "rxjs/ajax";
 import { BASE_API_URL } from "constants/urls";
@@ -61,6 +60,12 @@ const createUrl = (endpoint, params = {}) =>
 
 const getRequest = (endpoint, params) =>
   ajax.getJSON(createUrl(endpoint, params), { "Cache-Control": "no-cache" });
+
+const mapWithFetchTypes = () =>
+  map(action => {
+    const fetchTypes = getFetchTypes(action.type);
+    return [action, fetchTypes];
+  });
 
 const getRequestWithNormalization = ({
   action,
@@ -270,21 +275,18 @@ const fetchSearchEpic = (action$, state$) =>
   merge(
     action$.pipe(
       ofType(actionTypes.FETCH_SEARCH),
-      map(action => {
-        const { type: fetchType, query } = action;
-        const { requestType, cancelType } = getFetchTypes(fetchType);
-        return { type: query ? requestType : cancelType };
-      })
+      mapWithFetchTypes(),
+      map(([action, { requestType, cancelType }]) => ({
+        type: action.query ? requestType : cancelType
+      }))
     ),
     action$.pipe(
       ofType(actionTypes.FETCH_SEARCH),
-      debounceTime(500),
+      debounceTime(800),
       distinctUntilChanged(),
       filter(action => action.query),
-      switchMap(action => {
-        const { type: fetchType } = action;
-        const { successType, errorType } = getFetchTypes(fetchType);
-
+      mapWithFetchTypes(),
+      switchMap(([action, { successType, errorType }]) => {
         const { pageId, query } = action;
 
         const params = {
@@ -330,8 +332,7 @@ const fetchSearchEpic = (action$, state$) =>
 
             return actions;
           }),
-          // TODO: mergeMap ile de bi dene. Ne işe yarıyor öğren. console.log'la filan da bak
-          concatMap(actions => actions),
+          mergeMap(actions => actions),
           // Cancel the requests when a new "FETCH_SEARCH" action comes in.
           takeUntil(action$.pipe(ofType(actionTypes.FETCH_SEARCH))),
           catchError(() => of({ type: errorType }))
