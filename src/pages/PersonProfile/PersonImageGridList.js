@@ -25,6 +25,7 @@ function PersonImageGridList({ personId }) {
         filePaths={filePaths}
         isFetching={isFetching}
         imageAspectRatio="2:3"
+        minItemWidth={80}
       />
       <ImageGalleryModal
         title={person ? person.name : ""}

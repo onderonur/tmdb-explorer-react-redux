@@ -109,6 +109,7 @@ function MediaGalleryModal({
               lazyLoad={false}
               aspectRatio="16:9"
               objectFit="contain"
+              showFallbackWhileLoading={true}
             />
           </FullScreen>
         )}

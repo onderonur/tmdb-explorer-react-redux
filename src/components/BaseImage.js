@@ -4,38 +4,47 @@ import placeholderPng from "assets/placeholder.png";
 import clsx from "clsx";
 import AspectRatio from "components/AspectRatio";
 import useVisibilityTracker from "hooks/useVisibilityTracker";
+import { Box, useTheme, Zoom } from "@material-ui/core";
+import LoadingIndicator from "./LoadingIndicator";
 
 const ORIGINAL = "original";
 const DEFAULT_ALT = "Not Loaded";
 
 const useStyles = makeStyles(theme => ({
-  img: {
+  imgWrapper: {
     display: "block",
     width: "100%",
     height: "100%",
     objectFit: ({ objectFit }) => objectFit,
     backgroundColor: theme.palette.background.default
   },
-  imgWithAspectRatio: {
+  imgWithAspectRatioWrapper: {
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)"
+  },
+  img: {
+    width: "100%",
+    height: "100%"
   }
 }));
 
 function BaseImage({
-  src = placeholderPng,
+  src,
   alt = DEFAULT_ALT,
   aspectRatio = ORIGINAL,
   lazyLoad = true,
-  objectFit = "cover"
+  objectFit = "cover",
+  showFallbackWhileLoading
 }) {
   const classes = useStyles({ objectFit });
   const [imgHeight, setImgHeight] = useState(0);
   const [imgWidth, setImgWidth] = useState(0);
   const [ref, { isVisible }] = useVisibilityTracker();
   const [initialized, setInitialized] = useState(!lazyLoad);
+  const [isImgLoaded, setIsImgLoaded] = useState(false);
+  const theme = useTheme();
 
   const isOriginalAspectRatio = aspectRatio === ORIGINAL;
 
@@ -45,6 +54,8 @@ function BaseImage({
       setImgHeight(img.naturalHeight);
       setImgWidth(img.naturalWidth);
     }
+
+    setIsImgLoaded(true);
   }
 
   useEffect(() => {
@@ -61,12 +72,46 @@ function BaseImage({
       }
     >
       {lazyLoad && !initialized ? null : (
-        <img
-          className={clsx(classes.img, classes.imgWithAspectRatio)}
-          src={src}
-          alt={alt}
-          onLoad={handleLoad}
-        />
+        <>
+          <Box
+            className={clsx(
+              classes.imgWrapper,
+              classes.imgWithAspectRatioWrapper
+            )}
+          >
+            <Zoom
+              in={isImgLoaded}
+              style={{
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0
+              }}
+            >
+              <img
+                className={classes.img}
+                src={src || placeholderPng}
+                alt={alt}
+                onLoad={handleLoad}
+              />
+            </Zoom>
+          </Box>
+          {!isImgLoaded && showFallbackWhileLoading && (
+            <Box
+              position="absolute"
+              top={0}
+              left={0}
+              right={0}
+              bottom={0}
+              display="flex"
+              alignItems="center"
+              bgcolor={theme.palette.grey[900]}
+            >
+              <LoadingIndicator loading />
+            </Box>
+          )}
+        </>
       )}
     </AspectRatio>
   );
