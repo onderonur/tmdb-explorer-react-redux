@@ -36,11 +36,14 @@ function MovieIntroduction({ movieId }) {
       title={
         <>
           <Typography variant="h5" gutterBottom={!movie.tagline}>
-            {movie.title}{" "}
+            {movie.title}
             {releaseYear && (
-              <span className={classes.year}>{`(${getMovieReleaseYear(
-                movie
-              )})`}</span>
+              <>
+                {" "}
+                <span className={classes.year}>{`(${getMovieReleaseYear(
+                  movie
+                )})`}</span>
+              </>
             )}
           </Typography>
           {movie.tagline && (
