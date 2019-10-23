@@ -14,9 +14,8 @@ const keyMap = {
 const useStyles = makeStyles(theme => ({
   stepper: {
     position: "absolute",
-    // We give some space from top and bottom for YouTube video player controls
-    top: ({ isVideoPlayer }) => (isVideoPlayer ? "30%" : 0),
-    bottom: ({ isVideoPlayer }) => (isVideoPlayer ? "30%" : 0),
+    top: "30%",
+    bottom: "30%",
     width: "20%",
     display: "flex",
     alignItems: "center",
@@ -34,10 +33,9 @@ const useStyles = makeStyles(theme => ({
 function MediaGalleryModalStepper({
   dataSource = [],
   queryParamName,
-  activeStepIndex,
-  isVideoPlayer
+  activeStepIndex
 }) {
-  const classes = useStyles({ isVideoPlayer });
+  const classes = useStyles();
   const location = useLocation();
   const historyPush = useHistoryPush();
 
