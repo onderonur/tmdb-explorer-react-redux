@@ -13,6 +13,13 @@ const keyMap = {
 
 const useStyles = makeStyles(theme => ({
   stepper: {
+    position: "absolute",
+    // We give some space from top and bottom for YouTube video player controls
+    top: ({ isVideoPlayer }) => (isVideoPlayer ? "30%" : 0),
+    bottom: ({ isVideoPlayer }) => (isVideoPlayer ? "30%" : 0),
+    width: "20%",
+    display: "flex",
+    alignItems: "center",
     cursor: "pointer",
     opacity: 0.4,
     "&:hover": {
@@ -30,7 +37,7 @@ function MediaGalleryModalStepper({
   activeStepIndex,
   isVideoPlayer
 }) {
-  const classes = useStyles();
+  const classes = useStyles({ isVideoPlayer });
   const location = useLocation();
   const historyPush = useHistoryPush();
 
@@ -57,40 +64,28 @@ function MediaGalleryModalStepper({
     <HotKeys keyMap={keyMap} handlers={keyHandlers} allowChanges={true}>
       {previousPath && (
         <Box
-          position="absolute"
-          top={isVideoPlayer ? "30%" : 0}
-          bottom={isVideoPlayer ? "30%" : 0}
+          className={classes.stepper}
           left={0}
-          width="20%"
+          justifyContent="flex-start"
           onClick={() =>
             historyPush(previousPath, {
               keepScrollState: true
             })
           }
-          className={classes.stepper}
-          display="flex"
-          justifyContent="flex-start"
-          alignItems="center"
         >
           <ChevronLeftIcon className={classes.stepperIcon} />
         </Box>
       )}
       {nextPath && (
         <Box
-          position="absolute"
-          top={isVideoPlayer ? "30%" : 0}
-          bottom={isVideoPlayer ? "30%" : 0}
+          className={classes.stepper}
           right={0}
-          width="20%"
+          justifyContent="flex-end"
           onClick={() =>
             historyPush(nextPath, {
               keepScrollState: true
             })
           }
-          className={classes.stepper}
-          display="flex"
-          justifyContent="flex-end"
-          alignItems="center"
         >
           <ChevronRightIcon className={classes.stepperIcon} />
         </Box>
