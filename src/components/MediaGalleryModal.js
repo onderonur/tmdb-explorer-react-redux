@@ -1,23 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { MobileStepper, Button, IconButton } from "@material-ui/core";
+import { IconButton, Box } from "@material-ui/core";
 import BaseDialog from "components/BaseDialog";
-import { useTheme } from "@material-ui/styles";
-import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
-import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import useHistoryPush from "hooks/useHistoryPush";
-import { HotKeys } from "react-hotkeys";
 import useQueryString from "hooks/useQueryString";
 import { useLocation } from "react-router-dom";
-import BaseImage from "./BaseImage";
-import { getImageUrl } from "utils";
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
-import FullScreen from "react-full-screen";
 import YouTubePlayer from "./YouTubePlayer";
-
-const keyMap = {
-  NEXT: ["right", "d"],
-  PREVIOUS: ["left", "a"]
-};
+import MediaGalleryModalStepper from "./MediaGalleryModalStepper";
+import MediaGalleryModalImageViewer from "./MediaGalleryModalImageViewer";
+import FullScreen from "react-full-screen";
 
 function MediaGalleryModal({
   title,
@@ -25,7 +16,6 @@ function MediaGalleryModal({
   queryParamName,
   isVideoPlayer = false
 }) {
-  const theme = useTheme();
   const location = useLocation();
   const historyPush = useHistoryPush();
 
@@ -37,12 +27,8 @@ function MediaGalleryModal({
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   useEffect(() => {
-    if (typeof activeStepIndex === "number") {
-      setIsVisible(activeStepIndex >= 0);
-    } else {
-      setIsVisible(false);
-    }
-  }, [activeStepIndex]);
+    setIsVisible(!!activeStep);
+  }, [activeStep]);
 
   function handleClose() {
     setIsVisible(false);
@@ -52,111 +38,41 @@ function MediaGalleryModal({
     historyPush(location.pathname, { keepScrollState: true });
   }
 
-  const nextPath =
-    activeStepIndex + 1 !== dataSource.length
-      ? `${location.pathname}?${queryParamName}=${
-          dataSource[activeStepIndex + 1]
-        }`
-      : null;
-  const previousPath =
-    activeStepIndex - 1 !== -1
-      ? `${location.pathname}?${queryParamName}=${
-          dataSource[activeStepIndex - 1]
-        }`
-      : null;
-
-  const keyHandlers = {
-    NEXT: () => historyPush(nextPath, { keepScrollState: true }),
-    PREVIOUS: () => historyPush(previousPath, { keepScrollState: true })
-  };
-
   return (
-    <HotKeys keyMap={keyMap} handlers={keyHandlers} allowChanges={true}>
-      <BaseDialog
-        title={title}
-        titleRight={
-          !false && (
-            <IconButton onClick={() => setIsFullScreen(true)}>
-              <FullscreenIcon />
-            </IconButton>
-          )
-        }
-        open={!!isVisible}
-        onClose={handleClose}
-        onExited={handleExited}
-        zeroPaddingContent
+    <BaseDialog
+      title={title}
+      titleRight={
+        <IconButton onClick={() => setIsFullScreen(true)}>
+          <FullscreenIcon />
+        </IconButton>
+      }
+      open={!!isVisible}
+      onClose={handleClose}
+      onExited={handleExited}
+      zeroPaddingContent
+    >
+      <FullScreen
+        enabled={isFullScreen}
+        onChange={enabled => setIsFullScreen(enabled)}
       >
-        {isVideoPlayer ? (
-          <YouTubePlayer youTubeId={dataSource[activeStepIndex]} />
-        ) : (
-          <FullScreen
-            enabled={isFullScreen}
-            onChange={enabled => setIsFullScreen(enabled)}
-          >
-            <BaseImage
-              // Added this key to recreate the component when the "file_path" changes.
-              // Without this, when user clicks the "next" or "previous" button, it wait image to load to rerender.
-              key={
-                dataSource[activeStepIndex] ? dataSource[activeStepIndex] : "0"
-              }
-              src={
-                dataSource[activeStepIndex]
-                  ? getImageUrl(dataSource[activeStepIndex], {
-                      original: true
-                    })
-                  : null
-              }
-              lazyLoad={false}
-              aspectRatio="16:9"
-              objectFit="contain"
-              showFallbackWhileLoading={true}
+        <Box position="relative">
+          {isVideoPlayer ? (
+            // TODO: Video ve fullscreen modunu düzelt
+            <YouTubePlayer youTubeId={dataSource[activeStepIndex]} />
+          ) : (
+            <MediaGalleryModalImageViewer
+              filePath={dataSource[activeStepIndex]}
             />
-          </FullScreen>
-        )}
-        <MobileStepper
-          steps={dataSource.length}
-          position="static"
-          variant="text"
-          activeStep={activeStepIndex}
-          nextButton={
-            <Button
-              size="small"
-              disabled={!nextPath}
-              onClick={() =>
-                historyPush(nextPath, {
-                  keepScrollState: true
-                })
-              }
-            >
-              Next
-              {theme.direction === "rtl" ? (
-                <KeyboardArrowLeft />
-              ) : (
-                <KeyboardArrowRight />
-              )}
-            </Button>
-          }
-          backButton={
-            <Button
-              size="small"
-              disabled={!previousPath}
-              onClick={() =>
-                historyPush(previousPath, {
-                  keepScrollState: true
-                })
-              }
-            >
-              {theme.direction === "rtl" ? (
-                <KeyboardArrowRight />
-              ) : (
-                <KeyboardArrowLeft />
-              )}
-              Back
-            </Button>
-          }
-        />
-      </BaseDialog>
-    </HotKeys>
+          )}
+          <MediaGalleryModalStepper
+            dataSource={dataSource}
+            queryParamName={queryParamName}
+            activeStepIndex={activeStepIndex}
+            isVideoPlayer={isVideoPlayer}
+          />
+        </Box>
+      </FullScreen>
+    </BaseDialog>
   );
 }
 
