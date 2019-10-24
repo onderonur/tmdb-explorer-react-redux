@@ -1,12 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from 'containers/App';
-import * as serviceWorker from './serviceWorker';
-import { Provider } from 'react-redux';
-import { ThemeProvider } from '@material-ui/styles';
-import theme from 'theme';
-import configureStore from './store';
-import { BrowserRouter } from 'react-router-dom';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "components/App";
+import * as serviceWorker from "./serviceWorker";
+import { Provider } from "react-redux";
+import { ThemeProvider } from "@material-ui/styles";
+import theme from "theme";
+import configureStore from "./store";
+import { BrowserRouter } from "react-router-dom";
 
 const store = configureStore();
 
@@ -19,12 +19,12 @@ const renderApp = () =>
         </BrowserRouter>
       </ThemeProvider>
     </Provider>,
-    document.getElementById('root')
+    document.getElementById("root")
   );
 
-if (process.env.NODE_ENV !== 'production' && module.hot) {
-  module.hot.accept('containers/App', renderApp);
-}
+// if (process.env.NODE_ENV !== 'production' && module.hot) {
+//   module.hot.accept('components/App', renderApp);
+// }
 
 renderApp();
 

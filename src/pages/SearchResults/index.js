@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
-import MovieSearchResults from "containers/MovieSearchResults";
 import useQueryString from "hooks/useQueryString";
-import PersonSearchResults from "containers/PersonSearchResults";
 import { Tabs, Tab, Box } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { fetchMovieSearch, fetchPersonSearch } from "actions";
 import { DEFAULT_FIRST_PAGE } from "reducers/higherOrderReducers/createPagination";
 import { selectors } from "reducers";
-import SearchResultsHeader from "components/SearchResultsHeader";
 import useHistoryPush from "hooks/useHistoryPush";
 import { useParams, useLocation } from "react-router-dom";
+import SearchResultsHeader from "./SearchResultsHeader";
+import MovieSearchResults from "./MovieSearchResults";
+import PersonSearchResults from "./PersonSearchResults";
 
 function SearchResults() {
   const { query } = useQueryString();

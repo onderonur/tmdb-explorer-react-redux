@@ -1,9 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovieSearch } from "actions";
-import InfiniteGridList from "components/InfiniteGridList";
-import MovieCard from "./MovieCard";
 import { selectors } from "reducers";
+import InfiniteGridList from "components/InfiniteGridList";
+import MovieCard from "components/MovieCard";
 
 function renderItem(movieId) {
   return (
@@ -19,7 +19,7 @@ function MovieSearchResults({ query }) {
     selectors.selectMovieSearchResultIds(state, query)
   );
   const isFetching = useSelector(state =>
-    selectors.selectIsFetchingMovieSearchResults(state, query)
+    selectors.selectIsFetchingMovieSearchResults(state)
   );
   const nextPage = useSelector(state =>
     selectors.selectMovieSearchResultsNextPage(state, query)

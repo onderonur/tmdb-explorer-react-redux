@@ -2,9 +2,9 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { selectors } from "reducers";
 import { Typography, makeStyles, Box, Grid, Link } from "@material-ui/core";
-import ImdbLogo from "components/ImdbLogo";
 import { getImdbProfileUrl } from "utils";
 import Introduction from "components/Introduction";
+import ImdbLogo from "components/ImdbLogo";
 
 const useStyles = makeStyles(theme => ({
   biography: {

@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function GridList({
+function BaseGridList({
   items = DEFAULT_ITEMS,
   loading,
   renderItem,
@@ -57,4 +57,4 @@ function GridList({
   );
 }
 
-export default GridList;
+export default BaseGridList;

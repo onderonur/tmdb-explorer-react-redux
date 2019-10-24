@@ -1,5 +1,6 @@
 import union from "lodash/union";
 import createReducer from "./createReducer";
+import { getFetchTypes } from "utils";
 
 export const DEFAULT_FIRST_PAGE = 1;
 
@@ -12,15 +13,15 @@ const initialState = {
 
 // Higher-order reducer: a function that returns a reducer.
 // It creates (returns) a reducer managing pagination, given the action types to handle.
-const createPagination = successType => {
-  if (typeof successType !== "string") {
-    throw new Error("Expected successType to be strings.");
+const createPagination = fetchType => {
+  if (typeof fetchType !== "string") {
+    throw new Error("Expected fetchType to be strings.");
   }
+
+  const { successType } = getFetchTypes(fetchType);
 
   return createReducer(initialState, {
     [successType]: (state, action) => {
-      state.isFetching = false;
-
       const {
         response: {
           result: { results, total_pages, total_results }

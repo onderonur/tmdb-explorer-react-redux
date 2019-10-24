@@ -1,224 +1,80 @@
 import * as actionTypes from "constants/actionTypes";
-import * as schemas from "schemas";
-import { get } from "utils";
-import { selectors } from "reducers";
+import { DEFAULT_FIRST_PAGE } from "reducers/higherOrderReducers/createPagination";
 
-export function toggleDrawer() {
-  return { type: actionTypes.TOGGLE_DRAWER };
-}
+export const toggleDrawer = () => ({
+  type: actionTypes.TOGGLE_DRAWER
+});
 
-// With callAPIMiddleware
-// This is an "async action creator"
-export function fetchPopularMovies(pageId) {
-  return {
-    types: [
-      actionTypes.FETCH_POPULAR_MOVIES_REQUEST,
-      actionTypes.FETCH_POPULAR_MOVIES_SUCCESS,
-      actionTypes.FETCH_POPULAR_MOVIES_ERROR
-    ],
-    isFetching: state => selectors.selectIsFetchingPopularMovies(state),
-    callAPI: () =>
-      get("/movie/popular", {
-        page: pageId
-      }),
-    payload: { pageId },
-    schema: { results: [schemas.movieSchema] }
-  };
-}
+export const fetchPopularMovies = pageId => ({
+  type: actionTypes.FETCH_POPULAR_MOVIES,
+  pageId
+});
 
-export function fetchMovie(movieId, requiredFields) {
-  return {
-    types: [
-      actionTypes.FETCH_MOVIE_REQUEST,
-      actionTypes.FETCH_MOVIE_SUCCESS,
-      actionTypes.FETCH_MOVIE_ERROR
-    ],
-    isFetching: state => selectors.selectIsFetchingMovie(state, movieId),
-    selectCachedData: state => selectors.selectMovie(state, movieId),
-    requiredFields,
-    callAPI: () => get(`/movie/${movieId}`),
-    schema: schemas.movieSchema,
-    payload: { movieId }
-  };
-}
+export const fetchMovie = (movieId, requiredFields) => ({
+  type: actionTypes.FETCH_MOVIE,
+  movieId,
+  requiredFields
+});
 
-export function fetchRecommendations(movieId) {
-  return {
-    types: [
-      actionTypes.FETCH_MOVIE_RECOMMENDATIONS_REQUEST,
-      actionTypes.FETCH_MOVIE_RECOMMENDATIONS_SUCCESS,
-      actionTypes.FETCH_MOVIE_RECOMMENDATIONS_ERROR
-    ],
-    isFetching: state =>
-      selectors.selectIsFetchingMovieRecommendations(state, movieId),
-    selectCachedData: state =>
-      selectors.selectMovieRecommendations(state, movieId),
-    callAPI: () => get(`/movie/${movieId}/recommendations`),
-    processResponse: data => ({ ...data, movieId }),
-    schema: schemas.movieRecommendationSchema,
-    payload: { movieId }
-  };
-}
+export const fetchPerson = (personId, requiredFields) => ({
+  type: actionTypes.FETCH_PERSON,
+  personId,
+  requiredFields
+});
 
-export function fetchGenres() {
-  return {
-    types: [
-      actionTypes.FETCH_GENRES_REQUEST,
-      actionTypes.FETCH_GENRES_SUCCESS,
-      actionTypes.FETCH_GENRES_ERROR
-    ],
-    isFetching: state => selectors.selectIsFetchingGenres(state),
-    callAPI: () => get("/genre/movie/list"),
-    schema: { genres: [schemas.genreSchema] }
-  };
-}
+export const fetchRecommendations = movieId => ({
+  type: actionTypes.FETCH_MOVIE_RECOMMENDATIONS,
+  movieId
+});
 
-export function fetchMovieCredits(movieId) {
-  return {
-    types: [
-      actionTypes.FETCH_MOVIE_CREDITS_REQUEST,
-      actionTypes.FETCH_MOVIE_CREDITS_SUCCESS,
-      actionTypes.FETCH_MOVIE_CREDITS_ERROR
-    ],
-    isFetching: state => selectors.selectIsFetchingMovieCredits(state, movieId),
-    selectCachedData: state => selectors.selectMovieCredits(state, movieId),
-    callAPI: () => get(`/movie/${movieId}/credits`),
-    schema: schemas.movieCreditSchema,
-    payload: { movieId }
-  };
-}
+export const fetchGenres = () => ({
+  type: actionTypes.FETCH_GENRES
+});
 
-export function fetchPerson(personId, requiredFields) {
-  return {
-    types: [
-      actionTypes.FETCH_PERSON_REQUEST,
-      actionTypes.FETCH_PERSON_SUCCESS,
-      actionTypes.FETCH_PERSON_ERROR
-    ],
-    isFetching: state => selectors.selectIsFetchingPerson(state, personId),
-    selectCachedData: state => selectors.selectPerson(state, personId),
-    requiredFields,
-    callAPI: () => get(`/person/${personId}`),
-    schema: schemas.personSchema,
-    payload: { personId }
-  };
-}
+export const fetchMovieCredits = movieId => ({
+  type: actionTypes.FETCH_MOVIE_CREDITS,
+  movieId
+});
 
-export function fetchPersonCredits(personId) {
-  return {
-    types: [
-      actionTypes.FETCH_PERSON_MOVIE_CREDITS_REQUEST,
-      actionTypes.FETCH_PERSON_MOVIE_CREDITS_SUCCESS,
-      actionTypes.FETCH_PERSON_MOVIE_CREDITS_ERROR
-    ],
-    isFetching: state =>
-      selectors.selectIsFetchingPersonCredits(state, personId),
-    selectCachedData: state => selectors.selectPersonCredits(state, personId),
-    callAPI: () => get(`/person/${personId}/movie_credits`),
-    schema: schemas.personCreditSchema,
-    payload: { personId }
-  };
-}
+export const fetchPersonCredits = personId => ({
+  type: actionTypes.FETCH_PERSON_MOVIE_CREDITS,
+  personId
+});
 
-export function fetchPopularPeople(pageId) {
-  return {
-    types: [
-      actionTypes.FETCH_POPULAR_PEOPLE_REQUEST,
-      actionTypes.FETCH_POPULAR_PEOPLE_SUCCESS,
-      actionTypes.FETCH_POPULAR_PEOPLE_ERROR
-    ],
-    isFetching: state => selectors.selectIsFetchingPopularPeople(state),
-    callAPI: () =>
-      get("/person/popular", {
-        page: pageId
-      }),
-    schema: { results: [schemas.personSchema] },
-    payload: { pageId }
-  };
-}
+export const fetchPopularPeople = pageId => ({
+  type: actionTypes.FETCH_POPULAR_PEOPLE,
+  pageId
+});
 
-export function fetchMovieVideos(movieId) {
-  return {
-    types: [
-      actionTypes.FETCH_MOVIE_VIDEOS_REQUEST,
-      actionTypes.FETCH_MOVIE_VIDEOS_SUCCESS,
-      actionTypes.FETCH_MOVIE_VIDEOS_ERROR
-    ],
-    isFetching: state => selectors.selectIsFetchingMovieVideos(state, movieId),
-    selectCachedData: state => selectors.selectMovieVideos(state, movieId),
-    callAPI: () => get(`/movie/${movieId}/videos`),
-    schema: schemas.movieVideosSchema,
-    payload: { movieId }
-  };
-}
+export const fetchMovieVideos = movieId => ({
+  type: actionTypes.FETCH_MOVIE_VIDEOS,
+  movieId
+});
 
-export function fetchMovieSearch(query, pageId) {
-  return {
-    types: [
-      actionTypes.FETCH_MOVIE_SEARCH_REQUEST,
-      actionTypes.FETCH_MOVIE_SEARCH_SUCCESS,
-      actionTypes.FETCH_MOVIE_SEARCH_ERROR
-    ],
-    isFetching: state =>
-      selectors.selectIsFetchingMovieSearchResults(state, query),
-    // We don't select "cachedData" to force a new request on every search.
-    callAPI: () =>
-      get("/search/movie", {
-        query,
-        page: pageId
-      }),
-    schema: { results: [schemas.movieSchema] },
-    payload: { query }
-  };
-}
+export const fetchMovieImages = movieId => ({
+  type: actionTypes.FETCH_MOVIE_IMAGES,
+  movieId
+});
 
-export function fetchPersonSearch(query, pageId) {
-  return {
-    types: [
-      actionTypes.FETCH_PERSON_SEARCH_REQUEST,
-      actionTypes.FETCH_PERSON_SEARCH_SUCCESS,
-      actionTypes.FETCH_PERSON_SEARCH_ERROR
-    ],
-    isFetching: state =>
-      selectors.selectIsFetchingPersonSearchResults(state, query),
-    // We don't select "cachedData" to force a new request on every search.
-    callAPI: () =>
-      get("/search/person", {
-        query,
-        page: pageId
-      }),
-    schema: { results: [schemas.personSchema] },
-    payload: { query }
-  };
-}
+export const fetchPersonImages = personId => ({
+  type: actionTypes.FETCH_PERSON_IMAGES,
+  personId
+});
 
-export function fetchMovieImages(movieId) {
-  return {
-    types: [
-      actionTypes.FETCH_MOVIE_IMAGES_REQUEST,
-      actionTypes.FETCH_MOVIE_IMAGES_SUCCESS,
-      actionTypes.FETCH_MOVIE_IMAGES_ERROR
-    ],
-    isFetching: state => selectors.selectIsFetchingMovieImages(state, movieId),
-    selectCachedData: state => selectors.selectMovieImages(state, movieId),
-    callAPI: () => get(`/movie/${movieId}/images`),
-    schema: schemas.movieImageSchema,
-    payload: { movieId }
-  };
-}
+export const fetchSearch = query => ({
+  type: actionTypes.FETCH_SEARCH,
+  query,
+  pageId: DEFAULT_FIRST_PAGE
+});
 
-export function fetchPersonImages(personId) {
-  return {
-    types: [
-      actionTypes.FETCH_PERSON_IMAGES_REQUEST,
-      actionTypes.FETCH_PERSON_IMAGES_SUCCESS,
-      actionTypes.FETCH_PERSON_IMAGES_ERROR
-    ],
-    isFetching: state =>
-      selectors.selectIsFetchingPersonImages(state, personId),
-    selectCachedData: state => selectors.selectPersonImages(state, personId),
-    callAPI: () => get(`/person/${personId}/images`),
-    schema: schemas.personImageSchema,
-    payload: { personId }
-  };
-}
+export const fetchMovieSearch = (query, pageId) => ({
+  type: actionTypes.FETCH_MOVIE_SEARCH,
+  query,
+  pageId
+});
+
+export const fetchPersonSearch = (query, pageId) => ({
+  type: actionTypes.FETCH_PERSON_SEARCH,
+  query,
+  pageId
+});

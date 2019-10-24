@@ -1,9 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPersonSearch } from "actions";
-import InfiniteGridList from "components/InfiniteGridList";
-import PersonCard from "./PersonCard";
 import { selectors } from "reducers";
+import InfiniteGridList from "components/InfiniteGridList";
+import PersonCard from "components/PersonCard";
 
 function renderItem(personId) {
   return (

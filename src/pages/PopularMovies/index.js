@@ -1,9 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPopularMovies } from "actions";
-import MovieCard from "containers/MovieCard";
-import InfiniteGridList from "components/InfiniteGridList";
 import { selectors } from "reducers";
+import MovieCard from "components/MovieCard";
+import InfiniteGridList from "components/InfiniteGridList";
 
 function renderItem(movieId) {
   return (

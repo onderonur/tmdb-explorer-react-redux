@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectors } from "reducers";
-import PersonListItem from "./PersonListItem";
 import RouterLink from "components/RouterLink";
+import PersonListItem from "components/PersonListItem";
 
 function MovieCastGridListItem({ castCreditId }) {
   const cast = useSelector(state =>

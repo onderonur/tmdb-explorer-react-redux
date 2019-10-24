@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { Typography } from "@material-ui/core";
-import Recommendations from "containers/Recommendations";
-import MovieIntroduction from "containers/MovieIntroduction";
 import { useDispatch } from "react-redux";
 import { fetchMovie } from "actions";
-import MovieVideoList from "containers/MovieVideoList";
-import MovieCastGridList from "containers/MovieCastGridList";
-import Profile from "components/Profile";
 import { useParams } from "react-router-dom";
-import MovieImageGridList from "containers/MovieImageGridList";
+import Profile from "components/Profile";
+import MovieIntroduction from "./MovieIntroduction";
+import MovieImageGridList from "./MovieImageGridList";
+import MovieVideoList from "./MovieVideoList";
+import MovieCastGridList from "./MovieCastGridList";
+import Recommendations from "./Recommendations";
 
 const REQUIRED_FIELDS = ["tagline"];
 

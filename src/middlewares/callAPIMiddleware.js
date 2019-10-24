@@ -1,7 +1,7 @@
 import { normalize } from "normalizr";
 
 // Checking cached data to see if it exists and has all the required fields
-function verifyCachedData(cachedData, requiredFields = []) {
+export function verifyCachedData(cachedData, requiredFields = []) {
   if (!cachedData) {
     return false;
   }
