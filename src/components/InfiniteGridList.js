@@ -1,6 +1,6 @@
 import React from "react";
 import InfiniteScrollWrapper from "components/InfiniteScrollWrapper";
-import GridList from "./GridList";
+import BaseGridList from "./BaseGridList";
 
 function InfiniteGridList({
   items,
@@ -18,7 +18,7 @@ function InfiniteGridList({
       loading={loading}
       onLoadMore={onLoadMore}
     >
-      <GridList
+      <BaseGridList
         keyExtractor={keyExtractor}
         items={items}
         loading={loading || hasNextPage}

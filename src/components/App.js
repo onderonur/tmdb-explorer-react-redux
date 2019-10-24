@@ -4,12 +4,11 @@ import Routes from "components/Routes";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGenres } from "actions";
 import LoadingIndicator from "components/LoadingIndicator";
-import Header from "components/Header";
+import AppHeader from "components/AppHeader";
 import { makeStyles } from "@material-ui/styles";
 import { selectors } from "reducers";
-import AppDrawer from "containers/AppDrawer";
+import AppDrawer from "components/AppDrawer";
 import BackToTopButton from "components/BackToTopButton";
-import HideOnScroll from "components/HideOnScroll";
 
 const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
@@ -20,21 +19,23 @@ const useStyles = makeStyles(theme => ({
 
 function App() {
   const dispatch = useDispatch();
+  const classes = useStyles();
   const isFetching = useSelector(state =>
     selectors.selectIsFetchingGenres(state)
   );
-  const classes = useStyles();
 
   useEffect(() => {
     dispatch(fetchGenres());
   }, [dispatch]);
 
+  // TODO: isFetching'den dolayı tüm app flicker yapıyor.
+  // O duruma genel bir çözüm bul.
+  // Alttaki tüm useEffect'ler 2 kez çalışıyor vs.
+
   return (
     <>
       <CssBaseline />
-      <HideOnScroll>
-        <Header />
-      </HideOnScroll>
+      <AppHeader />
       <AppDrawer />
       <div className={classes.toolbar} />
       <Container className={classes.main} component="main">

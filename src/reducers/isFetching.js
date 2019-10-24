@@ -4,101 +4,44 @@ import createIsFetching from "./higherOrderReducers/createIsFetching";
 import createByKey from "./higherOrderReducers/createByKey";
 
 const isFetching = combineReducers({
-  genres: createIsFetching([
-    actionTypes.FETCH_GENRES_REQUEST,
-    actionTypes.FETCH_GENRES_SUCCESS,
-    actionTypes.FETCH_GENRES_ERROR
-  ]),
+  genres: createIsFetching(actionTypes.FETCH_GENRES),
   moviesById: createByKey(
     action => action.movieId,
-    createIsFetching([
-      actionTypes.FETCH_MOVIE_REQUEST,
-      actionTypes.FETCH_MOVIE_SUCCESS,
-      actionTypes.FETCH_MOVIE_ERROR
-    ])
+    createIsFetching(actionTypes.FETCH_MOVIE)
   ),
   peopleById: createByKey(
     action => action.personId,
-    createIsFetching([
-      actionTypes.FETCH_PERSON_REQUEST,
-      actionTypes.FETCH_PERSON_SUCCESS,
-      actionTypes.FETCH_PERSON_ERROR
-    ])
+    createIsFetching(actionTypes.FETCH_PERSON)
   ),
   movieVideosByMovieId: createByKey(
     action => action.movieId,
-    createIsFetching([
-      actionTypes.FETCH_MOVIE_VIDEOS_REQUEST,
-      actionTypes.FETCH_MOVIE_VIDEOS_SUCCESS,
-      actionTypes.FETCH_MOVIE_VIDEOS_ERROR
-    ])
+    createIsFetching(actionTypes.FETCH_MOVIE_VIDEOS)
   ),
   movieCreditsByMovieId: createByKey(
     action => action.movieId,
-    createIsFetching([
-      actionTypes.FETCH_MOVIE_CREDITS_REQUEST,
-      actionTypes.FETCH_MOVIE_CREDITS_SUCCESS,
-      actionTypes.FETCH_MOVIE_CREDITS_ERROR
-    ])
+    createIsFetching(actionTypes.FETCH_MOVIE_CREDITS)
   ),
   movieRecommendationsByMovieId: createByKey(
     action => action.movieId,
-    createIsFetching([
-      actionTypes.FETCH_MOVIE_RECOMMENDATIONS_REQUEST,
-      actionTypes.FETCH_MOVIE_RECOMMENDATIONS_SUCCESS,
-      actionTypes.FETCH_MOVIE_RECOMMENDATIONS_ERROR
-    ])
+    createIsFetching(actionTypes.FETCH_MOVIE_RECOMMENDATIONS)
   ),
   movieImagesByMovieId: createByKey(
     action => action.movieId,
-    createIsFetching([
-      actionTypes.FETCH_MOVIE_IMAGES_REQUEST,
-      actionTypes.FETCH_MOVIE_IMAGES_SUCCESS,
-      actionTypes.FETCH_MOVIE_IMAGES_ERROR
-    ])
+    createIsFetching(actionTypes.FETCH_MOVIE_IMAGES)
   ),
   personImagesByPersonId: createByKey(
     action => action.personId,
-    createIsFetching([
-      actionTypes.FETCH_PERSON_IMAGES_REQUEST,
-      actionTypes.FETCH_PERSON_IMAGES_SUCCESS,
-      actionTypes.FETCH_PERSON_IMAGES_ERROR
-    ])
+    createIsFetching(actionTypes.FETCH_PERSON_IMAGES)
   ),
   personCreditsByPersonId: createByKey(
     action => action.personId,
-    createIsFetching([
-      actionTypes.FETCH_PERSON_MOVIE_CREDITS_REQUEST,
-      actionTypes.FETCH_PERSON_MOVIE_CREDITS_SUCCESS,
-      actionTypes.FETCH_PERSON_MOVIE_CREDITS_ERROR
-    ])
+    createIsFetching(actionTypes.FETCH_PERSON_MOVIE_CREDITS)
   ),
-  popularMovies: createIsFetching([
-    actionTypes.FETCH_POPULAR_MOVIES_REQUEST,
-    actionTypes.FETCH_POPULAR_MOVIES_SUCCESS,
-    actionTypes.FETCH_POPULAR_MOVIES_ERROR
-  ]),
-  popularPeople: createIsFetching([
-    actionTypes.FETCH_POPULAR_PEOPLE_REQUEST,
-    actionTypes.FETCH_POPULAR_PEOPLE_SUCCESS,
-    actionTypes.FETCH_POPULAR_PEOPLE_ERROR
-  ]),
-  movieSearchResultsByQuery: createByKey(
-    action => action.query,
-    createIsFetching([
-      actionTypes.FETCH_MOVIE_SEARCH_REQUEST,
-      actionTypes.FETCH_MOVIE_SEARCH_SUCCESS,
-      actionTypes.FETCH_MOVIE_SEARCH_ERROR
-    ])
-  ),
-  personSearchResultsByQuery: createByKey(
-    action => action.query,
-    createIsFetching([
-      actionTypes.FETCH_PERSON_SEARCH_REQUEST,
-      actionTypes.FETCH_PERSON_SEARCH_SUCCESS,
-      actionTypes.FETCH_PERSON_SEARCH_ERROR
-    ])
-  )
+  popularMovies: createIsFetching(actionTypes.FETCH_POPULAR_MOVIES),
+  popularPeople: createIsFetching(actionTypes.FETCH_POPULAR_PEOPLE),
+  search: createIsFetching(actionTypes.FETCH_SEARCH),
+  movieSearchResultsByQuery: createIsFetching(actionTypes.FETCH_MOVIE_SEARCH),
+  personSearchResultsByQuery: createIsFetching(actionTypes.FETCH_PERSON_SEARCH)
 });
 
 export default isFetching;
@@ -121,8 +64,7 @@ export const selectors = {
     state.personImagesByPersonId[personId],
   selectIsFetchingPersonCredits: (state, personId) =>
     state.personCreditsByPersonId[personId],
-  selectIsFetchingMovieSearchResults: (state, query) =>
-    state.movieSearchResultsByQuery[query],
-  selectIsFetchingPersonSearchResults: (state, query) =>
-    state.personSearchResultsByQuery[query]
+  selectIsFetchingSearch: state => state.search,
+  selectIsFetchingMovieSearchResults: state => state.movieSearchResultsByQuery,
+  selectIsFetchingPersonSearchResults: state => state.personSearchResultsByQuery
 };

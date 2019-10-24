@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRecommendations } from "actions";
-import MovieCard from "./MovieCard";
-import GridList from "components/GridList";
 import { selectors } from "reducers";
 import { useTheme } from "@material-ui/styles";
+import MovieCard from "components/MovieCard";
+import BaseGridList from "components/BaseGridList";
 
 function renderItem(recommendationId) {
   return (
@@ -29,7 +29,7 @@ function Recommendations({ movieId }) {
   }, [movieId, dispatch]);
 
   return (
-    <GridList
+    <BaseGridList
       items={recommendationIds}
       loading={isFetching}
       renderItem={renderItem}

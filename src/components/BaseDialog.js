@@ -27,6 +27,7 @@ function BaseDialog({
   open,
   fullScreen,
   title,
+  titleRight,
   onClose,
   onExited,
   zeroPaddingContent,
@@ -51,7 +52,7 @@ function BaseDialog({
         {!fullScreen && (
           <CloseIcon className={classes.closeButton} onClick={onClose} />
         )}
-        <BaseDialogTitle>{title}</BaseDialogTitle>
+        <BaseDialogTitle title={title} titleRight={titleRight} />
         <DialogContent>
           {zeroPaddingContent ? (
             <Box

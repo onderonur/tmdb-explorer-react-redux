@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovieVideos } from "actions";
 import { selectors } from "reducers";
+import BaseList from "components/BaseList";
+import LoadingIndicator from "components/LoadingIndicator";
 import MovieVideoListItem from "./MovieVideoListItem";
 import MovieVideoPlayerModal from "./MovieVideoPlayerModal";
-import LoadingIndicator from "components/LoadingIndicator";
-import BaseList from "components/BaseList";
 
 function MovieVideoList({ movieId }) {
   const dispatch = useDispatch();

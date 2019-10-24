@@ -6,15 +6,15 @@ import * as actionTypes from "constants/actionTypes";
 import createByKey from "./higherOrderReducers/createByKey";
 
 const pagination = combineReducers({
-  popularMovies: createPagination(actionTypes.FETCH_POPULAR_MOVIES_SUCCESS),
-  popularPeople: createPagination(actionTypes.FETCH_POPULAR_PEOPLE_SUCCESS),
+  popularMovies: createPagination(actionTypes.FETCH_POPULAR_MOVIES),
+  popularPeople: createPagination(actionTypes.FETCH_POPULAR_PEOPLE),
   movieSearchResultsByQuery: createByKey(
     action => action.query,
-    createPagination(actionTypes.FETCH_MOVIE_SEARCH_SUCCESS)
+    createPagination(actionTypes.FETCH_MOVIE_SEARCH)
   ),
   personSearchResultsByQuery: createByKey(
     action => action.query,
-    createPagination(actionTypes.FETCH_PERSON_SEARCH_SUCCESS)
+    createPagination(actionTypes.FETCH_PERSON_SEARCH)
   )
 });
 

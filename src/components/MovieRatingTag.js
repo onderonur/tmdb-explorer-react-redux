@@ -1,23 +1,16 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectors } from "reducers";
-import { makeStyles, Typography } from "@material-ui/core";
-
-const useStyles = makeStyles(theme => ({
-  tag: {
-    backgroundColor: theme.palette.secondary.main,
-    padding: theme.spacing(0.25, 0.5)
-  }
-}));
+import { Typography, Box, useTheme } from "@material-ui/core";
 
 function MovieRatingTag({ movieId }) {
-  const classes = useStyles();
   const movie = useSelector(state => selectors.selectMovie(state, movieId));
+  const theme = useTheme();
 
   return (
-    <div className={classes.tag}>
+    <Box bgcolor={theme.palette.secondary.main} paddingY={0.25} paddingX={0.5}>
       <Typography variant="caption">{movie.vote_average} / 10</Typography>
-    </div>
+    </Box>
   );
 }
 

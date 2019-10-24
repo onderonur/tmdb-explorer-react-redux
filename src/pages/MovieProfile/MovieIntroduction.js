@@ -2,11 +2,11 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { selectors } from "reducers";
 import { Typography, makeStyles, Box, Grid, Link } from "@material-ui/core";
-import Rating from "components/Rating";
-import MovieGenreChip from "./MovieGenreChip";
-import ImdbLogo from "components/ImdbLogo";
+import Rating from "./Rating";
 import { getMovieReleaseYear, getImdbProfileUrl } from "utils";
 import Introduction from "components/Introduction";
+import ImdbLogo from "components/ImdbLogo";
+import MovieGenreChip from "./MovieGenreChip";
 
 const useStyles = makeStyles(theme => ({
   year: {
@@ -36,11 +36,14 @@ function MovieIntroduction({ movieId }) {
       title={
         <>
           <Typography variant="h5" gutterBottom={!movie.tagline}>
-            {movie.title}{" "}
+            {movie.title}
             {releaseYear && (
-              <span className={classes.year}>{`(${getMovieReleaseYear(
-                movie
-              )})`}</span>
+              <>
+                {" "}
+                <span className={classes.year}>{`(${getMovieReleaseYear(
+                  movie
+                )})`}</span>
+              </>
             )}
           </Typography>
           {movie.tagline && (
