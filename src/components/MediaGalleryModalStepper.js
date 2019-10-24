@@ -14,11 +14,9 @@ const keyMap = {
 const useStyles = makeStyles(theme => ({
   stepper: {
     position: "absolute",
-    top: "30%",
-    bottom: "30%",
-    width: "20%",
-    display: "flex",
-    alignItems: "center",
+    top: "50%",
+    width: 60,
+    height: 60,
     cursor: "pointer",
     opacity: 0.4,
     "&:hover": {
