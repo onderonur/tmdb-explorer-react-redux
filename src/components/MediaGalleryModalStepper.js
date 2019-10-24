@@ -11,12 +11,15 @@ const keyMap = {
   PREVIOUS: ["left", "a"]
 };
 
+const SIZE = 60;
+
 const useStyles = makeStyles(theme => ({
   stepper: {
     position: "absolute",
     top: "50%",
-    width: 60,
-    height: 60,
+    marginTop: -SIZE / 2,
+    width: SIZE,
+    height: SIZE,
     cursor: "pointer",
     opacity: 0.4,
     "&:hover": {
