@@ -4,7 +4,7 @@ import placeholderPng from "assets/placeholder.png";
 import clsx from "clsx";
 import AspectRatio from "components/AspectRatio";
 import useVisibilityTracker from "hooks/useVisibilityTracker";
-import { Box, useTheme, Zoom } from "@material-ui/core";
+import { Box, useTheme } from "@material-ui/core";
 import LoadingIndicator from "./LoadingIndicator";
 
 const ORIGINAL = "original";
@@ -78,24 +78,12 @@ function BaseImage({
               classes.imgWithAspectRatioWrapper
             )}
           >
-            <Zoom
-              in={isImgLoaded}
-              style={{
-                position: "absolute",
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-                objectFit
-              }}
-            >
-              <img
-                className={classes.img}
-                src={src || placeholderPng}
-                alt={alt}
-                onLoad={handleLoad}
-              />
-            </Zoom>
+            <img
+              className={classes.img}
+              src={src || placeholderPng}
+              alt={alt}
+              onLoad={handleLoad}
+            />
           </Box>
           {!isImgLoaded && showFallbackWhileLoading && (
             <Box

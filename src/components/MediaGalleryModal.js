@@ -10,6 +10,12 @@ import MediaGalleryModalImageViewer from "./MediaGalleryModalImageViewer";
 import FullScreen from "react-full-screen";
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import FullscreenExitIcon from "@material-ui/icons/FullscreenExit";
+import { HotKeys } from "react-hotkeys";
+
+const keyMap = {
+  NEXT: ["right", "d"],
+  PREVIOUS: ["left", "a"]
+};
 
 const useStyles = makeStyles(theme => ({
   fullScreenButton: {
@@ -48,6 +54,33 @@ function MediaGalleryModal({
     historyPush(location.pathname, { keepScrollState: true });
   }
 
+  const nextPath =
+    activeStepIndex + 1 !== dataSource.length
+      ? `${location.pathname}?${queryParamName}=${
+          dataSource[activeStepIndex + 1]
+        }`
+      : null;
+
+  const previousPath =
+    activeStepIndex - 1 !== -1
+      ? `${location.pathname}?${queryParamName}=${
+          dataSource[activeStepIndex - 1]
+        }`
+      : null;
+
+  function goToNextPath() {
+    historyPush(nextPath, { keepScrollState: true });
+  }
+
+  function goToPreviousPath() {
+    historyPush(previousPath, { keepScrollState: true });
+  }
+
+  const keyHandlers = {
+    NEXT: goToNextPath,
+    PREVIOUS: goToPreviousPath
+  };
+
   return (
     <BaseDialog
       title={title}
@@ -60,29 +93,29 @@ function MediaGalleryModal({
         enabled={!isVideoPlayer && isFullScreen}
         onChange={enabled => setIsFullScreen(enabled)}
       >
-        <Box position="relative">
-          {isVideoPlayer ? (
-            <YouTubePlayer youTubeId={dataSource[activeStepIndex]} />
-          ) : (
-            <MediaGalleryModalImageViewer
-              filePath={dataSource[activeStepIndex]}
+        <HotKeys keyMap={keyMap} handlers={keyHandlers} allowChanges={true}>
+          <Box position="relative">
+            {isVideoPlayer ? (
+              <YouTubePlayer youTubeId={dataSource[activeStepIndex]} />
+            ) : (
+              <MediaGalleryModalImageViewer
+                filePath={dataSource[activeStepIndex]}
+              />
+            )}
+            <MediaGalleryModalStepper
+              onClickPrevious={goToPreviousPath}
+              onClickNext={goToNextPath}
             />
-          )}
-          <MediaGalleryModalStepper
-            dataSource={dataSource}
-            queryParamName={queryParamName}
-            activeStepIndex={activeStepIndex}
-            isVideoPlayer={isVideoPlayer}
-          />
-          {!isVideoPlayer && (
-            <IconButton
-              className={classes.fullScreenButton}
-              onClick={() => setIsFullScreen(!isFullScreen)}
-            >
-              {isFullScreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
-            </IconButton>
-          )}
-        </Box>
+            {!isVideoPlayer && (
+              <IconButton
+                className={classes.fullScreenButton}
+                onClick={() => setIsFullScreen(!isFullScreen)}
+              >
+                {isFullScreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
+              </IconButton>
+            )}
+          </Box>
+        </HotKeys>
       </FullScreen>
     </BaseDialog>
   );
