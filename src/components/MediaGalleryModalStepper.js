@@ -1,15 +1,7 @@
 import React from "react";
 import { Box, makeStyles } from "@material-ui/core";
-import useHistoryPush from "hooks/useHistoryPush";
-import { HotKeys } from "react-hotkeys";
-import { useLocation } from "react-router-dom";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-
-const keyMap = {
-  NEXT: ["right", "d"],
-  PREVIOUS: ["left", "a"]
-};
 
 const SIZE = 60;
 
@@ -31,65 +23,32 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function MediaGalleryModalStepper({
-  dataSource = [],
-  queryParamName,
-  activeStepIndex
-}) {
+function MediaGalleryModalStepper({ onClickPrevious, onClickNext }) {
   const classes = useStyles();
-  const location = useLocation();
-  const historyPush = useHistoryPush();
-
-  const nextPath =
-    activeStepIndex + 1 !== dataSource.length
-      ? `${location.pathname}?${queryParamName}=${
-          dataSource[activeStepIndex + 1]
-        }`
-      : null;
-
-  const previousPath =
-    activeStepIndex - 1 !== -1
-      ? `${location.pathname}?${queryParamName}=${
-          dataSource[activeStepIndex - 1]
-        }`
-      : null;
-
-  const keyHandlers = {
-    NEXT: () => historyPush(nextPath, { keepScrollState: true }),
-    PREVIOUS: () => historyPush(previousPath, { keepScrollState: true })
-  };
 
   return (
-    <HotKeys keyMap={keyMap} handlers={keyHandlers} allowChanges={true}>
-      {previousPath && (
+    <>
+      {onClickPrevious && (
         <Box
           className={classes.stepper}
           left={0}
           justifyContent="flex-start"
-          onClick={() =>
-            historyPush(previousPath, {
-              keepScrollState: true
-            })
-          }
+          onClick={onClickPrevious}
         >
           <ChevronLeftIcon className={classes.stepperIcon} />
         </Box>
       )}
-      {nextPath && (
+      {onClickNext && (
         <Box
           className={classes.stepper}
           right={0}
           justifyContent="flex-end"
-          onClick={() =>
-            historyPush(nextPath, {
-              keepScrollState: true
-            })
-          }
+          onClick={onClickNext}
         >
           <ChevronRightIcon className={classes.stepperIcon} />
         </Box>
       )}
-    </HotKeys>
+    </>
   );
 }
 
