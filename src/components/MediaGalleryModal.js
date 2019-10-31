@@ -69,11 +69,15 @@ function MediaGalleryModal({
       : null;
 
   function goToNextPath() {
-    historyPush(nextPath, { keepScrollState: true });
+    if (nextPath) {
+      historyPush(nextPath, { keepScrollState: true });
+    }
   }
 
   function goToPreviousPath() {
-    historyPush(previousPath, { keepScrollState: true });
+    if (previousPath) {
+      historyPush(previousPath, { keepScrollState: true });
+    }
   }
 
   const keyHandlers = {
@@ -103,8 +107,8 @@ function MediaGalleryModal({
               />
             )}
             <MediaGalleryModalStepper
-              onClickPrevious={goToPreviousPath}
-              onClickNext={goToNextPath}
+              onClickPrevious={previousPath ? goToPreviousPath : null}
+              onClickNext={nextPath ? goToNextPath : null}
             />
             {!isVideoPlayer && (
               <IconButton
