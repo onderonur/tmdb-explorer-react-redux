@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Typography } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchPerson } from "actions";
 import { useParams } from "react-router-dom";
 import Profile from "components/Profile";
@@ -8,12 +8,16 @@ import PersonInfo from "./PersonInfo";
 import PersonIntroduction from "./PersonIntroduction";
 import PersonImageGridList from "./PersonImageGridList";
 import PersonCastingGridList from "./PersonCastingGridList";
+import { selectors } from "reducers";
 
 const REQUIRED_FIELDS = ["biography", "imdb_id"];
 
 function PersonProfile() {
-  const { personId } = useParams();
   const dispatch = useDispatch();
+  const { personId } = useParams();
+  const isFetching = useSelector(state =>
+    selectors.selectIsFetchingPerson(state, personId)
+  );
 
   useEffect(() => {
     dispatch(fetchPerson(personId, REQUIRED_FIELDS));
@@ -21,6 +25,7 @@ function PersonProfile() {
 
   return (
     <Profile
+      loading={isFetching}
       introduction={<PersonIntroduction personId={personId} />}
       leftSide={
         <>
