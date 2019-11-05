@@ -1,11 +1,11 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 
 function useScrollRestoration() {
   const location = useLocation();
   const history = useHistory();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (
       history.action !== "POP" &&
       (!location.state || !location.state.keepScroll)
