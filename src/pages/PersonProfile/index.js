@@ -9,6 +9,7 @@ import PersonIntroduction from "./PersonIntroduction";
 import PersonImageGridList from "./PersonImageGridList";
 import PersonCastingGridList from "./PersonCastingGridList";
 import { selectors } from "reducers";
+import { verifyCachedData } from "utils";
 
 const REQUIRED_FIELDS = ["biography", "imdb_id"];
 
@@ -18,14 +19,17 @@ function PersonProfile() {
   const isFetching = useSelector(state =>
     selectors.selectIsFetchingPerson(state, personId)
   );
+  const person = useSelector(state => selectors.selectPerson(state, personId));
 
   useEffect(() => {
     dispatch(fetchPerson(personId, REQUIRED_FIELDS));
   }, [personId, dispatch]);
 
+  const loading = isFetching || !verifyCachedData(person, REQUIRED_FIELDS);
+
   return (
     <Profile
-      loading={isFetching}
+      loading={loading}
       introduction={<PersonIntroduction personId={personId} />}
       leftSide={
         <>

@@ -10,6 +10,7 @@ import MovieVideoList from "./MovieVideoList";
 import MovieCastGridList from "./MovieCastGridList";
 import Recommendations from "./Recommendations";
 import { selectors } from "reducers";
+import { verifyCachedData } from "utils";
 
 const REQUIRED_FIELDS = ["tagline"];
 
@@ -19,14 +20,17 @@ function MovieProfile() {
   const isFetching = useSelector(state =>
     selectors.selectIsFetchingMovie(state, movieId)
   );
+  const movie = useSelector(state => selectors.selectMovie(state, movieId));
 
   useEffect(() => {
     dispatch(fetchMovie(movieId, REQUIRED_FIELDS));
   }, [movieId, dispatch]);
 
+  const loading = isFetching || !verifyCachedData(movie, REQUIRED_FIELDS);
+
   return (
     <Profile
-      loading={isFetching}
+      loading={loading}
       introduction={<MovieIntroduction movieId={movieId} />}
       main={
         <>
