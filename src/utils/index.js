@@ -25,3 +25,12 @@ export function getFetchTypes(fetchType) {
   const cancelType = `${fetchType}_CANCELLED`;
   return { requestType, successType, errorType, cancelType };
 }
+
+// Checking cached data to see if it exists and has all the required fields
+export const verifyCachedData = (cachedData, requiredFields = []) => {
+  if (!cachedData) {
+    return false;
+  }
+
+  return requiredFields.every(key => cachedData.hasOwnProperty(key));
+};

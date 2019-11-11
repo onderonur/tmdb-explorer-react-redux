@@ -21,16 +21,7 @@ import { BASE_API_URL } from "constants/urls";
 import { normalize } from "normalizr";
 import { of, forkJoin, merge } from "rxjs";
 import queryString from "query-string";
-import { getFetchTypes } from "utils";
-
-// Checking cached data to see if it exists and has all the required fields
-export const verifyCachedData = (cachedData, requiredFields = []) => {
-  if (!cachedData) {
-    return false;
-  }
-
-  return requiredFields.every(key => cachedData.hasOwnProperty(key));
-};
+import { getFetchTypes, verifyCachedData } from "utils";
 
 const filterByCachedData = (state$, selectCachedData) => action$ =>
   action$.pipe(
