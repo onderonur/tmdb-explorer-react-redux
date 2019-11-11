@@ -3,7 +3,7 @@ import entities, * as fromEntities from "./entities";
 import pagination, * as fromPagination from "./pagination";
 import isFetching, * as fromIsFetching from "./isFetching";
 import drawer, * as fromDrawer from "./drawer";
-import bindSelectors from "./bindSelectors";
+import bindSelectors from "./utils/bindSelectors";
 
 const rootReducer = combineReducers({
   entities,

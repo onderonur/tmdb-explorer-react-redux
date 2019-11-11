@@ -23,14 +23,11 @@ function App() {
   const isFetching = useSelector(state =>
     selectors.selectIsFetchingGenres(state)
   );
+  const genres = useSelector(state => selectors.selectGenres(state));
 
   useEffect(() => {
     dispatch(fetchGenres());
   }, [dispatch]);
-
-  // TODO: isFetching'den dolayı tüm app flicker yapıyor.
-  // O duruma genel bir çözüm bul.
-  // Alttaki tüm useEffect'ler 2 kez çalışıyor vs.
 
   return (
     <>
@@ -39,7 +36,7 @@ function App() {
       <AppDrawer />
       <div className={classes.toolbar} />
       <Container className={classes.main} component="main">
-        <LoadingIndicator loading={isFetching}>
+        <LoadingIndicator loading={isFetching || !genres.length}>
           <Routes />
         </LoadingIndicator>
       </Container>

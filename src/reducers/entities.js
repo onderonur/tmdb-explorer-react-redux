@@ -37,7 +37,8 @@ export const selectors = {
   selectMovie,
   selectMovies: (state, movieIds) =>
     movieIds.map(movieId => selectMovie(state, movieId)),
-  selectGenre: (state, id) => state.genres[id],
+  selectGenre: (state, genreId) => state.genres[genreId],
+  selectGenres: state => Object.values(state.genres),
   selectMovieCredits: (state, movieId) => state.movieCredits[movieId],
   selectCastCredits: (state, castCreditId) => state.castCredits[castCreditId],
   selectPerson,
