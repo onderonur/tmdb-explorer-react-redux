@@ -13,6 +13,7 @@ This is a tmdb (the Movie Db) explorer react-redux application that implements s
 * Immutable state updates (with [immer](https://github.com/immerjs/immer))
 
 - Custom middleware to handle data fetching and caching.
+*Edit: Removed the custom middleware and used `redux-observable` instead.*
 
 ### Redux State Shape
 
