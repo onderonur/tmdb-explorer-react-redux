@@ -16,13 +16,13 @@ const initialState = {
   personImages: {}
 };
 
-function entities(state = initialState, action) {
+const entities = (state = initialState, action) => {
   return produce(state, draft => {
     if (action.response && action.response.entities) {
       draft = merge(draft, action.response.entities);
     }
   });
-}
+};
 
 // Default export is the "reducer".
 export default entities;
