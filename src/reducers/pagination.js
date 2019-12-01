@@ -7,8 +7,8 @@ import * as actions from "actions";
 import createByKey from "./higherOrderReducers/createByKey";
 
 const pagination = combineReducers({
-  popularMovies: createPagination(actions.fetchPopularMovies.type),
-  popularPeople: createPagination(actionTypes.FETCH_POPULAR_PEOPLE),
+  popularMovies: createPagination(actions.fetchPopularMovies),
+  popularPeople: createPagination(actions.fetchPopularPeople),
   movieSearchResultsByQuery: createByKey(
     action => action.query,
     createPagination(actionTypes.FETCH_MOVIE_SEARCH)

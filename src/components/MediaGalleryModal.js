@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { IconButton, Box, makeStyles } from "@material-ui/core";
 import BaseDialog from "components/BaseDialog";
 import useHistoryPush from "hooks/useHistoryPush";
@@ -46,9 +46,9 @@ function MediaGalleryModal({
     setIsVisible(!!activeStep);
   }, [activeStep]);
 
-  function handleClose() {
+  const handleClose = useCallback(() => {
     setIsVisible(false);
-  }
+  }, []);
 
   function handleExited() {
     historyPush(location.pathname, { keepScrollState: true });
