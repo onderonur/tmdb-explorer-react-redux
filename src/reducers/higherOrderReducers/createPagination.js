@@ -1,6 +1,6 @@
 import union from "lodash/union";
-import createReducer from "./createReducer";
 import { getFetchTypes } from "utils";
+import { createReducer } from "@reduxjs/toolkit";
 
 export const DEFAULT_FIRST_PAGE = 1;
 

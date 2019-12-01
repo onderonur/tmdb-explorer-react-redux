@@ -1,5 +1,5 @@
 import * as actions from "actions";
-import createReducer from "./higherOrderReducers/createReducer";
+import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
   isOpen: false

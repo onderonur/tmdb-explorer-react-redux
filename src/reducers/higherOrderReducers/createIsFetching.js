@@ -1,5 +1,5 @@
-import createReducer from "./createReducer";
 import { getFetchTypes } from "utils";
+import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = false;
 
