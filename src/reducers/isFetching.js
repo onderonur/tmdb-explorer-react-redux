@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import * as actionTypes from "constants/actionTypes";
+import * as actions from "actions";
 import createIsFetching from "./higherOrderReducers/createIsFetching";
 import createByKey from "./higherOrderReducers/createByKey";
 
@@ -37,7 +38,7 @@ const isFetching = combineReducers({
     action => action.personId,
     createIsFetching(actionTypes.FETCH_PERSON_MOVIE_CREDITS)
   ),
-  popularMovies: createIsFetching(actionTypes.FETCH_POPULAR_MOVIES),
+  popularMovies: createIsFetching(actions.fetchPopularMovies),
   popularPeople: createIsFetching(actionTypes.FETCH_POPULAR_PEOPLE),
   search: createIsFetching(actionTypes.FETCH_SEARCH),
   movieSearchResultsByQuery: createIsFetching(actionTypes.FETCH_MOVIE_SEARCH),

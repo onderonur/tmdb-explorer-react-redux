@@ -22,11 +22,10 @@ const createPagination = fetchType => {
 
   return createReducer(initialState, {
     [successType]: (state, action) => {
+      const { response } = action;
       const {
-        response: {
-          result: { results, total_pages, total_results }
-        }
-      } = action;
+        result: { results, total_pages, total_results }
+      } = response;
 
       state.ids = union(state.ids, results);
       state.pageCount = state.pageCount + 1;

@@ -3,10 +3,11 @@ import createPagination, {
   selectors as paginationSelectors
 } from "./higherOrderReducers/createPagination";
 import * as actionTypes from "constants/actionTypes";
+import * as actions from "actions";
 import createByKey from "./higherOrderReducers/createByKey";
 
 const pagination = combineReducers({
-  popularMovies: createPagination(actionTypes.FETCH_POPULAR_MOVIES),
+  popularMovies: createPagination(actions.fetchPopularMovies.type),
   popularPeople: createPagination(actionTypes.FETCH_POPULAR_PEOPLE),
   movieSearchResultsByQuery: createByKey(
     action => action.query,
