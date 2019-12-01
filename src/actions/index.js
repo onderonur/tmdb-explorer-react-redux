@@ -1,14 +1,13 @@
 import * as actionTypes from "constants/actionTypes";
 import { DEFAULT_FIRST_PAGE } from "reducers/higherOrderReducers/createPagination";
+import { createAction } from "@reduxjs/toolkit";
 
-export const toggleDrawer = () => ({
-  type: actionTypes.TOGGLE_DRAWER
-});
+export const toggleDrawer = createAction("drawer/toggle");
 
-export const fetchPopularMovies = pageId => ({
-  type: actionTypes.FETCH_POPULAR_MOVIES,
-  pageId
-});
+export const fetchPopularMovies = createAction(
+  "movie/fetchPopular",
+  pageId => ({ payload: { pageId } })
+);
 
 export const fetchMovie = (movieId, requiredFields) => ({
   type: actionTypes.FETCH_MOVIE,

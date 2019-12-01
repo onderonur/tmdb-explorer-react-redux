@@ -1,4 +1,5 @@
 import * as actionTypes from "constants/actionTypes";
+import * as actions from "actions";
 import * as schemas from "schemas";
 import { selectors } from "reducers";
 import { ofType, combineEpics } from "redux-observable";
@@ -131,10 +132,10 @@ const groupedGetRequest = ({
   );
 
 const fetchPopularMoviesEpic = groupedGetRequest({
-  type: actionTypes.FETCH_POPULAR_MOVIES,
-  groupActionsBy: ({ pageId }) => pageId,
+  type: actions.fetchPopularMovies.type,
+  groupActionsBy: ({ payload: { pageId } }) => pageId,
   endpoint: () => "/movie/popular",
-  params: ({ pageId }) => ({ page: pageId }),
+  params: ({ payload: { pageId } }) => ({ page: pageId }),
   schema: {
     results: [schemas.movieSchema]
   }
