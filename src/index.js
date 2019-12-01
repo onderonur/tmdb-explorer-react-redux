@@ -8,8 +8,10 @@ import theme from "theme";
 import store from "./store";
 import { BrowserRouter } from "react-router-dom";
 import rootEpic from "epics";
+import rootSaga from "sagas";
 
 store.runEpic(rootEpic);
+store.runSaga(rootSaga);
 
 const renderApp = () =>
   ReactDOM.render(

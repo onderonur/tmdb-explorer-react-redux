@@ -1,5 +1,5 @@
 import * as actionTypes from "constants/actionTypes";
-import * as actions from "actions";
+// import * as actions from "actions";
 import * as schemas from "schemas";
 import { selectors } from "reducers";
 import { ofType, combineEpics } from "redux-observable";
@@ -131,43 +131,43 @@ const groupedGetRequest = ({
     )
   );
 
-const fetchPopularMoviesEpic = groupedGetRequest({
-  type: actions.fetchPopularMovies.type,
-  groupActionsBy: ({ payload: { pageId } }) => pageId,
-  endpoint: () => "/movie/popular",
-  params: ({ payload: { pageId } }) => ({ page: pageId }),
-  schema: {
-    results: [schemas.movieSchema]
-  }
-});
+// const fetchPopularMoviesEpic = groupedGetRequest({
+//   type: actions.fetchPopularMovies.type,
+//   groupActionsBy: ({ payload: { pageId } }) => pageId,
+//   endpoint: () => "/movie/popular",
+//   params: ({ payload: { pageId } }) => ({ page: pageId }),
+//   schema: {
+//     results: [schemas.movieSchema]
+//   }
+// });
 
-const fetchMovieEpic = groupedGetRequest({
-  type: actionTypes.FETCH_MOVIE,
-  groupActionsBy: action => action.movieId,
-  selectCachedData: (state, action) =>
-    selectors.selectMovie(state, action.movieId),
-  endpoint: action => `/movie/${action.movieId}`,
-  schema: schemas.movieSchema
-});
+// const fetchMovieEpic = groupedGetRequest({
+//   type: actionTypes.FETCH_MOVIE,
+//   groupActionsBy: action => action.movieId,
+//   selectCachedData: (state, action) =>
+//     selectors.selectMovie(state, action.movieId),
+//   endpoint: action => `/movie/${action.movieId}`,
+//   schema: schemas.movieSchema
+// });
 
-const fetchPersonEpic = groupedGetRequest({
-  type: actionTypes.FETCH_PERSON,
-  groupActionsBy: ({ personId }) => personId,
-  selectCachedData: (state, { personId }) =>
-    selectors.selectPerson(state, personId),
-  endpoint: action => `/person/${action.personId}`,
-  schema: schemas.personSchema
-});
+// const fetchPersonEpic = groupedGetRequest({
+//   type: actionTypes.FETCH_PERSON,
+//   groupActionsBy: ({ personId }) => personId,
+//   selectCachedData: (state, { personId }) =>
+//     selectors.selectPerson(state, personId),
+//   endpoint: action => `/person/${action.personId}`,
+//   schema: schemas.personSchema
+// });
 
-const fetchRecommendationsEpic = groupedGetRequest({
-  type: actionTypes.FETCH_MOVIE_RECOMMENDATIONS,
-  groupActionsBy: ({ movieId }) => movieId,
-  selectCachedData: (state, { movieId }) =>
-    selectors.selectMovieRecommendations(state, movieId),
-  endpoint: ({ movieId }) => `/movie/${movieId}/recommendations`,
-  processResponse: (response, { movieId }) => ({ ...response, movieId }),
-  schema: schemas.movieRecommendationSchema
-});
+// const fetchRecommendationsEpic = groupedGetRequest({
+//   type: actionTypes.FETCH_MOVIE_RECOMMENDATIONS,
+//   groupActionsBy: ({ movieId }) => movieId,
+//   selectCachedData: (state, { movieId }) =>
+//     selectors.selectMovieRecommendations(state, movieId),
+//   endpoint: ({ movieId }) => `/movie/${movieId}/recommendations`,
+//   processResponse: (response, { movieId }) => ({ ...response, movieId }),
+//   schema: schemas.movieRecommendationSchema
+// });
 
 const fetchMovieCreditsEpic = groupedGetRequest({
   type: actionTypes.FETCH_MOVIE_CREDITS,
@@ -187,13 +187,13 @@ const fetchPersonCreditsEpic = groupedGetRequest({
   schema: schemas.personCreditSchema
 });
 
-const fetchPopularPeopleEpic = groupedGetRequest({
-  type: actionTypes.FETCH_POPULAR_PEOPLE,
-  groupActionsBy: ({ pageId }) => pageId,
-  endpoint: () => "/person/popular",
-  params: ({ pageId }) => ({ page: pageId }),
-  schema: { results: [schemas.personSchema] }
-});
+// const fetchPopularPeopleEpic = groupedGetRequest({
+//   type: actionTypes.FETCH_POPULAR_PEOPLE,
+//   groupActionsBy: ({ pageId }) => pageId,
+//   endpoint: () => "/person/popular",
+//   params: ({ pageId }) => ({ page: pageId }),
+//   schema: { results: [schemas.personSchema] }
+// });
 
 const fetchMovieVideosEpic = groupedGetRequest({
   type: actionTypes.FETCH_MOVIE_VIDEOS,
@@ -222,17 +222,17 @@ const fetchPersonImagesEpic = groupedGetRequest({
   schema: schemas.personImageSchema
 });
 
-const fetchGenresEpic = action$ =>
-  action$.pipe(
-    ofType(actionTypes.FETCH_GENRES),
-    switchMap(action =>
-      getRequestWithNormalization({
-        action,
-        endpoint: () => "/genre/movie/list",
-        schema: { genres: [schemas.genreSchema] }
-      })
-    )
-  );
+// const fetchGenresEpic = action$ =>
+//   action$.pipe(
+//     ofType(actionTypes.FETCH_GENRES),
+//     switchMap(action =>
+//       getRequestWithNormalization({
+//         action,
+//         endpoint: () => "/genre/movie/list",
+//         schema: { genres: [schemas.genreSchema] }
+//       })
+//     )
+//   );
 
 // We don't select "cachedData" to force a new request on every search.
 const fetchMovieSearchEpic = action$ =>
@@ -334,14 +334,14 @@ const fetchSearchEpic = (action$, state$) =>
   );
 
 const rootEpic = combineEpics(
-  fetchPopularMoviesEpic,
-  fetchMovieEpic,
-  fetchPersonEpic,
-  fetchRecommendationsEpic,
-  fetchGenresEpic,
+  // fetchPopularMoviesEpic,
+  // fetchMovieEpic,
+  // fetchPersonEpic,
+  // fetchRecommendationsEpic,
+  // fetchGenresEpic,
   fetchMovieCreditsEpic,
   fetchPersonCreditsEpic,
-  fetchPopularPeopleEpic,
+  // fetchPopularPeopleEpic,
   fetchMovieVideosEpic,
   fetchMovieImagesEpic,
   fetchPersonImagesEpic,

@@ -9,26 +9,29 @@ export const fetchPopularMovies = createAction(
   pageId => ({ payload: { pageId } })
 );
 
-export const fetchMovie = (movieId, requiredFields) => ({
-  type: actionTypes.FETCH_MOVIE,
-  movieId,
-  requiredFields
-});
+export const fetchMovie = createAction(
+  "movie/fetch",
+  (movieId, requiredFields) => ({
+    payload: { movieId, requiredFields }
+  })
+);
 
-export const fetchPerson = (personId, requiredFields) => ({
-  type: actionTypes.FETCH_PERSON,
-  personId,
-  requiredFields
-});
+export const fetchPerson = createAction(
+  "person/fetch",
+  (personId, requiredFields) => ({
+    payload: {
+      personId,
+      requiredFields
+    }
+  })
+);
 
-export const fetchRecommendations = movieId => ({
-  type: actionTypes.FETCH_MOVIE_RECOMMENDATIONS,
-  movieId
-});
+export const fetchRecommendations = createAction(
+  "movie/fetchRecommendations",
+  movieId => ({ payload: { movieId } })
+);
 
-export const fetchGenres = () => ({
-  type: actionTypes.FETCH_GENRES
-});
+export const fetchGenres = createAction("genres/fetch");
 
 export const fetchMovieCredits = movieId => ({
   type: actionTypes.FETCH_MOVIE_CREDITS,
@@ -40,10 +43,10 @@ export const fetchPersonCredits = personId => ({
   personId
 });
 
-export const fetchPopularPeople = pageId => ({
-  type: actionTypes.FETCH_POPULAR_PEOPLE,
-  pageId
-});
+export const fetchPopularPeople = createAction(
+  "person/fetchPopular",
+  pageId => ({ payload: { pageId } })
+);
 
 export const fetchMovieVideos = movieId => ({
   type: actionTypes.FETCH_MOVIE_VIDEOS,

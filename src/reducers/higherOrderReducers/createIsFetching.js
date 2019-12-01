@@ -3,20 +3,18 @@ import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = false;
 
-const createIsFetching = fetchType => {
+const createIsFetching = baseType => {
   if (!typeof type === "string") {
     throw new Error("Expected types to be strings.");
   }
 
-  const { requestType, successType, errorType, cancelType } = getFetchTypes(
-    fetchType
-  );
+  const fetchTypes = getFetchTypes(baseType);
 
   return createReducer(initialState, {
-    [requestType]: () => true,
-    [successType]: () => false,
-    [errorType]: () => false,
-    [cancelType]: () => false
+    [fetchTypes.requestType]: () => true,
+    [fetchTypes.successType]: () => false,
+    [fetchTypes.errorType]: () => false,
+    [fetchTypes.cancelType]: () => false
   });
 };
 

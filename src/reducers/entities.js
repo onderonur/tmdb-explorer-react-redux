@@ -1,5 +1,6 @@
 import produce from "immer";
 import merge from "lodash/merge";
+import get from "lodash/get";
 
 const initialState = {
   movies: {},
@@ -18,8 +19,11 @@ const initialState = {
 
 const entities = (state = initialState, action) => {
   return produce(state, draft => {
-    if (action.response && action.response.entities) {
-      draft = merge(draft, action.response.entities);
+    const entities =
+      get(action, ["response", "entities"]) ||
+      get(action, ["payload", "response", "entities"]);
+    if (entities) {
+      draft = merge(draft, entities);
     }
   });
 };
