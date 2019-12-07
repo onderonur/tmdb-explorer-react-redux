@@ -3,9 +3,9 @@ import { makeStyles } from "@material-ui/styles";
 import placeholderPng from "assets/placeholder.png";
 import clsx from "clsx";
 import AspectRatio from "components/AspectRatio";
-import useVisibilityTracker from "hooks/useVisibilityTracker";
 import { Box, useTheme } from "@material-ui/core";
 import LoadingIndicator from "./LoadingIndicator";
+import { useTrackVisibility } from "react-intersection-observer-hook";
 
 const ORIGINAL = "original";
 const DEFAULT_ALT = "Not Loaded";
@@ -39,12 +39,12 @@ function BaseImage({
   showFallbackWhileLoading
 }) {
   const classes = useStyles({ objectFit });
+  const theme = useTheme();
   const [imgHeight, setImgHeight] = useState(0);
   const [imgWidth, setImgWidth] = useState(0);
-  const [ref, { isVisible }] = useVisibilityTracker();
+  const [ref, { isVisible }] = useTrackVisibility();
   const [initialized, setInitialized] = useState(!lazyLoad);
   const [isImgLoaded, setIsImgLoaded] = useState(false);
-  const theme = useTheme();
 
   const isOriginalAspectRatio = aspectRatio === ORIGINAL;
 
