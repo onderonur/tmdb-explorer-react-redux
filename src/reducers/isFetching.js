@@ -17,34 +17,34 @@ const isFetching = combineReducers({
     createIsFetching(actions.fetchPerson)
   ),
   movieVideosByMovieId: createByKey(
-    action => action.movieId,
-    createIsFetching(actionTypes.FETCH_MOVIE_VIDEOS)
+    action => get(action, ["payload", "movieId"]),
+    createIsFetching(actions.fetchMovieVideos)
   ),
   movieCreditsByMovieId: createByKey(
-    action => action.movieId,
-    createIsFetching(actionTypes.FETCH_MOVIE_CREDITS)
+    action => get(action, ["payload", "movieId"]),
+    createIsFetching(actions.fetchMovieCredits)
   ),
   movieRecommendationsByMovieId: createByKey(
-    action => action.movieId,
+    action => get(action, ["payload", "movieId"]),
     createIsFetching(actions.fetchRecommendations)
   ),
   movieImagesByMovieId: createByKey(
-    action => action.movieId,
-    createIsFetching(actionTypes.FETCH_MOVIE_IMAGES)
+    action => get(action, ["payload", "movieId"]),
+    createIsFetching(actions.fetchMovieImages)
   ),
   personImagesByPersonId: createByKey(
-    action => action.personId,
-    createIsFetching(actionTypes.FETCH_PERSON_IMAGES)
+    action => get(action, ["payload", "personId"]),
+    createIsFetching(actions.fetchPersonImages)
   ),
   personCreditsByPersonId: createByKey(
-    action => action.personId,
-    createIsFetching(actionTypes.FETCH_PERSON_MOVIE_CREDITS)
+    action => get(action, ["payload", "personId"]),
+    createIsFetching(actions.fetchPersonCredits)
   ),
   popularMovies: createIsFetching(actions.fetchPopularMovies),
   popularPeople: createIsFetching(actions.fetchPopularPeople),
   search: createIsFetching(actionTypes.FETCH_SEARCH),
-  movieSearchResultsByQuery: createIsFetching(actionTypes.FETCH_MOVIE_SEARCH),
-  personSearchResultsByQuery: createIsFetching(actionTypes.FETCH_PERSON_SEARCH)
+  movieSearchResultsByQuery: createIsFetching(actions.fetchMovieSearch),
+  personSearchResultsByQuery: createIsFetching(actions.fetchPersonSearch)
 });
 
 export default isFetching;

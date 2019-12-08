@@ -145,6 +145,112 @@ function* watchFetchRecommendations() {
   }
 }
 
+function* watchFetchMovieCredits() {
+  while (true) {
+    const action = yield take(actions.fetchMovieCredits);
+    const { movieId } = action.payload;
+    yield fork(fetcherSaga, {
+      action,
+      endpoint: `/movie/${movieId}/credits`,
+      schema: schemas.movieCreditSchema,
+      cachedData: {
+        selector: selectors.selectMovieCredits,
+        args: movieId
+      }
+    });
+  }
+}
+
+function* watchFetchMovieVideos() {
+  while (true) {
+    const action = yield take(actions.fetchMovieVideos);
+    const { movieId } = action.payload;
+    yield fork(fetcherSaga, {
+      action,
+      endpoint: `/movie/${movieId}/videos`,
+      schema: schemas.movieVideosSchema,
+      cachedData: {
+        selector: selectors.selectMovieVideos,
+        args: movieId
+      }
+    });
+  }
+}
+
+function* watchFetchMovieImages() {
+  while (true) {
+    const action = yield take(actions.fetchMovieImages);
+    const { movieId } = action.payload;
+    yield fork(fetcherSaga, {
+      action,
+      endpoint: `/movie/${movieId}/images`,
+      schema: schemas.movieImageSchema,
+      cachedData: {
+        selector: selectors.selectMovieImages,
+        args: movieId
+      }
+    });
+  }
+}
+
+function* watchFetchPersonCredits() {
+  while (true) {
+    const action = yield take(actions.fetchPersonCredits);
+    const { personId } = action.payload;
+    yield fork(fetcherSaga, {
+      action,
+      endpoint: `/person/${personId}/movie_credits`,
+      schema: schemas.personCreditSchema,
+      cachedData: {
+        selector: selectors.selectPersonCredits,
+        args: personId
+      }
+    });
+  }
+}
+
+function* watchFetchPersonImages() {
+  while (true) {
+    const action = yield take(actions.fetchPersonImages);
+    const { personId } = action.payload;
+    yield fork(fetcherSaga, {
+      action,
+      endpoint: `/person/${personId}/images`,
+      schema: schemas.personImageSchema,
+      cachedData: {
+        selector: selectors.selectPersonImages,
+        args: personId
+      }
+    });
+  }
+}
+
+function* watchFetchMovieSearch() {
+  while (true) {
+    const action = yield take(actions.fetchMovieSearch);
+    const { query, pageId } = action.payload;
+    yield fork(fetcherSaga, {
+      action,
+      endpoint: `/search/movie`,
+      params: { query, page: pageId },
+      schema: { results: [schemas.movieSchema] }
+    });
+  }
+}
+
+function* watchFetchPersonSearch() {
+  while (true) {
+    const action = yield take(actions.fetchPersonSearch);
+    const { query, pageId } = action.payload;
+    yield fork(fetcherSaga, {
+      action,
+      endpoint: `/search/person`,
+      params: { query, page: pageId },
+      schema: { results: [schemas.personSchema] }
+    });
+  }
+}
+
 export default function* root() {
   yield all([
     fork(watchFetchGenres),
@@ -152,6 +258,13 @@ export default function* root() {
     fork(watchFetchPopularPeople),
     fork(watchFetchMovie),
     fork(watchFetchPerson),
-    fork(watchFetchRecommendations)
+    fork(watchFetchRecommendations),
+    fork(watchFetchMovieCredits),
+    fork(watchFetchMovieVideos),
+    fork(watchFetchPersonCredits),
+    fork(watchFetchMovieImages),
+    fork(watchFetchPersonImages),
+    fork(watchFetchMovieSearch),
+    fork(watchFetchPersonSearch)
   ]);
 }
