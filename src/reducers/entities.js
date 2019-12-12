@@ -48,18 +48,10 @@ export const selectors = {
     personIds.map(personId => selectPerson(state, personId)),
   selectPersonCredits: (state, personId) => state.personCredits[personId],
   selectVideo: (state, videoId) => state.videos[videoId],
-  selectMovieVideos: (state, movieId) =>
-    state.movieVideos[movieId] ? state.movieVideos[movieId].videos : undefined,
-  selectMovieRecommendations: (state, movieId) => {
-    const recommendations = state.movieRecommendations[movieId];
-    return recommendations ? recommendations.movies : undefined;
-  },
-  selectMovieImages: (state, movieId) => {
-    const movieImages = state.movieImages[movieId];
-    return movieImages ? movieImages.backdrops : undefined;
-  },
-  selectPersonImages: (state, personId) => {
-    const personImages = state.personImages[personId];
-    return personImages ? personImages.profiles : undefined;
-  }
+  selectMovieVideos: (state, movieId) => state.movieVideos[movieId]?.videos,
+  selectMovieRecommendations: (state, movieId) =>
+    state.movieRecommendations[movieId]?.movies,
+  selectMovieImages: (state, movieId) => state.movieImages[movieId]?.backdrops,
+  selectPersonImages: (state, personId) =>
+    state.personImages[personId]?.profiles
 };

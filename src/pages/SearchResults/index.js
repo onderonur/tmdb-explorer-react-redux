@@ -35,6 +35,11 @@ function SearchResults() {
     dispatch(fetchPersonSearch(query, DEFAULT_FIRST_PAGE));
   }, [dispatch, query]);
 
+  const totalResults = {
+    movie: totalMovieCount,
+    person: totalPersonCount
+  };
+
   return (
     <>
       <Tabs value={searchType} onChange={handleChange}>
@@ -44,13 +49,7 @@ function SearchResults() {
       <Box marginTop={2}>
         <SearchResultsHeader
           query={query}
-          totalResults={
-            searchType === "movie"
-              ? totalMovieCount
-              : searchType === "person"
-              ? totalPersonCount
-              : ""
-          }
+          totalResults={totalResults[searchType]}
         />
         {searchType === "movie" && <MovieSearchResults query={query} />}
         {searchType === "person" && <PersonSearchResults query={query} />}

@@ -16,7 +16,11 @@ function PersonIntroduction({ personId }) {
   const person = useSelector(state => selectors.selectPerson(state, personId));
   const classes = useStyles();
 
-  return person ? (
+  if (!person) {
+    return null;
+  }
+
+  return (
     <Introduction
       imageSrc={person.profile_path}
       backgroundImageSrc={person.profile_path}
@@ -47,7 +51,7 @@ function PersonIntroduction({ personId }) {
         </>
       }
     />
-  ) : null;
+  );
 }
 
 export default PersonIntroduction;

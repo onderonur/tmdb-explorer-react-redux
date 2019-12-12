@@ -29,7 +29,11 @@ function MovieIntroduction({ movieId }) {
 
   const releaseYear = getMovieReleaseYear(movie);
 
-  return movie ? (
+  if (!movie) {
+    return null;
+  }
+
+  return (
     <Introduction
       backgroundImageSrc={movie.backdrop_path}
       imageSrc={movie.poster_path}
@@ -99,7 +103,7 @@ function MovieIntroduction({ movieId }) {
         </>
       }
     />
-  ) : null;
+  );
 }
 
 export default MovieIntroduction;
