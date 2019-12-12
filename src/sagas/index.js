@@ -1,4 +1,14 @@
-import { put, take, fork, all, call, select } from "redux-saga/effects";
+import {
+  put,
+  delay,
+  fork,
+  all,
+  call,
+  select,
+  takeEvery,
+  takeLatest,
+  cancelled
+} from "redux-saga/effects";
 import { getFetchTypes, verifyCachedData } from "utils";
 import * as schemas from "schemas";
 import * as actions from "actions";
@@ -6,8 +16,11 @@ import { BASE_API_URL } from "constants/urls";
 import queryString from "query-string";
 import { normalize } from "normalizr";
 import { selectors } from "reducers";
+import axios from "axios";
 
 const api_key = process.env.REACT_APP_API_KEY;
+
+const CancelToken = axios.CancelToken;
 
 const createUrl = (endpoint, params = {}) =>
   `${BASE_API_URL}${endpoint}?${queryString.stringify({
@@ -15,20 +28,41 @@ const createUrl = (endpoint, params = {}) =>
     api_key
   })}`;
 
+// GET request with cancellation
+function* callAPI(endpoint, params, schema, processData, config = {}) {
+  const source = CancelToken.source();
+  const cancelToken = source.token;
+  try {
+    const url = yield call(createUrl, endpoint, params);
+    const response = yield call([axios, "get"], url, {
+      ...config,
+      cancelToken
+    });
+    let { data } = response;
+    // Process the data if any additional info is required for reducers or normalization.
+    data = processData ? processData(data) : data;
+    // Normalize the data, if a schema is given.
+    data = schema ? normalize(data, schema) : data;
+    return data;
+  } finally {
+    if (yield cancelled()) {
+      source.cancel();
+    }
+  }
+}
+
 function* fetcherSaga({
   action,
   endpoint,
   params,
   schema,
-  processResponse,
-  cachedData: { selector, args } = {}
+  processData,
+  cachedData
 }) {
-  const baseType = action.type;
-  const payload = action.payload || {};
-  const { requestType, successType, errorType } = getFetchTypes(baseType);
+  const { type, payload = {} } = action;
+  const { requestType, successType, errorType } = getFetchTypes(type);
   try {
-    // TODO: Check "isFetching" or group actions like streams in epics.
-    const cachedData = selector ? yield select(selector, args) : null;
+    // TODO: Check "isFetching" or group actions like streams in epics. (takeLeadingPerKey etc)
     const verified = yield call(
       verifyCachedData,
       cachedData,
@@ -37,18 +71,11 @@ function* fetcherSaga({
     // If there is a "verified" cached data, we don't fetch it again.
     if (!verified) {
       yield put({ type: requestType, payload });
-      const url = yield call(createUrl, endpoint, params);
-      // TODO: May use "axios" etc instead.
-      const response = yield call(fetch, url);
-      let json = yield call([response, "json"]);
-      // Process the response if any additional info is required for reducers or normalization.
-      json = processResponse ? processResponse(json) : json;
-      // Normalize the response, if a schema is given.
-      json = schema ? normalize(json, schema) : json;
+      let data = yield call(callAPI, endpoint, params, schema, processData);
       // Dispatch success action.
       yield put({
         type: successType,
-        payload: { ...payload, response: json }
+        payload: { ...payload, response: data }
       });
     }
   } catch (error) {
@@ -57,198 +84,233 @@ function* fetcherSaga({
   }
 }
 
-/******************************************************************************/
-/******************************* WATCHERS *************************************/
-/******************************************************************************/
-
-function* watchFetchGenres() {
-  const action = yield take(actions.fetchGenres);
-  yield fork(fetcherSaga, {
+function* fetchGenresSaga(action) {
+  yield call(fetcherSaga, {
     action,
     endpoint: "/genre/movie/list",
     schema: { genres: [schemas.genreSchema] }
   });
 }
 
-function* watchFetchPopularMovies() {
-  while (true) {
-    const action = yield take(actions.fetchPopularMovies);
-    const { pageId } = action.payload;
-    yield fork(fetcherSaga, {
-      action,
-      endpoint: "/movie/popular",
-      params: { page: pageId },
-      schema: { results: [schemas.movieSchema] }
-    });
+function* fetchPopularMoviesSaga(action) {
+  const { page } = action.payload;
+  yield call(fetcherSaga, {
+    action: action,
+    endpoint: "/movie/popular",
+    params: { page },
+    schema: { results: [schemas.movieSchema] }
+  });
+}
+
+function* fetchPopularPeopleSaga(action) {
+  const { page } = action.payload;
+  yield call(fetcherSaga, {
+    action,
+    endpoint: "/person/popular",
+    params: { page },
+    schema: { results: [schemas.personSchema] }
+  });
+}
+
+function* fetchMovieSaga(action) {
+  const { movieId } = action.payload;
+  const movie = yield select(selectors.selectMovie, movieId);
+  yield call(fetcherSaga, {
+    action,
+    endpoint: `/movie/${movieId}`,
+    schema: schemas.movieSchema,
+    cachedData: movie
+  });
+}
+
+function* fetchPersonSaga(action) {
+  const { personId } = action.payload;
+  const person = yield select(selectors.selectPerson, personId);
+  yield call(fetcherSaga, {
+    action,
+    endpoint: `/person/${personId}`,
+    schema: schemas.personSchema,
+    cachedData: person
+  });
+}
+
+function* fetchRecommendationsSaga(action) {
+  const { movieId } = action.payload;
+  const recommendations = yield select(
+    selectors.selectMovieRecommendations,
+    movieId
+  );
+  yield call(fetcherSaga, {
+    action,
+    endpoint: `/movie/${movieId}/recommendations`,
+    processData: response => ({ ...response, movieId }),
+    schema: schemas.movieRecommendationSchema,
+    cachedData: recommendations
+  });
+}
+
+function* fetchMovieCreditsSaga(action) {
+  const { movieId } = action.payload;
+  const movieCredits = yield select(selectors.selectMovieCredits, movieId);
+  yield call(fetcherSaga, {
+    action,
+    endpoint: `/movie/${movieId}/credits`,
+    schema: schemas.movieCreditSchema,
+    cachedData: movieCredits
+  });
+}
+
+function* fetchMovieVideosSaga(action) {
+  const { movieId } = action.payload;
+  const movieVideos = yield select(selectors.selectMovieVideos, movieId);
+  yield call(fetcherSaga, {
+    action,
+    endpoint: `/movie/${movieId}/videos`,
+    schema: schemas.movieVideosSchema,
+    cachedData: movieVideos
+  });
+}
+
+function* fetchMovieImagesSaga(action) {
+  const { movieId } = action.payload;
+  const movieImages = yield select(selectors.selectMovieImages, movieId);
+  yield call(fetcherSaga, {
+    action,
+    endpoint: `/movie/${movieId}/images`,
+    schema: schemas.movieImageSchema,
+    cachedData: movieImages
+  });
+}
+
+function* fetchPersonCreditsSaga(action) {
+  const { personId } = action.payload;
+  const personCredits = yield select(selectors.selectPersonCredits, personId);
+  yield call(fetcherSaga, {
+    action,
+    endpoint: `/person/${personId}/movie_credits`,
+    schema: schemas.personCreditSchema,
+    cachedData: personCredits
+  });
+}
+
+function* fetchPersonImagesSaga(action) {
+  const { personId } = action.payload;
+  const personImages = yield select(selectors.selectPersonImages, personId);
+  yield call(fetcherSaga, {
+    action,
+    endpoint: `/person/${personId}/images`,
+    schema: schemas.personImageSchema,
+    cachedData: personImages
+  });
+}
+
+function* fetchMovieSearchSaga(action) {
+  const { query, page } = action.payload;
+  yield call(fetcherSaga, {
+    action,
+    endpoint: `/search/movie`,
+    params: { query, page },
+    schema: { results: [schemas.movieSchema] }
+  });
+}
+
+function* fetchPersonSearchSaga(action) {
+  const { query, page } = action.payload;
+  yield call(fetcherSaga, {
+    action,
+    endpoint: `/search/person`,
+    params: { query, page },
+    schema: { results: [schemas.personSchema] }
+  });
+}
+
+function* fetchSearchSaga(action) {
+  const { type, payload } = action;
+  const { requestType, successType, errorType, cancelType } = getFetchTypes(
+    type
+  );
+  const { query } = payload;
+  if (query) {
+    yield put({ type: requestType });
+    yield delay(800);
+    try {
+      yield all([
+        call(fetchMovieSearchSaga, {
+          ...action,
+          type: actions.fetchMovieSearch
+        }),
+        call(fetchPersonSearchSaga, {
+          ...action,
+          type: actions.fetchPersonSearch
+        })
+      ]);
+      yield put({ type: successType });
+    } catch (error) {
+      yield put({ type: errorType, error });
+    }
+  } else {
+    yield put({ type: cancelType });
   }
+}
+
+/******************************************************************************/
+/******************************* WATCHERS *************************************/
+/******************************************************************************/
+
+function* watchFetchGenres() {
+  yield takeEvery(actions.fetchGenres, fetchGenresSaga);
+}
+
+function* watchFetchPopularMovies() {
+  yield takeEvery(actions.fetchPopularMovies, fetchPopularMoviesSaga);
 }
 
 function* watchFetchPopularPeople() {
-  while (true) {
-    const action = yield take(actions.fetchPopularPeople);
-    const { pageId } = action.payload;
-    yield fork(fetcherSaga, {
-      action,
-      endpoint: "/person/popular",
-      params: { page: pageId },
-      schema: { results: [schemas.personSchema] }
-    });
-  }
+  yield takeEvery(actions.fetchPopularPeople, fetchPopularPeopleSaga);
 }
 
 function* watchFetchMovie() {
-  while (true) {
-    const action = yield take(actions.fetchMovie);
-    const { movieId } = action.payload;
-    yield fork(fetcherSaga, {
-      action,
-      endpoint: `/movie/${movieId}`,
-      schema: schemas.movieSchema,
-      cachedData: {
-        selector: selectors.selectMovie,
-        args: movieId
-      }
-    });
-  }
+  yield takeEvery(actions.fetchMovie, fetchMovieSaga);
 }
 
 function* watchFetchPerson() {
-  while (true) {
-    const action = yield take(actions.fetchPerson);
-    const { personId } = action.payload;
-    yield fork(fetcherSaga, {
-      action,
-      endpoint: `/person/${personId}`,
-      schema: schemas.personSchema,
-      cachedData: {
-        selector: selectors.selectPerson,
-        args: personId
-      }
-    });
-  }
+  yield takeEvery(actions.fetchPerson, fetchPersonSaga);
 }
 
 function* watchFetchRecommendations() {
-  while (true) {
-    const action = yield take(actions.fetchRecommendations);
-    const { movieId } = action.payload;
-    yield fork(fetcherSaga, {
-      action,
-      endpoint: `/movie/${movieId}/recommendations`,
-      processResponse: response => ({ ...response, movieId }),
-      schema: schemas.movieRecommendationSchema,
-      cachedData: {
-        selector: selectors.selectMovieRecommendations,
-        args: movieId
-      }
-    });
-  }
+  yield takeEvery(actions.fetchRecommendations, fetchRecommendationsSaga);
 }
 
 function* watchFetchMovieCredits() {
-  while (true) {
-    const action = yield take(actions.fetchMovieCredits);
-    const { movieId } = action.payload;
-    yield fork(fetcherSaga, {
-      action,
-      endpoint: `/movie/${movieId}/credits`,
-      schema: schemas.movieCreditSchema,
-      cachedData: {
-        selector: selectors.selectMovieCredits,
-        args: movieId
-      }
-    });
-  }
+  yield takeEvery(actions.fetchMovieCredits, fetchMovieCreditsSaga);
 }
 
 function* watchFetchMovieVideos() {
-  while (true) {
-    const action = yield take(actions.fetchMovieVideos);
-    const { movieId } = action.payload;
-    yield fork(fetcherSaga, {
-      action,
-      endpoint: `/movie/${movieId}/videos`,
-      schema: schemas.movieVideosSchema,
-      cachedData: {
-        selector: selectors.selectMovieVideos,
-        args: movieId
-      }
-    });
-  }
+  yield takeEvery(actions.fetchMovieVideos, fetchMovieVideosSaga);
 }
 
 function* watchFetchMovieImages() {
-  while (true) {
-    const action = yield take(actions.fetchMovieImages);
-    const { movieId } = action.payload;
-    yield fork(fetcherSaga, {
-      action,
-      endpoint: `/movie/${movieId}/images`,
-      schema: schemas.movieImageSchema,
-      cachedData: {
-        selector: selectors.selectMovieImages,
-        args: movieId
-      }
-    });
-  }
+  yield takeEvery(actions.fetchMovieImages, fetchMovieImagesSaga);
 }
 
 function* watchFetchPersonCredits() {
-  while (true) {
-    const action = yield take(actions.fetchPersonCredits);
-    const { personId } = action.payload;
-    yield fork(fetcherSaga, {
-      action,
-      endpoint: `/person/${personId}/movie_credits`,
-      schema: schemas.personCreditSchema,
-      cachedData: {
-        selector: selectors.selectPersonCredits,
-        args: personId
-      }
-    });
-  }
+  yield takeEvery(actions.fetchPersonCredits, fetchPersonCreditsSaga);
 }
 
 function* watchFetchPersonImages() {
-  while (true) {
-    const action = yield take(actions.fetchPersonImages);
-    const { personId } = action.payload;
-    yield fork(fetcherSaga, {
-      action,
-      endpoint: `/person/${personId}/images`,
-      schema: schemas.personImageSchema,
-      cachedData: {
-        selector: selectors.selectPersonImages,
-        args: personId
-      }
-    });
-  }
+  yield takeEvery(actions.fetchPersonImages, fetchPersonImagesSaga);
 }
 
 function* watchFetchMovieSearch() {
-  while (true) {
-    const action = yield take(actions.fetchMovieSearch);
-    const { query, pageId } = action.payload;
-    yield fork(fetcherSaga, {
-      action,
-      endpoint: `/search/movie`,
-      params: { query, page: pageId },
-      schema: { results: [schemas.movieSchema] }
-    });
-  }
+  yield takeEvery(actions.fetchMovieSearch, fetchMovieSearchSaga);
 }
 
 function* watchFetchPersonSearch() {
-  while (true) {
-    const action = yield take(actions.fetchPersonSearch);
-    const { query, pageId } = action.payload;
-    yield fork(fetcherSaga, {
-      action,
-      endpoint: `/search/person`,
-      params: { query, page: pageId },
-      schema: { results: [schemas.personSchema] }
-    });
-  }
+  yield takeEvery(actions.fetchPersonSearch, fetchPersonSearchSaga);
+}
+
+function* watchFetchSearch() {
+  yield takeLatest(actions.fetchSearch, fetchSearchSaga);
 }
 
 export default function* root() {
@@ -265,6 +327,7 @@ export default function* root() {
     fork(watchFetchMovieImages),
     fork(watchFetchPersonImages),
     fork(watchFetchMovieSearch),
-    fork(watchFetchPersonSearch)
+    fork(watchFetchPersonSearch),
+    fork(watchFetchSearch)
   ]);
 }

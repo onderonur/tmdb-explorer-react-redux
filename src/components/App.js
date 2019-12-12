@@ -24,6 +24,7 @@ function App() {
     selectors.selectIsFetchingGenres(state)
   );
   const genres = useSelector(state => selectors.selectGenres(state));
+  const genresCount = Object.keys(genres).length;
 
   useEffect(() => {
     dispatch(fetchGenres());
@@ -36,7 +37,7 @@ function App() {
       <AppDrawer />
       <div className={classes.toolbar} />
       <Container className={classes.main} component="main">
-        <LoadingIndicator loading={isFetching || !genres.length}>
+        <LoadingIndicator loading={isFetching || !genresCount}>
           <Routes />
         </LoadingIndicator>
       </Container>

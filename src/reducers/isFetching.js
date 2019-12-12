@@ -1,50 +1,47 @@
 import { combineReducers } from "redux";
-import * as actionTypes from "constants/actionTypes";
 import * as actions from "actions";
 import createIsFetching from "./higherOrderReducers/createIsFetching";
 import createByKey from "./higherOrderReducers/createByKey";
-// TODO: Install only required lodash modules.
-import get from "lodash/get";
 
 const isFetching = combineReducers({
   genres: createIsFetching(actions.fetchGenres),
   moviesById: createByKey(
-    action => get(action, ["payload", "movieId"]),
+    action => action.payload?.movieId,
     createIsFetching(actions.fetchMovie)
   ),
   peopleById: createByKey(
-    action => get(action, ["payload", "personId"]),
+    action => action.payload?.personId,
     createIsFetching(actions.fetchPerson)
   ),
   movieVideosByMovieId: createByKey(
-    action => get(action, ["payload", "movieId"]),
+    action => action.payload?.movieId,
     createIsFetching(actions.fetchMovieVideos)
   ),
   movieCreditsByMovieId: createByKey(
-    action => get(action, ["payload", "movieId"]),
+    action => action.payload?.movieId,
     createIsFetching(actions.fetchMovieCredits)
   ),
   movieRecommendationsByMovieId: createByKey(
-    action => get(action, ["payload", "movieId"]),
+    action => action.payload?.movieId,
     createIsFetching(actions.fetchRecommendations)
   ),
   movieImagesByMovieId: createByKey(
-    action => get(action, ["payload", "movieId"]),
+    action => action.payload?.movieId,
     createIsFetching(actions.fetchMovieImages)
   ),
   personImagesByPersonId: createByKey(
-    action => get(action, ["payload", "personId"]),
+    action => action.payload?.personId,
     createIsFetching(actions.fetchPersonImages)
   ),
   personCreditsByPersonId: createByKey(
-    action => get(action, ["payload", "personId"]),
+    action => action.payload?.personId,
     createIsFetching(actions.fetchPersonCredits)
   ),
   popularMovies: createIsFetching(actions.fetchPopularMovies),
   popularPeople: createIsFetching(actions.fetchPopularPeople),
-  search: createIsFetching(actionTypes.FETCH_SEARCH),
-  movieSearchResultsByQuery: createIsFetching(actions.fetchMovieSearch),
-  personSearchResultsByQuery: createIsFetching(actions.fetchPersonSearch)
+  search: createIsFetching(actions.fetchSearch),
+  movieSearchResults: createIsFetching(actions.fetchMovieSearch),
+  personSearchResults: createIsFetching(actions.fetchPersonSearch)
 });
 
 export default isFetching;
@@ -68,6 +65,6 @@ export const selectors = {
   selectIsFetchingPersonCredits: (state, personId) =>
     state.personCreditsByPersonId[personId],
   selectIsFetchingSearch: state => state.search,
-  selectIsFetchingMovieSearchResults: state => state.movieSearchResultsByQuery,
-  selectIsFetchingPersonSearchResults: state => state.personSearchResultsByQuery
+  selectIsFetchingMovieSearchResults: state => state.movieSearchResults,
+  selectIsFetchingPersonSearchResults: state => state.personSearchResults
 };

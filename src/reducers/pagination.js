@@ -4,18 +4,17 @@ import createPagination, {
 } from "./higherOrderReducers/createPagination";
 import * as actions from "actions";
 import createByKey from "./higherOrderReducers/createByKey";
-import get from "lodash/get";
 
 const pagination = combineReducers({
   popularMovies: createPagination(actions.fetchPopularMovies),
   popularPeople: createPagination(actions.fetchPopularPeople),
   movieSearchResultsByQuery: createByKey(
-    action => get(action, ["payload", "query"]),
-    createPagination(actions.fetchMovieSearch)
+    action => action.payload?.query,
+    createPagination([actions.fetchMovieSearch, actions.fetchSearch])
   ),
   personSearchResultsByQuery: createByKey(
-    action => get(action, ["payload", "query"]),
-    createPagination(actions.fetchPersonSearch)
+    action => action.payload?.query,
+    createPagination([actions.fetchPersonSearch, actions.fetchSearch])
   )
 });
 
