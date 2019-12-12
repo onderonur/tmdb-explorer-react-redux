@@ -27,10 +27,7 @@ function PersonImageGridList({ personId }) {
         imageAspectRatio="2:3"
         minItemWidth={80}
       />
-      <ImageGalleryModal
-        title={person ? person.name : ""}
-        filePaths={filePaths}
-      />
+      <ImageGalleryModal title={person?.name} filePaths={filePaths} />
     </>
   );
 }

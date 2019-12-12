@@ -19,7 +19,7 @@ function MovieVideoPlayerModal({ movieId }) {
 
   return (
     <MediaGalleryModal
-      title={videoToWatch ? videoToWatch.name : ""}
+      title={videoToWatch?.name}
       dataSource={videoKeys}
       queryParamName="watch"
       isVideoPlayer={true}

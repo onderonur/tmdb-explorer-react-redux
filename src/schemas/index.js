@@ -34,16 +34,18 @@ export const personSchema = new schema.Entity(
   },
   {
     processStrategy: value => {
-      return value.known_for
-        ? {
-            ...value,
-            // Omitting tv series info of people.
-            // We are only selecting "movie" type media.
-            known_for: value.known_for.filter(
-              media => media.media_type === "movie"
-            )
-          }
-        : value;
+      if (value.known_for) {
+        return {
+          ...value,
+          // Omitting tv series info of people.
+          // We are only selecting "movie" type media.
+          known_for: value.known_for.filter(
+            media => media.media_type === "movie"
+          )
+        };
+      }
+
+      return value;
     }
   }
 );

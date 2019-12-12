@@ -54,7 +54,7 @@ function AutoSearch({
     <Downshift
       inputValue={inputValue}
       onSelect={onItemSelect}
-      itemToString={item => (item ? item.title : "")}
+      itemToString={item => item?.title || ""}
     >
       {({
         getInputProps,
