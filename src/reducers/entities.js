@@ -1,6 +1,5 @@
 import produce from "immer";
 import merge from "lodash/merge";
-import get from "lodash/get";
 
 const initialState = {
   movies: {},
@@ -19,9 +18,8 @@ const initialState = {
 
 const entities = (state = initialState, action) => {
   return produce(state, draft => {
-    const entities =
-      get(action, ["response", "entities"]) ||
-      get(action, ["payload", "response", "entities"]);
+    const { payload } = action;
+    const entities = payload?.response?.entities;
     if (entities) {
       draft = merge(draft, entities);
     }
@@ -42,7 +40,7 @@ export const selectors = {
   selectMovies: (state, movieIds) =>
     movieIds.map(movieId => selectMovie(state, movieId)),
   selectGenre: (state, genreId) => state.genres[genreId],
-  selectGenres: state => Object.values(state.genres),
+  selectGenres: state => state.genres,
   selectMovieCredits: (state, movieId) => state.movieCredits[movieId],
   selectCastCredits: (state, castCreditId) => state.castCredits[castCreditId],
   selectPerson,

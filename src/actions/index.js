@@ -1,13 +1,11 @@
-import * as actionTypes from "constants/actionTypes";
 import { DEFAULT_FIRST_PAGE } from "reducers/higherOrderReducers/createPagination";
 import { createAction } from "@reduxjs/toolkit";
 
 export const toggleDrawer = createAction("drawer/toggle");
 
-export const fetchPopularMovies = createAction(
-  "movie/fetchPopular",
-  pageId => ({ payload: { pageId } })
-);
+export const fetchPopularMovies = createAction("movie/fetchPopular", page => ({
+  payload: { page }
+}));
 
 export const fetchMovie = createAction(
   "movie/fetch",
@@ -45,10 +43,9 @@ export const fetchPersonCredits = createAction(
   })
 );
 
-export const fetchPopularPeople = createAction(
-  "person/fetchPopular",
-  pageId => ({ payload: { pageId } })
-);
+export const fetchPopularPeople = createAction("person/fetchPopular", page => ({
+  payload: { page }
+}));
 
 export const fetchMovieVideos = createAction("movie/fetchVideos", movieId => ({
   payload: { movieId }
@@ -65,22 +62,17 @@ export const fetchPersonImages = createAction(
   })
 );
 
-export const fetchSearch = query => ({
-  type: actionTypes.FETCH_SEARCH,
-  query,
-  pageId: DEFAULT_FIRST_PAGE
-});
+export const fetchSearch = createAction("search/fetch", query => ({
+  payload: { query, page: DEFAULT_FIRST_PAGE }
+}));
 
-export const fetchMovieSearch = createAction(
-  "movie/search",
-  (query, pageId) => ({
-    payload: { query, pageId }
-  })
-);
+export const fetchMovieSearch = createAction("movie/search", (query, page) => ({
+  payload: { query, page }
+}));
 
 export const fetchPersonSearch = createAction(
   "person/search",
-  (query, pageId) => ({
-    payload: { query, pageId }
+  (query, page) => ({
+    payload: { query, page }
   })
 );
