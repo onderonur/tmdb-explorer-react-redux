@@ -166,7 +166,7 @@ function* fetchMovieVideosSaga(action) {
   yield call(fetcherSaga, {
     action,
     endpoint: `/movie/${movieId}/videos`,
-    schema: schemas.movieVideosSchema,
+    schema: schemas.movieVideoSchema,
     cachedData: movieVideos
   });
 }
