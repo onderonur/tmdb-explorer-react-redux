@@ -34,16 +34,18 @@ export const personSchema = new schema.Entity(
   },
   {
     processStrategy: value => {
-      return value.known_for
-        ? {
-            ...value,
-            // Omitting tv series info of people.
-            // We are only selecting "movie" type media.
-            known_for: value.known_for.filter(
-              media => media.media_type === "movie"
-            )
-          }
-        : value;
+      if (value.known_for) {
+        return {
+          ...value,
+          // Omitting tv series info of people.
+          // We are only selecting "movie" type media.
+          known_for: value.known_for.filter(
+            media => media.media_type === "movie"
+          )
+        };
+      }
+
+      return value;
     }
   }
 );
@@ -159,7 +161,7 @@ export const movieCreditSchema = new schema.Entity(
 
 export const videoSchema = new schema.Entity("videos");
 
-export const movieVideosSchema = new schema.Entity(
+export const movieVideoSchema = new schema.Entity(
   "movieVideos",
   {
     videos: [videoSchema]
@@ -198,7 +200,6 @@ const imageSchema = new schema.Entity(
   { idAttribute: value => value.file_path }
 );
 
-// TODO: Schema'lardaki plural-single kullanımları kontrol edip düzelt.
 export const movieImageSchema = new schema.Entity(
   "movieImages",
   {

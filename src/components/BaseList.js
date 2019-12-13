@@ -8,13 +8,13 @@ function BaseList({
   loading,
   listEmptyMesage = "Nothing has been found"
 }) {
-  return !data.length && !loading ? (
-    listEmptyMesage
-  ) : (
-    <LoadingIndicator loading={loading}>
-      <List>{data.map((item, index) => renderItem(item, index))}</List>
-    </LoadingIndicator>
-  );
+  if (loading) {
+    return <LoadingIndicator loading />;
+  } else if (!data.length) {
+    return listEmptyMesage;
+  }
+
+  return <List>{data.map((item, index) => renderItem(item, index))}</List>;
 }
 
 export default BaseList;

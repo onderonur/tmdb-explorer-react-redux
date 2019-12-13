@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
   Dialog,
@@ -35,6 +35,11 @@ function BaseDialog({
 }) {
   const classes = useStyles();
 
+  const contextValue = useMemo(() => ({ fullScreen, closeDialog: onClose }), [
+    fullScreen,
+    onClose
+  ]);
+
   return (
     <Dialog
       open={open}
@@ -45,10 +50,7 @@ function BaseDialog({
       onClose={onClose}
       onExited={onExited}
     >
-      {/* TODO: Instead of providing context value as an object, there should be a more
-      performant solution. Or all of the consumers will re-render every time
-      "BaseDialog" re-renders. */}
-      <DialogContext.Provider value={{ fullScreen, closeDialog: onClose }}>
+      <DialogContext.Provider value={contextValue}>
         {!fullScreen && (
           <CloseIcon className={classes.closeButton} onClick={onClose} />
         )}

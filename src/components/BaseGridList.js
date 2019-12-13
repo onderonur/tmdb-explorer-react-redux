@@ -37,13 +37,15 @@ function BaseGridList({
       : keyExtractor(item, index);
   }
 
-  return !items.length && !loading ? (
-    typeof listEmptyMessage === "string" ? (
-      <Typography>{listEmptyMessage}</Typography>
-    ) : (
-      listEmptyMessage
-    )
-  ) : (
+  if (!items.length && !loading) {
+    if (typeof listEmptyMessage === "string") {
+      return <Typography>{listEmptyMessage}</Typography>;
+    }
+
+    return listEmptyMessage;
+  }
+
+  return (
     <React.Fragment>
       <ul className={classes.flexList}>
         {items.map((item, index) => (

@@ -1,12 +1,12 @@
-import * as actionTypes from "constants/actionTypes";
-import createReducer from "./higherOrderReducers/createReducer";
+import * as actions from "actions";
+import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
   isOpen: false
 };
 
 const drawer = createReducer(initialState, {
-  [actionTypes.TOGGLE_DRAWER]: (state, action) => {
+  [actions.toggleDrawer]: (state, action) => {
     state.isOpen = !state.isOpen;
   }
 });

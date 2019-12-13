@@ -2,8 +2,14 @@ import placeholderPng from "assets/placeholder.png";
 import { BASE_IMG_API_URL } from "constants/urls";
 
 export function getMovieReleaseYear(movie) {
-  const { release_date } = movie || {};
-  return release_date ? new Date(movie.release_date).getFullYear() : null;
+  const date = movie?.release_date;
+
+  if (!date) {
+    return null;
+  }
+
+  const year = new Date(movie.release_date).getFullYear();
+  return year;
 }
 
 export function getImageUrl(path, { original } = {}) {
@@ -19,10 +25,10 @@ export function getImdbProfileUrl(imdbId) {
 }
 
 export function getFetchTypes(fetchType) {
-  const requestType = `${fetchType}_REQUEST`;
-  const successType = `${fetchType}_SUCCESS`;
-  const errorType = `${fetchType}_ERROR`;
-  const cancelType = `${fetchType}_CANCELLED`;
+  const requestType = `${fetchType}/requested`;
+  const successType = `${fetchType}/succeeded`;
+  const errorType = `${fetchType}/failed`;
+  const cancelType = `${fetchType}/cancelled`;
   return { requestType, successType, errorType, cancelType };
 }
 

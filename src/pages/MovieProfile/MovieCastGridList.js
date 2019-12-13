@@ -14,7 +14,7 @@ function MovieCastGridList({ movieId }) {
   const movieCredits = useSelector(state =>
     selectors.selectMovieCredits(state, movieId)
   );
-  const castCreditIds = movieCredits ? movieCredits.cast : [];
+  const castCreditIds = movieCredits?.cast || [];
   const isFetchingCredits = useSelector(state =>
     selectors.selectIsFetchingMovieCredits(state, movieId)
   );

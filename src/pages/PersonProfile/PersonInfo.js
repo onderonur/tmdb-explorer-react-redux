@@ -11,7 +11,11 @@ function PersonInfo({ personId }) {
     return person.gender === 1 ? "Female" : person.gender === 2 ? "Male" : "";
   }
 
-  return person ? (
+  if (!person) {
+    return null;
+  }
+
+  return (
     <>
       <TextWithLabel label="Known For" text={person.known_for_department} />
       <TextWithLabel label="Gender" text={getGender(person.gender)} />
@@ -20,7 +24,7 @@ function PersonInfo({ personId }) {
       {person.official_site && (
         <TextWithLabel label="Official Site" text={person.official_site} />
       )}
-      {person.also_known_as && person.also_known_as.length ? (
+      {person.also_known_as?.length ? (
         <TextWithLabel
           label="Also Known As"
           text={person.also_known_as.map(alias => (
@@ -29,7 +33,7 @@ function PersonInfo({ personId }) {
         />
       ) : null}
     </>
-  ) : null;
+  );
 }
 
 export default PersonInfo;

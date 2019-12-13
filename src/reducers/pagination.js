@@ -2,19 +2,19 @@ import { combineReducers } from "redux";
 import createPagination, {
   selectors as paginationSelectors
 } from "./higherOrderReducers/createPagination";
-import * as actionTypes from "constants/actionTypes";
+import * as actions from "actions";
 import createByKey from "./higherOrderReducers/createByKey";
 
 const pagination = combineReducers({
-  popularMovies: createPagination(actionTypes.FETCH_POPULAR_MOVIES),
-  popularPeople: createPagination(actionTypes.FETCH_POPULAR_PEOPLE),
+  popularMovies: createPagination(actions.fetchPopularMovies),
+  popularPeople: createPagination(actions.fetchPopularPeople),
   movieSearchResultsByQuery: createByKey(
-    action => action.query,
-    createPagination(actionTypes.FETCH_MOVIE_SEARCH)
+    action => action.payload?.query,
+    createPagination([actions.fetchMovieSearch, actions.fetchSearch])
   ),
   personSearchResultsByQuery: createByKey(
-    action => action.query,
-    createPagination(actionTypes.FETCH_PERSON_SEARCH)
+    action => action.payload?.query,
+    createPagination([actions.fetchPersonSearch, actions.fetchSearch])
   )
 });
 

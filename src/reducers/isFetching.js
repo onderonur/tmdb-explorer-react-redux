@@ -1,47 +1,47 @@
 import { combineReducers } from "redux";
-import * as actionTypes from "constants/actionTypes";
+import * as actions from "actions";
 import createIsFetching from "./higherOrderReducers/createIsFetching";
 import createByKey from "./higherOrderReducers/createByKey";
 
 const isFetching = combineReducers({
-  genres: createIsFetching(actionTypes.FETCH_GENRES),
+  genres: createIsFetching(actions.fetchGenres),
   moviesById: createByKey(
-    action => action.movieId,
-    createIsFetching(actionTypes.FETCH_MOVIE)
+    action => action.payload?.movieId,
+    createIsFetching(actions.fetchMovie)
   ),
   peopleById: createByKey(
-    action => action.personId,
-    createIsFetching(actionTypes.FETCH_PERSON)
+    action => action.payload?.personId,
+    createIsFetching(actions.fetchPerson)
   ),
   movieVideosByMovieId: createByKey(
-    action => action.movieId,
-    createIsFetching(actionTypes.FETCH_MOVIE_VIDEOS)
+    action => action.payload?.movieId,
+    createIsFetching(actions.fetchMovieVideos)
   ),
   movieCreditsByMovieId: createByKey(
-    action => action.movieId,
-    createIsFetching(actionTypes.FETCH_MOVIE_CREDITS)
+    action => action.payload?.movieId,
+    createIsFetching(actions.fetchMovieCredits)
   ),
   movieRecommendationsByMovieId: createByKey(
-    action => action.movieId,
-    createIsFetching(actionTypes.FETCH_MOVIE_RECOMMENDATIONS)
+    action => action.payload?.movieId,
+    createIsFetching(actions.fetchRecommendations)
   ),
   movieImagesByMovieId: createByKey(
-    action => action.movieId,
-    createIsFetching(actionTypes.FETCH_MOVIE_IMAGES)
+    action => action.payload?.movieId,
+    createIsFetching(actions.fetchMovieImages)
   ),
   personImagesByPersonId: createByKey(
-    action => action.personId,
-    createIsFetching(actionTypes.FETCH_PERSON_IMAGES)
+    action => action.payload?.personId,
+    createIsFetching(actions.fetchPersonImages)
   ),
   personCreditsByPersonId: createByKey(
-    action => action.personId,
-    createIsFetching(actionTypes.FETCH_PERSON_MOVIE_CREDITS)
+    action => action.payload?.personId,
+    createIsFetching(actions.fetchPersonCredits)
   ),
-  popularMovies: createIsFetching(actionTypes.FETCH_POPULAR_MOVIES),
-  popularPeople: createIsFetching(actionTypes.FETCH_POPULAR_PEOPLE),
-  search: createIsFetching(actionTypes.FETCH_SEARCH),
-  movieSearchResultsByQuery: createIsFetching(actionTypes.FETCH_MOVIE_SEARCH),
-  personSearchResultsByQuery: createIsFetching(actionTypes.FETCH_PERSON_SEARCH)
+  popularMovies: createIsFetching(actions.fetchPopularMovies),
+  popularPeople: createIsFetching(actions.fetchPopularPeople),
+  search: createIsFetching(actions.fetchSearch),
+  movieSearchResults: createIsFetching(actions.fetchMovieSearch),
+  personSearchResults: createIsFetching(actions.fetchPersonSearch)
 });
 
 export default isFetching;
@@ -65,6 +65,6 @@ export const selectors = {
   selectIsFetchingPersonCredits: (state, personId) =>
     state.personCreditsByPersonId[personId],
   selectIsFetchingSearch: state => state.search,
-  selectIsFetchingMovieSearchResults: state => state.movieSearchResultsByQuery,
-  selectIsFetchingPersonSearchResults: state => state.personSearchResultsByQuery
+  selectIsFetchingMovieSearchResults: state => state.movieSearchResults,
+  selectIsFetchingPersonSearchResults: state => state.personSearchResults
 };

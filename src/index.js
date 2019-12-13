@@ -5,10 +5,11 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "@material-ui/styles";
 import theme from "theme";
-import configureStore from "./store";
+import store from "./store";
 import { BrowserRouter } from "react-router-dom";
+import rootSaga from "sagas";
 
-const store = configureStore();
+store.runSaga(rootSaga);
 
 const renderApp = () =>
   ReactDOM.render(

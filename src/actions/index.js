@@ -1,80 +1,78 @@
-import * as actionTypes from "constants/actionTypes";
 import { DEFAULT_FIRST_PAGE } from "reducers/higherOrderReducers/createPagination";
+import { createAction } from "@reduxjs/toolkit";
 
-export const toggleDrawer = () => ({
-  type: actionTypes.TOGGLE_DRAWER
-});
+export const toggleDrawer = createAction("drawer/toggle");
 
-export const fetchPopularMovies = pageId => ({
-  type: actionTypes.FETCH_POPULAR_MOVIES,
-  pageId
-});
+export const fetchPopularMovies = createAction("movie/fetchPopular", page => ({
+  payload: { page }
+}));
 
-export const fetchMovie = (movieId, requiredFields) => ({
-  type: actionTypes.FETCH_MOVIE,
-  movieId,
-  requiredFields
-});
+export const fetchMovie = createAction(
+  "movie/fetch",
+  (movieId, requiredFields) => ({
+    payload: { movieId, requiredFields }
+  })
+);
 
-export const fetchPerson = (personId, requiredFields) => ({
-  type: actionTypes.FETCH_PERSON,
-  personId,
-  requiredFields
-});
+export const fetchPerson = createAction(
+  "person/fetch",
+  (personId, requiredFields) => ({
+    payload: {
+      personId,
+      requiredFields
+    }
+  })
+);
 
-export const fetchRecommendations = movieId => ({
-  type: actionTypes.FETCH_MOVIE_RECOMMENDATIONS,
-  movieId
-});
+export const fetchRecommendations = createAction(
+  "movie/fetchRecommendations",
+  movieId => ({ payload: { movieId } })
+);
 
-export const fetchGenres = () => ({
-  type: actionTypes.FETCH_GENRES
-});
+export const fetchGenres = createAction("genres/fetch");
 
-export const fetchMovieCredits = movieId => ({
-  type: actionTypes.FETCH_MOVIE_CREDITS,
-  movieId
-});
+export const fetchMovieCredits = createAction(
+  "movies/fetchCredits",
+  movieId => ({ payload: { movieId } })
+);
 
-export const fetchPersonCredits = personId => ({
-  type: actionTypes.FETCH_PERSON_MOVIE_CREDITS,
-  personId
-});
+export const fetchPersonCredits = createAction(
+  "person/fetchCredits",
+  personId => ({
+    payload: { personId }
+  })
+);
 
-export const fetchPopularPeople = pageId => ({
-  type: actionTypes.FETCH_POPULAR_PEOPLE,
-  pageId
-});
+export const fetchPopularPeople = createAction("person/fetchPopular", page => ({
+  payload: { page }
+}));
 
-export const fetchMovieVideos = movieId => ({
-  type: actionTypes.FETCH_MOVIE_VIDEOS,
-  movieId
-});
+export const fetchMovieVideos = createAction("movie/fetchVideos", movieId => ({
+  payload: { movieId }
+}));
 
-export const fetchMovieImages = movieId => ({
-  type: actionTypes.FETCH_MOVIE_IMAGES,
-  movieId
-});
+export const fetchMovieImages = createAction("movie/fetchImages", movieId => ({
+  payload: { movieId }
+}));
 
-export const fetchPersonImages = personId => ({
-  type: actionTypes.FETCH_PERSON_IMAGES,
-  personId
-});
+export const fetchPersonImages = createAction(
+  "person/fetchImages",
+  personId => ({
+    payload: { personId }
+  })
+);
 
-export const fetchSearch = query => ({
-  type: actionTypes.FETCH_SEARCH,
-  query,
-  pageId: DEFAULT_FIRST_PAGE
-});
+export const fetchSearch = createAction("search/fetch", query => ({
+  payload: { query, page: DEFAULT_FIRST_PAGE }
+}));
 
-export const fetchMovieSearch = (query, pageId) => ({
-  type: actionTypes.FETCH_MOVIE_SEARCH,
-  query,
-  pageId
-});
+export const fetchMovieSearch = createAction("movie/search", (query, page) => ({
+  payload: { query, page }
+}));
 
-export const fetchPersonSearch = (query, pageId) => ({
-  type: actionTypes.FETCH_PERSON_SEARCH,
-  query,
-  pageId
-});
+export const fetchPersonSearch = createAction(
+  "person/search",
+  (query, page) => ({
+    payload: { query, page }
+  })
+);

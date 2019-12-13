@@ -14,7 +14,7 @@ function PersonCastingGridList({ personId }) {
   const personCredits = useSelector(state =>
     selectors.selectPersonCredits(state, personId)
   );
-  const castingIds = personCredits ? personCredits.castings : [];
+  const castingIds = personCredits?.castings || [];
   const isFetching = useSelector(state =>
     selectors.selectIsFetchingPersonCredits(state, personId)
   );
