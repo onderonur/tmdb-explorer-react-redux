@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/styles";
 import { selectors } from "reducers";
 import { getImageUrl } from "utils";
 import BaseCardHeader from "components/BaseCardHeader";
+import { getAspectRatioString } from "./AspectRatio";
 
 const useStyles = makeStyles(theme => ({
   link: {
@@ -24,7 +25,7 @@ function PersonCard({ personId }) {
         <BaseImage
           src={getImageUrl(person.profile_path)}
           alt={person.name}
-          aspectRatio="2:3"
+          aspectRatio={getAspectRatioString(2, 3)}
         />
         <BaseCardHeader title={person.name} />
       </BaseCard>

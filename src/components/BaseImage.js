@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import placeholderPng from "assets/placeholder.png";
 import clsx from "clsx";
-import AspectRatio from "components/AspectRatio";
+import AspectRatio, { getAspectRatioString } from "components/AspectRatio";
 import { Box, useTheme } from "@material-ui/core";
 import LoadingIndicator from "./LoadingIndicator";
 import { useTrackVisibility } from "react-intersection-observer-hook";
 
 const ORIGINAL = "original";
 const DEFAULT_ALT = "Not Loaded";
+const DEFAULT_ASPECT_RATIO = getAspectRatioString(1, 1);
 
 const useStyles = makeStyles(theme => ({
   imgWrapper: {
@@ -40,10 +41,10 @@ function BaseImage({
 }) {
   const classes = useStyles({ objectFit });
   const theme = useTheme();
-  const [imgHeight, setImgHeight] = useState(0);
-  const [imgWidth, setImgWidth] = useState(0);
+  const [imgHeight, setImgHeight] = useState();
+  const [imgWidth, setImgWidth] = useState();
   const [ref, { isVisible }] = useTrackVisibility();
-  const [initialized, setInitialized] = useState(!lazyLoad);
+  const [lazyLoaded, setLazyLoaded] = useState(isVisible);
   const [isImgLoaded, setIsImgLoaded] = useState(false);
 
   const isOriginalAspectRatio = aspectRatio === ORIGINAL;
@@ -60,7 +61,7 @@ function BaseImage({
 
   useEffect(() => {
     if (isVisible) {
-      setInitialized(true);
+      setLazyLoaded(true);
     }
   }, [isVisible]);
 
@@ -68,10 +69,14 @@ function BaseImage({
     <AspectRatio
       ref={lazyLoad ? ref : undefined}
       aspectRatio={
-        isOriginalAspectRatio ? `${imgWidth}:${imgHeight}` : aspectRatio
+        isOriginalAspectRatio
+          ? imgWidth && imgHeight
+            ? getAspectRatioString(imgWidth, imgHeight)
+            : DEFAULT_ASPECT_RATIO
+          : aspectRatio
       }
     >
-      {lazyLoad && !initialized ? null : (
+      {lazyLoad && !lazyLoaded ? null : (
         <>
           <Box
             className={clsx(

@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
-import AspectRatio from "./AspectRatio";
+import AspectRatio, { getAspectRatioString } from "./AspectRatio";
 
 const useStyles = makeStyles(theme => ({
   player: {
@@ -16,7 +16,7 @@ function YouTubePlayer({ youTubeId }) {
   const classes = useStyles();
 
   return (
-    <AspectRatio aspectRatio="16:9">
+    <AspectRatio aspectRatio={getAspectRatioString(16, 9)}>
       <iframe
         className={classes.player}
         // Key is added to unmount the iframe everytime youTubeId changes.

@@ -4,6 +4,7 @@ import { fetchMovieImages } from "actions";
 import { selectors } from "reducers";
 import ImageGridList from "components/ImageGridList";
 import ImageGalleryModal from "components/ImageGalleryModal";
+import { getAspectRatioString } from "components/AspectRatio";
 
 function MovieImageGridList({ movieId }) {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ function MovieImageGridList({ movieId }) {
       <ImageGridList
         filePaths={filePaths}
         isFetching={isFetching}
-        imageAspectRatio="16:9"
+        aspectRatio={getAspectRatioString(16, 9)}
       />
       <ImageGalleryModal title={movie?.title} filePaths={filePaths} />
     </>

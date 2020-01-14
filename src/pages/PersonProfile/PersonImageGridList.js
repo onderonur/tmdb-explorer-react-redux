@@ -4,6 +4,7 @@ import { fetchPersonImages } from "actions";
 import { selectors } from "reducers";
 import ImageGridList from "components/ImageGridList";
 import ImageGalleryModal from "components/ImageGalleryModal";
+import { getAspectRatioString } from "components/AspectRatio";
 
 function PersonImageGridList({ personId }) {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ function PersonImageGridList({ personId }) {
       <ImageGridList
         filePaths={filePaths}
         isFetching={isFetching}
-        imageAspectRatio="2:3"
+        aspectRatio={getAspectRatioString(2, 3)}
         minItemWidth={80}
       />
       <ImageGalleryModal title={person?.name} filePaths={filePaths} />

@@ -8,6 +8,7 @@ import { getImageUrl } from "utils";
 import { selectors } from "reducers";
 import BaseCardHeader from "components/BaseCardHeader";
 import MovieRatingTag from "./MovieRatingTag";
+import { getAspectRatioString } from "./AspectRatio";
 
 const useStyles = makeStyles(theme => ({
   link: {
@@ -25,7 +26,7 @@ function MovieCard({ movieId, subheader }) {
         <BaseImage
           src={getImageUrl(movie.poster_path)}
           alt={movie.title}
-          aspectRatio="2:3"
+          aspectRatio={getAspectRatioString(2, 3)}
         />
         <div style={{ position: "absolute", top: 0, left: 0 }}>
           <MovieRatingTag movieId={movieId} />

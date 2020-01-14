@@ -1,6 +1,7 @@
 import React from "react";
 import BaseImage from "./BaseImage";
 import { getImageUrl } from "utils";
+import { getAspectRatioString } from "./AspectRatio";
 
 function MediaGalleryModalImageViewer({ filePath }) {
   return (
@@ -12,7 +13,7 @@ function MediaGalleryModalImageViewer({ filePath }) {
         original: true
       })}
       lazyLoad={false}
-      aspectRatio="16:9"
+      aspectRatio={getAspectRatioString(16, 9)}
       objectFit="contain"
       showFallbackWhileLoading={true}
     />

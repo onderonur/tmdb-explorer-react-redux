@@ -2,6 +2,7 @@ import React from "react";
 import BaseImage from "components/BaseImage";
 import { makeStyles, Box, Typography } from "@material-ui/core";
 import { getImageUrl } from "utils";
+import { getAspectRatioString } from "./AspectRatio";
 
 const useStyles = makeStyles(theme => ({
   backdrop: {
@@ -39,7 +40,10 @@ function Introduction({ backgroundImageSrc, imageSrc, title, content }) {
         zIndex={1}
       >
         <Box flexBasis={300}>
-          <BaseImage src={getImageUrl(imageSrc)} aspectRatio="2:3" />
+          <BaseImage
+            src={getImageUrl(imageSrc)}
+            aspectRatio={getAspectRatioString(2, 3)}
+          />
         </Box>
         <Box padding={2} flex={1} flexBasis={300}>
           {typeof title === "string" ? (

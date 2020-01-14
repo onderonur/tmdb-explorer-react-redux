@@ -1,21 +1,29 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
-const AspectRatio = React.forwardRef(({ aspectRatio, children }, ref) => {
-  const [ratioX, ratioY] = aspectRatio.split(":");
-  const paddingTop = `${(100 * ratioY) / ratioX}%`;
+export const getAspectRatioString = (width, height) => `${width}:${height}`;
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    overflow: "hidden",
+    position: "relative",
+    height: ({ paddingTop }) => (paddingTop ? 0 : undefined),
+    paddingTop: ({ paddingTop }) => paddingTop
+  }
+}));
+
+const AspectRatio = ({ aspectRatio, children }, ref) => {
+  const [ratioX, ratioY] = aspectRatio.split(":").map(ratio => parseInt(ratio));
+  const ratio = (100 * ratioY) / ratioX;
+  const paddingTop = isNaN(ratio) ? undefined : `${ratio}%`;
+
+  const classes = useStyles({ paddingTop });
 
   return (
-    <Box
-      ref={ref}
-      position="relative"
-      height={0}
-      paddingTop={paddingTop}
-      overflow="hidden"
-    >
+    <div ref={ref} className={classes.root}>
       {children}
-    </Box>
+    </div>
   );
-});
+};
 
-export default AspectRatio;
+export default React.forwardRef(AspectRatio);
