@@ -1,24 +1,15 @@
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
-import AspectRatio, { getAspectRatioString } from "./AspectRatio";
-
-const useStyles = makeStyles(theme => ({
-  player: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%"
-  }
-}));
+import useAspectRatio, { getAspectRatioString } from "hooks/useAspectRatio";
 
 function YouTubePlayer({ youTubeId }) {
-  const classes = useStyles();
+  const aspectRatioClasses = useAspectRatio({
+    aspectRatio: getAspectRatioString(16, 9)
+  });
 
   return (
-    <AspectRatio aspectRatio={getAspectRatioString(16, 9)}>
+    <div className={aspectRatioClasses.root}>
       <iframe
-        className={classes.player}
+        className={aspectRatioClasses.child}
         // Key is added to unmount the iframe everytime youTubeId changes.
         // Otherwise, iframe messes up with the browser history.
         key={youTubeId}
@@ -27,7 +18,7 @@ function YouTubePlayer({ youTubeId }) {
         frameBorder="0"
         allowFullScreen
       />
-    </AspectRatio>
+    </div>
   );
 }
 

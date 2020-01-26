@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import placeholderPng from "assets/placeholder.png";
 import clsx from "clsx";
-import AspectRatio, { getAspectRatioString } from "components/AspectRatio";
 import { Box, useTheme } from "@material-ui/core";
 import LoadingIndicator from "./LoadingIndicator";
 import { useTrackVisibility } from "react-intersection-observer-hook";
+import useAspectRatio, { getAspectRatioString } from "hooks/useAspectRatio";
 
 const ORIGINAL = "original";
 const DEFAULT_ALT = "Not Loaded";
@@ -14,15 +14,7 @@ const DEFAULT_ASPECT_RATIO = getAspectRatioString(1, 1);
 const useStyles = makeStyles(theme => ({
   imgWrapper: {
     display: "block",
-    width: "100%",
-    height: "100%",
     backgroundColor: theme.palette.background.default
-  },
-  imgWithAspectRatioWrapper: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)"
   },
   img: {
     width: "100%",
@@ -49,6 +41,14 @@ function BaseImage({
 
   const isOriginalAspectRatio = aspectRatio === ORIGINAL;
 
+  const aspectRatioClasses = useAspectRatio({
+    aspectRatio: isOriginalAspectRatio
+      ? imgWidth && imgHeight
+        ? getAspectRatioString(imgWidth, imgHeight)
+        : DEFAULT_ASPECT_RATIO
+      : aspectRatio
+  });
+
   function handleLoad(e) {
     if (isOriginalAspectRatio) {
       const img = e.target;
@@ -66,24 +66,10 @@ function BaseImage({
   }, [isVisible]);
 
   return (
-    <AspectRatio
-      ref={lazyLoad ? ref : undefined}
-      aspectRatio={
-        isOriginalAspectRatio
-          ? imgWidth && imgHeight
-            ? getAspectRatioString(imgWidth, imgHeight)
-            : DEFAULT_ASPECT_RATIO
-          : aspectRatio
-      }
-    >
+    <div ref={lazyLoad ? ref : undefined} className={aspectRatioClasses.root}>
       {lazyLoad && !lazyLoaded ? null : (
         <>
-          <Box
-            className={clsx(
-              classes.imgWrapper,
-              classes.imgWithAspectRatioWrapper
-            )}
-          >
+          <Box className={clsx(classes.imgWrapper, aspectRatioClasses.child)}>
             <img
               className={classes.img}
               src={src || placeholderPng}
@@ -107,7 +93,7 @@ function BaseImage({
           )}
         </>
       )}
-    </AspectRatio>
+    </div>
   );
 }
 
