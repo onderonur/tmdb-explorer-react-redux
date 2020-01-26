@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import placeholderPng from "assets/placeholder.png";
-import clsx from "clsx";
 import { Box, useTheme } from "@material-ui/core";
 import LoadingIndicator from "./LoadingIndicator";
 import { useTrackVisibility } from "react-intersection-observer-hook";
-import useAspectRatio, { getAspectRatioString } from "hooks/useAspectRatio";
+import AspectRatio, { getAspectRatioString } from "./AspectRatio";
 
 const ORIGINAL = "original";
 const DEFAULT_ALT = "Not Loaded";
@@ -41,14 +40,6 @@ function BaseImage({
 
   const isOriginalAspectRatio = aspectRatio === ORIGINAL;
 
-  const aspectRatioClasses = useAspectRatio({
-    aspectRatio: isOriginalAspectRatio
-      ? imgWidth && imgHeight
-        ? getAspectRatioString(imgWidth, imgHeight)
-        : DEFAULT_ASPECT_RATIO
-      : aspectRatio
-  });
-
   function handleLoad(e) {
     if (isOriginalAspectRatio) {
       const img = e.target;
@@ -66,10 +57,19 @@ function BaseImage({
   }, [isVisible]);
 
   return (
-    <div ref={lazyLoad ? ref : undefined} className={aspectRatioClasses.root}>
+    <AspectRatio
+      ref={lazyLoad ? ref : undefined}
+      aspectRatio={
+        isOriginalAspectRatio
+          ? imgWidth && imgHeight
+            ? getAspectRatioString(imgWidth, imgHeight)
+            : DEFAULT_ASPECT_RATIO
+          : aspectRatio
+      }
+    >
       {lazyLoad && !lazyLoaded ? null : (
         <>
-          <Box className={clsx(classes.imgWrapper, aspectRatioClasses.child)}>
+          <Box className={classes.imgWrapper}>
             <img
               className={classes.img}
               src={src || placeholderPng}
@@ -93,7 +93,7 @@ function BaseImage({
           )}
         </>
       )}
-    </div>
+    </AspectRatio>
   );
 }
 

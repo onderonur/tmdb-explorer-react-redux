@@ -1,15 +1,10 @@
 import React from "react";
-import useAspectRatio, { getAspectRatioString } from "hooks/useAspectRatio";
+import AspectRatio, { getAspectRatioString } from "./AspectRatio";
 
 function YouTubePlayer({ youTubeId }) {
-  const aspectRatioClasses = useAspectRatio({
-    aspectRatio: getAspectRatioString(16, 9)
-  });
-
   return (
-    <div className={aspectRatioClasses.root}>
+    <AspectRatio aspectRatio={getAspectRatioString(16, 9)}>
       <iframe
-        className={aspectRatioClasses.child}
         // Key is added to unmount the iframe everytime youTubeId changes.
         // Otherwise, iframe messes up with the browser history.
         key={youTubeId}
@@ -18,7 +13,7 @@ function YouTubePlayer({ youTubeId }) {
         frameBorder="0"
         allowFullScreen
       />
-    </div>
+    </AspectRatio>
   );
 }
 

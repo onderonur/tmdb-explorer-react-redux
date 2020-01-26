@@ -8,7 +8,14 @@ const useStyles = makeStyles(theme => ({
     overflow: "hidden",
     position: "relative",
     height: ({ paddingTop }) => (paddingTop ? 0 : undefined),
-    paddingTop: ({ paddingTop }) => paddingTop
+    paddingTop: ({ paddingTop }) => paddingTop,
+    "& > *": {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%"
+    }
   }
 }));
 
