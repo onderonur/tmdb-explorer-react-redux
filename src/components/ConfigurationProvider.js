@@ -18,8 +18,8 @@ export function useConfiguration() {
 }
 
 function ConfigurationProvider({ children }) {
-  const [loading, setLoading] = useState(true);
   const [configuration, setConfiguration] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -52,8 +52,8 @@ function ConfigurationProvider({ children }) {
   );
 
   const value = useMemo(
-    () => ({ loading, configuration, error, getImageUrl }),
-    [loading, configuration, error, getImageUrl]
+    () => ({ configuration, loading, error, getImageUrl }),
+    [configuration, loading, error, getImageUrl]
   );
 
   if (error) {
