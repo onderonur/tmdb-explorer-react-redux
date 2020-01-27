@@ -1,9 +1,11 @@
 import React from "react";
 import BaseImage from "./BaseImage";
-import { getImageUrl } from "utils";
 import { getAspectRatioString } from "./AspectRatio";
+import { useConfiguration } from "./ConfigurationProvider";
 
 function MediaGalleryModalImageViewer({ filePath }) {
+  const { getImageUrl } = useConfiguration();
+
   return (
     <BaseImage
       // Added this key to recreate the component when the "file_path" changes.

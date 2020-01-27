@@ -8,6 +8,8 @@ import theme from "theme";
 import store from "./store";
 import { BrowserRouter } from "react-router-dom";
 import rootSaga from "sagas";
+import ConfigurationProvider from "components/ConfigurationProvider";
+import { CssBaseline } from "@material-ui/core";
 
 store.runSaga(rootSaga);
 
@@ -15,9 +17,12 @@ const renderApp = () =>
   ReactDOM.render(
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <CssBaseline />
+        <ConfigurationProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ConfigurationProvider>
       </ThemeProvider>
     </Provider>,
     document.getElementById("root")

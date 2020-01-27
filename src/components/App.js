@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { CssBaseline, Container } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import Routes from "components/Routes";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGenres } from "actions";
@@ -32,7 +32,6 @@ function App() {
 
   return (
     <>
-      <CssBaseline />
       <AppHeader />
       <AppDrawer />
       <div className={classes.toolbar} />

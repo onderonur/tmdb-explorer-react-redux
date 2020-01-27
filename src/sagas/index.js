@@ -9,24 +9,14 @@ import {
   takeLatest,
   cancelled
 } from "redux-saga/effects";
-import { getFetchTypes, verifyCachedData } from "utils";
+import { getFetchTypes, verifyCachedData, createUrl } from "utils";
 import * as schemas from "schemas";
 import * as actions from "actions";
-import { BASE_API_URL } from "constants/urls";
-import queryString from "query-string";
 import { normalize } from "normalizr";
 import { selectors } from "reducers";
 import axios from "axios";
 
-const api_key = process.env.REACT_APP_API_KEY;
-
 const CancelToken = axios.CancelToken;
-
-const createUrl = (endpoint, params = {}) =>
-  `${BASE_API_URL}${endpoint}?${queryString.stringify({
-    ...params,
-    api_key
-  })}`;
 
 // GET request with cancellation
 function* callAPI(endpoint, params, schema, processData, config = {}) {

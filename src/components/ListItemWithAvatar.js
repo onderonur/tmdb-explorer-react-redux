@@ -6,7 +6,7 @@ import {
   ListItemText,
   makeStyles
 } from "@material-ui/core";
-import { getImageUrl } from "utils";
+import { useConfiguration } from "./ConfigurationProvider";
 
 const useStyles = makeStyles(theme => ({
   secondaryText: {
@@ -21,6 +21,7 @@ function ListItemWithAvatar({
   ...rest
 }) {
   const classes = useStyles();
+  const { getImageUrl } = useConfiguration();
 
   return (
     <ListItem alignItems="flex-start" dense {...rest}>

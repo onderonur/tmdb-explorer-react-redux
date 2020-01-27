@@ -1,8 +1,8 @@
 import React from "react";
 import BaseImage from "components/BaseImage";
 import { makeStyles, Box, Typography } from "@material-ui/core";
-import { getImageUrl } from "utils";
 import { getAspectRatioString } from "./AspectRatio";
+import { useConfiguration } from "./ConfigurationProvider";
 
 const useStyles = makeStyles(theme => ({
   backdrop: {
@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Introduction({ backgroundImageSrc, imageSrc, title, content }) {
+  const { getImageUrl } = useConfiguration();
   const classes = useStyles({
     backgroundImageSrc: getImageUrl(backgroundImageSrc)
   });

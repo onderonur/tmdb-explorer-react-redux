@@ -1,5 +1,5 @@
-import placeholderPng from "assets/placeholder.png";
-import { BASE_IMG_API_URL } from "constants/urls";
+import { BASE_API_URL } from "constants/urls";
+import queryString from "query-string";
 
 export function getMovieReleaseYear(movie) {
   const date = movie?.release_date;
@@ -12,13 +12,13 @@ export function getMovieReleaseYear(movie) {
   return year;
 }
 
-export function getImageUrl(path, { original } = {}) {
-  if (!path) {
-    return placeholderPng;
-  }
+const api_key = process.env.REACT_APP_API_KEY;
 
-  return `${BASE_IMG_API_URL}/${original ? "original" : "w500"}${path}`;
-}
+export const createUrl = (endpoint, params = {}) =>
+  `${BASE_API_URL}${endpoint}?${queryString.stringify({
+    ...params,
+    api_key
+  })}`;
 
 export function getImdbProfileUrl(imdbId) {
   return `https://www.imdb.com/title/${imdbId}`;

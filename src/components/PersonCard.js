@@ -5,9 +5,9 @@ import { useSelector } from "react-redux";
 import RouterLink from "components/RouterLink";
 import { makeStyles } from "@material-ui/styles";
 import { selectors } from "reducers";
-import { getImageUrl } from "utils";
 import BaseCardHeader from "components/BaseCardHeader";
 import { getAspectRatioString } from "./AspectRatio";
+import { useConfiguration } from "./ConfigurationProvider";
 
 const useStyles = makeStyles(theme => ({
   link: {
@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
 function PersonCard({ personId }) {
   const classes = useStyles();
   const person = useSelector(state => selectors.selectPerson(state, personId));
+  const { getImageUrl } = useConfiguration();
 
   return (
     <RouterLink className={classes.link} to={`/person/${personId}`}>
