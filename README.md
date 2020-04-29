@@ -1,6 +1,6 @@
 ## TMDB Explorer: A React-Redux Application
 
-**Live demo on Netlify is [here](https://tmdb-explorer.netlify.com/)**.
+**Live demo on Netlify is [here](https://tmdb-explorer.netlify.app/)**.
 
 This is a tmdb (the Movie Db) explorer react-redux application that implements some of the [redux recipes](https://redux.js.org/recipes/recipe-index) like;
 
