@@ -13,18 +13,22 @@ function MovieAndPersonAutoSearch({ className, autoFocus }) {
   const historyPush = useHistoryPush();
 
   const movieIds =
-    useSelector(state =>
+    useSelector((state) =>
       selectors.selectMovieSearchResultIds(state, searchValue)
     ) || [];
-  const movies = useSelector(state => selectors.selectMovies(state, movieIds));
+  const movies = useSelector((state) =>
+    selectors.selectMovies(state, movieIds)
+  );
 
   const personIds =
-    useSelector(state =>
+    useSelector((state) =>
       selectors.selectPersonSearchResultIds(state, searchValue)
     ) || [];
-  const people = useSelector(state => selectors.selectPeople(state, personIds));
+  const people = useSelector((state) =>
+    selectors.selectPeople(state, personIds)
+  );
 
-  const isFetching = useSelector(state =>
+  const isFetching = useSelector((state) =>
     selectors.selectIsFetchingSearch(state)
   );
 
@@ -60,11 +64,9 @@ function MovieAndPersonAutoSearch({ className, autoFocus }) {
   }
 
   let suggestions = [
-    ...movies.map(movie => ({ ...movie, suggestionType: "movie" })),
-    ...people.map(person => ({ ...person, suggestionType: "person" }))
-  ];
-
-  suggestions = suggestions.sort((a, b) =>
+    ...movies.map((movie) => ({ ...movie, suggestionType: "movie" })),
+    ...people.map((person) => ({ ...person, suggestionType: "person" })),
+  ].sort((a, b) =>
     a[a.suggestionType === "movie" ? "title" : "name"].localeCompare(
       b[b.suggestionType === "movie" ? "title" : "name"]
     )
@@ -73,12 +75,12 @@ function MovieAndPersonAutoSearch({ className, autoFocus }) {
   return (
     <AutoSearch
       className={className}
-      extractSuggestionKey={suggestion =>
+      extractSuggestionKey={(suggestion) =>
         `${suggestion.suggestionType}_${suggestion.id}`
       }
       placeholder="Search Movies & People"
       suggestions={suggestions}
-      renderSuggestion={suggestion =>
+      renderSuggestion={(suggestion) =>
         suggestion.suggestionType === "movie" ? (
           <MovieListItem movieId={suggestion.id} />
         ) : (
