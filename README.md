@@ -35,10 +35,6 @@ You may use libraries like [reselect](https://github.com/reduxjs/reselect) to op
 
 Also, [material-ui](https://material-ui.com/) has released the version 4 and it has some cool hooks like `useTheme` to style your components and `useMediaQuery`. I've always liked CSS-in-JS and this approach with hooks is one of my favorites.
 
-### Hot Reloading
-
-Hot reloading is enabled for both react components and redux reducers. With this configuration, you can change your components and don't lose the state in the store.
-
 ### Development
 
 To run the project go to [TMDB](https://developers.themoviedb.org/3) and get an `api_key`. Copy and paste that `api_key` as `REACT_APP_API_KEY=<your_api_key>` in `.env` file without `<` and `>`.
