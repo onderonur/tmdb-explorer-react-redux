@@ -5,12 +5,12 @@ import ImageGridListItem from "./ImageGridListItem";
 function ImageGridList({
   filePaths,
   isFetching,
-  imageAspectRatio,
+  aspectRatio,
   minItemWidth = 120
 }) {
   function renderItem(filePath) {
     return (
-      <ImageGridListItem filePath={filePath} aspectRatio={imageAspectRatio} />
+      <ImageGridListItem filePath={filePath} aspectRatio={aspectRatio} />
     );
   }
 

@@ -1,8 +1,8 @@
 ## TMDB Explorer: A React-Redux Application
 
-**Note:** This project was a great practice to learn Redux recipes. And Redux is a great tool (redux-saga and @reduxjs/toolkit too). But it was a little bit of overkill for this project. It was used only for some kind of a caching mechanism. But, it was a little bit hard to maintain too. So, I've migrated this project to a simpler structure and let this one to be a React-Redux recipe application by itself. You can find the main project **[here](https://github.com/onderonur/tmdb-explorer)**.
+**Note:** This project was a great practice to learn Redux recipes. And Redux is a great tool (redux-saga and @reduxjs/toolkit too). But it was a little bit of overkill for this project. It was used only for some kind of a caching mechanism. But, it was a little bit hard to maintain too. So, I've migrated this project to a simpler structure, added SSR with Next.js and let this one to be a React-Redux recipe application by itself. You can find the main project **[here](https://github.com/onderonur/tmdb-explorer)**.
 
-**Live demo on Netlify is [here](https://tmdb-explorer.netlify.app/)**.
+**Live demo (for Next.js version) on Vercel is [here](https://tmdb-explorer.vercel.app/)**.
 
 This is a tmdb (the Movie Db) explorer react-redux application that implements some of the [redux recipes](https://redux.js.org/recipes/recipe-index) like;
 
